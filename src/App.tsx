@@ -4,6 +4,8 @@ import MainLayout from "./components/layout/MainLayout";
 import Home from "./pages/view/Home";
 import Contact from "./pages/view/Contact";
 import Blogdetails from "./pages/view/Blogdetatails";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 const App: React.FC = () => {
   return (
@@ -15,6 +17,8 @@ const App: React.FC = () => {
         <Route path="/" element={<MainLayout children={<Home />} />} />
         <Route path="/contact" element={<MainLayout children={<Contact />} />} />
         <Route path="/blogdetails" element={<MainLayout children={<Blogdetails />} />} />
+        <Route path="/login" element={<Login />}  />
+        <Route path="/register" element={<Register  />} />
 
 
 
