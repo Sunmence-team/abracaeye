@@ -11,3 +11,16 @@
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
 }
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
