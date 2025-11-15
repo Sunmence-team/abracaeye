@@ -1,5 +1,5 @@
 import React from "react";
-import { assets } from "../../assets/assets";
+import { assets } from "../../assets/assessts";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import { FaInstagram, FaXTwitter, FaFacebook } from "react-icons/fa6";
 import { useFormik } from "formik";
