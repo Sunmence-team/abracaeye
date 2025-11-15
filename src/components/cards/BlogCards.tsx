@@ -29,13 +29,13 @@ const BlogCard: React.FC<BlogCardProps> = ({
         <p className="text-sm">{excerpt}</p>
         <div className="w-full flex justify-between">
           <div className="flex items-center gap-2">
-            <div className="bg-pryClr w-6 h-6 rounded-full flex items-center justify-center text-white text-xs p-2">
+            <div className="bg-dark-red w-6 h-6 rounded-full flex items-center justify-center text-white text-xs p-2">
               {authorInitials}
             </div>
             <p className="text-xs font-medium">{authorName}</p>
           </div>
           <div className="justify-end flex gap-3 items-center">
-            <FaHeart className="text-pryClr" />
+            <FaHeart className="text-dark-red" />
             <FaRegCommentDots />
             <IoIosShareAlt />
           </div>

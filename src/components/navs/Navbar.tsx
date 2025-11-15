@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
               className={`
                 font-medium text-sm tracking-wide
                 transition-all duration-300
-                ${activeLink === item.href ? 'text-pryClr' : 'text-gray-700 hover:text-pryClr'}
+                ${activeLink === item.href ? 'text-dark-red' : 'text-gray-700 hover:text-dark-red'}
               `}
             >
               {item.label}
@@ -72,8 +72,8 @@ const Navbar: React.FC = () => {
           onClick={() => setIsOpen(!isOpen)}
           className="
             md:hidden p-2.5 rounded-full
-            bg-gradient-to-br from-pryClr/10 to-pryClr/5
-            hover:from-pryClr/20 hover:to-pryClr/10
+            bg-gradient-to-br from-dark-red/10 to-dark-red/5
+            hover:from-dark-red/20 hover:to-dark-red/10
             transition-all duration-300
             group
           "
@@ -82,12 +82,12 @@ const Navbar: React.FC = () => {
           <div className="relative w-6 h-6">
             <Menu
               size={24}
-              className={`absolute inset-0 text-pryClr transition-all duration-300
+              className={`absolute inset-0 text-dark-red transition-all duration-300
                 ${isOpen ? 'opacity-0 rotate-90 scale-0' : 'opacity-100 rotate-0 scale-100'}`}
             />
             <X
               size={24}
-              className={`absolute inset-0 text-pryClr transition-all duration-300
+              className={`absolute inset-0 text-dark-red transition-all duration-300
                 ${isOpen ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-0'}`}
             />
           </div>
@@ -121,11 +121,11 @@ const Navbar: React.FC = () => {
             onClick={() => setIsOpen(false)}
             className="
               absolute top-7 right-6 p-3 rounded-full
-              bg-pryClr/10 hover:bg-pryClr/20
+              bg-dark-red/10 hover:bg-dark-red/20
               transition-all duration-300
             "
           >
-            <X size={26} className="text-pryClr" />
+            <X size={26} className="text-dark-red" />
           </button>
           {/* Logo */}
           <img src={assets.logo} className="w-28 opacity-80" alt="Logo" />
@@ -144,8 +144,8 @@ const Navbar: React.FC = () => {
                   text-3xl font-semibold tracking-wider
                   transition-all duration-300
                   ${activeLink === item.href
-                    ? 'text-pryClr scale-110'
-                    : 'text-gray-800 hover:text-pryClr hover:scale-105'
+                    ? 'text-dark-red scale-110'
+                    : 'text-gray-800 hover:text-dark-red hover:scale-105'
                   }
                 `}
               >

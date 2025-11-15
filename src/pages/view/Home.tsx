@@ -146,7 +146,7 @@ const Home = () => {
         <div className="absolute inset-0 flex items-end pb-8 md:pb-12">
           <div className="w-[90%] mx-auto text-white">
             <div className="w-full md:w-[55%] flex flex-col gap-3 md:gap-4">
-              <button className="bg-trdClr text-white px-3 md:px-4 py-1 text-xs md:text-sm rounded-sm w-fit font-medium">
+              <button className="bg-light-red text-white px-3 md:px-4 py-1 text-xs md:text-sm rounded-sm w-fit font-medium">
                 {slides[currentIndex].badge}
               </button>
 
@@ -169,7 +169,7 @@ const Home = () => {
 
       {/* Recent Eye News */}
       <div className="w-[90%] flex flex-col py-12">
-        <p className="text-pryClr text-sm md:text-base">Recent Eye News</p>
+        <p className="text-dark-red text-sm md:text-base">Recent Eye News</p>
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mt-8">
           {blogPosts.map((post, index) => (
             <BlogCard

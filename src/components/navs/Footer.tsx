@@ -32,17 +32,17 @@ const Footer = () => {
                       flex-1 h-full px-3 md:px-4 lg:px-4 py-2
                       border border-gray-300 rounded-lg
                       text-gray-700 placeholder-gray-500 text-xs md:text-sm lg:text-sm
-                      focus:outline-none focus:ring-2 focus:ring-trdClr/30 focus:border-trdClr
+                      focus:outline-none focus:ring-2 focus:ring-light-red/30 focus:border-light-red
                       transition-all duration-200
                     "
                   />
                   <button
                     className="
                       h-full px-4 md:px-8 lg:px-12 py-2
-                      bg-trdClr text-white font-medium text-xs md:text-sm lg:text-sm
+                      bg-light-red text-white font-medium text-xs md:text-sm lg:text-sm
                       rounded-lg
-                      hover:bg-trdClr/90
-                      focus:outline-none focus:ring-2 focus:ring-trdClr/30
+                      hover:bg-light-red/90
+                      focus:outline-none focus:ring-2 focus:ring-light-red/30
                       transition-all duration-200
                       whitespace-nowrap shadow-sm
                     "
@@ -64,23 +64,23 @@ const Footer = () => {
               Stay informed with the latest stories, insights, and updates from around the world.
             </p>
             <div className="flex gap-3 md:gap-4">
-              <FaInstagram className="text-lg md:text-xl lg:text-base text-white hover:text-pryClr cursor-pointer transition-colors" />
-              <FaFacebook className="text-lg md:text-xl lg:text-base text-white hover:text-pryClr cursor-pointer transition-colors" />
-              <FaTwitter className="text-lg md:text-xl lg:text-base text-white hover:text-pryClr cursor-pointer transition-colors" />
+              <FaInstagram className="text-lg md:text-xl lg:text-base text-white hover:text-dark-red cursor-pointer transition-colors" />
+              <FaFacebook className="text-lg md:text-xl lg:text-base text-white hover:text-dark-red cursor-pointer transition-colors" />
+              <FaTwitter className="text-lg md:text-xl lg:text-base text-white hover:text-dark-red cursor-pointer transition-colors" />
             </div>
           </div>
 
           {/* Nav Links */}
           <div className="flex flex-row gap-4 md:gap-6 lg:gap-8 text-xs md:text-sm lg:text-sm">
-            <p className="hover:text-pryClr cursor-pointer transition-colors">Blog</p>
-            <p className="hover:text-pryClr cursor-pointer transition-colors">Market Place</p>
-            <p className="hover:text-pryClr cursor-pointer transition-colors">Contact Us</p>
+            <p className="hover:text-dark-red cursor-pointer transition-colors">Blog</p>
+            <p className="hover:text-dark-red cursor-pointer transition-colors">Market Place</p>
+            <p className="hover:text-dark-red cursor-pointer transition-colors">Contact Us</p>
           </div>
         </div>
       </div>
 
       {/* Copyright */}
-      <div className="w-full bg-pryClr flex items-center justify-center py-3 md:py-4 lg:py-4">
+      <div className="w-full bg-dark-red flex items-center justify-center py-3 md:py-4 lg:py-4">
         <p className="text-white text-xs md:text-sm lg:text-xs font-bold">
           AbrayaBlogNews@2025 All rights Reserved
         </p>
