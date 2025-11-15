@@ -40,7 +40,7 @@ const Login = () => {
           toast.success("Welcome back! Redirecting...");
 
           setTimeout(() => {
-            navigate("/dashboard/appointments");
+            navigate("");
           }, 1500);
         }
       } catch (err: any) {
