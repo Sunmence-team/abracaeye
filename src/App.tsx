@@ -1,15 +1,26 @@
-import { Routes } from 'react-router-dom'
-import { Toaster } from "sonner";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import MainLayout from "./components/layout/MainLayout";
+import Home from "./pages/view/Home";
 
-function App() {
-
+const App: React.FC = () => {
   return (
     <>
-      <Toaster />
-      <Routes>
-      </Routes>
-    </>
-  )
-}
 
-export default App
+      <Routes>
+
+        {/* Main routes with navbar */}
+        <Route path="/" element={<MainLayout children={<Home />} />} />
+
+
+
+
+
+      </Routes>
+
+
+    </>
+  );
+};
+
+export default App;
