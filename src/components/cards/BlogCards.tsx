@@ -1,9 +1,48 @@
-import React from 'react'
+import React from 'react';
+import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
+import { IoIosShareAlt } from 'react-icons/io';
 
-const BlogCards = () => {
-  return (
-    <div>BlogCards</div>
-  )
+interface BlogCardProps {
+  image: string;
+  title: string;
+  excerpt: string;
+  authorInitials: string;
+  authorName: string;
 }
 
-export default BlogCards
+const BlogCard: React.FC<BlogCardProps> = ({
+  image,
+  title,
+  excerpt,
+  authorInitials,
+  authorName,
+}) => {
+  return (
+    <div className="w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)]">
+      <img
+        src={image}
+        alt={title}
+        className="w-full h-72 object-cover rounded-t-lg"
+      />
+      <div className="w-full p-4 flex flex-col gap-3">
+        <p className="font-semibold text-lg">{title}</p>
+        <p className="text-sm">{excerpt}</p>
+        <div className="w-full flex justify-between">
+          <div className="flex items-center gap-2">
+            <div className="bg-pryClr w-6 h-6 rounded-full flex items-center justify-center text-white text-xs p-2">
+              {authorInitials}
+            </div>
+            <p className="text-xs font-medium">{authorName}</p>
+          </div>
+          <div className="justify-end flex gap-3 items-center">
+            <FaHeart className="text-pryClr" />
+            <FaRegCommentDots />
+            <IoIosShareAlt />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default BlogCard;
