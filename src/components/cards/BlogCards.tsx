@@ -1,8 +1,10 @@
 import React from 'react';
 import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
 import { IoIosShareAlt } from 'react-icons/io';
+import { Link } from 'react-router-dom';
 
 interface BlogCardProps {
+  id: string;
   image: string;
   title: string;
   excerpt: string;
@@ -11,6 +13,7 @@ interface BlogCardProps {
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({
+  id,
   image,
   title,
   excerpt,
@@ -18,7 +21,9 @@ const BlogCard: React.FC<BlogCardProps> = ({
   authorName,
 }) => {
   return (
-    <div className="w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)]">
+    <Link 
+      to={`/blogdetails/${id}`}
+      className="w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)]">
       <img
         src={image}
         alt={title}
@@ -41,7 +46,7 @@ const BlogCard: React.FC<BlogCardProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

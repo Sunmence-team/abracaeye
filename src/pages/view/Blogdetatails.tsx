@@ -51,7 +51,7 @@ const Blogdetails = () => {
           </button>
 
           {/* ⭐ Dynamic Title */}
-          <h1 className="text-3xl md:text-4xl font-bold leading-tight text-[var(--color-light-red)]">
+          <h1 className="text-3xl md:text-4xl font-bold leading-tight text-light-red">
             {selectedPost.title}
           </h1>
 
@@ -80,14 +80,14 @@ const Blogdetails = () => {
           
           <div className="w-full flex justify-between mt-5">
             <div className="flex items-center gap-2">
-              <div className="bg-[var(--color-light-red)] w-8 h-8 rounded-full flex items-center justify-center text-white text-xs p-2 font-bold">
+              <div className="bg-light-red w-8 h-8 rounded-full flex items-center justify-center text-white text-xs p-2 font-bold">
                 {selectedPost.authorInitials}
               </div>
               <p className="text-[15px] font-medium">{selectedPost.authorName}</p>
             </div>
 
             <div className="justify-end flex gap-3 items-center">
-              <FaHeart className="text-[var(--color-light-red)]" size={20} />
+              <FaHeart className="text-light-red" size={20} />
               <FaRegCommentDots size={20} />
               <IoIosShareAlt size={20} />
             </div>
@@ -96,7 +96,7 @@ const Blogdetails = () => {
 
         {/* RIGHT SIDEBAR */}
         <div className="mt-30">
-          <h2 className="text-lg font-semibold mb-4 text-[var(--color-light-red)]">
+          <h2 className="text-lg font-semibold mb-4 text-light-red">
             Recent Eye News
           </h2>
 

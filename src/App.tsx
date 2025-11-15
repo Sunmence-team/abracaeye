@@ -6,17 +6,18 @@ import Contact from "./pages/view/Contact";
 import Blogdetails from "./pages/view/Blogdetatails";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import { Toaster } from "sonner";
 
 const App: React.FC = () => {
   return (
     <>
-
+      <Toaster />
       <Routes>
 
         {/* Main routes with navbar */}
         <Route path="/" element={<MainLayout children={<Home />} />} />
         <Route path="/contact" element={<MainLayout children={<Contact />} />} />
-        <Route path="/blogdetails" element={<MainLayout children={<Blogdetails />} />} />
+        <Route path="/blogdetails/:id" element={<MainLayout children={<Blogdetails />} />} />
         <Route path="/login" element={<Login />}  />
         <Route path="/register" element={<Register  />} />
 
