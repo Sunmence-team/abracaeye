@@ -118,7 +118,7 @@ const Contact = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-[var(--color-ligt-red)] hover:bg-red-700 text-white py-3 rounded-md text-[16px] font-medium transition"
+                className="w-full bg-[var(--color-light-red)] hover:bg-red-700 text-white py-3 rounded-md text-[16px] font-medium transition"
               >
                 Submit
               </button>
@@ -132,7 +132,7 @@ const Contact = () => {
             <div className="space-y-5">
               {/* Phone */}
               <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
-                <div className="text-white bg-[var(--color-ligt-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
+                <div className="text-white bg-[var(--color-light-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
                   <FaPhone size={25} />
                 </div>
                 <div>
@@ -143,7 +143,7 @@ const Contact = () => {
 
               {/* Email */}
               <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
-                <div className="text-white bg-[var(--color-ligt-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
+                <div className="text-white bg-[var(--color-light-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
                   <FaEnvelope size={25} />
                 </div>
                 <div>
@@ -154,7 +154,7 @@ const Contact = () => {
 
               {/* Location */}
               <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
-                <div className="text-white bg-[var(--color-ligt-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
+                <div className="text-white bg-[var(--color-light-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
                   <FaMapMarkerAlt size={25} />
                 </div>
                 <div>
@@ -169,9 +169,9 @@ const Contact = () => {
               <h1 className="text-2xl font-medium my-15">Connect with Us</h1>
 
               <div className="flex items-center gap-5 text-3xl">
-                <FaInstagram className="cursor-pointer hover:text-[var(--color-ligt-red)] transition" />
-                <FaFacebook className="cursor-pointer hover:text-[var(--color-ligt-red)] transition" />
-                <FaXTwitter className="cursor-pointer hover:text-[var(--color-ligt-red)] transition" />
+                <FaInstagram className="cursor-pointer hover:text-[var(--color-light-red)] transition" />
+                <FaFacebook className="cursor-pointer hover:text-[var(--color-light-red)] transition" />
+                <FaXTwitter className="cursor-pointer hover:text-[var(--color-light-red)] transition" />
               </div>
             </div>
 
