@@ -95,11 +95,15 @@ const AddPost: React.FC = () => {
             {prevImage ? (
               <img
                 src={prevImage}
-                alt="upoad-img"
+                alt="prev-img"
                 className="h-23 w-23 object-cover"
               />
             ) : (
-              <img src={assets.upload} alt="upoad-img" />
+              <img
+                src={assets.upload}
+                alt="upoad-img"
+                className="object-contain"
+              />
             )}
           </div>
         </div>

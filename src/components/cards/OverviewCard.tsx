@@ -14,10 +14,12 @@ const OverviewCard: React.FC<OverviewCardProps> = ({
   return (
     <div
       onClick={action}
-      className="bg-transparent border border-light-red rounded-md py-5 px-7 w-[300px] lg:w-[300px] h-[164px] cursor-pointer flex flex-col gap-3 items-center justify-center"
+      className="bg-transparent border border-light-red rounded-md py-3 lg:py-5 px-4 lg:px-7 sm:w-full lg:w-[300px] lg:h-[164px] cursor-pointer flex flex-col gap-3 items-center justify-center"
     >
-      <Icon className="text-4xl text-light-red font-semibold" />
-      <h3 className="text-[18px] font-semibold text-black">{name}</h3>
+      <Icon className="text-xl lg:text-4xl text-light-red font-semibold" />
+      <h3 className="text-xs lg:text-[18px] font-semibold text-black">
+        {name}
+      </h3>
     </div>
   );
 };

@@ -28,14 +28,14 @@ const VendorCard: React.FC<VendorCardProps> = ({
         </div>
       </div>
       <div className="flex flex-col gap-2 p-2">
-        <h5 className="text-sm text-light-red font-semibold underline">
+        <h5 className="text-xs lg:text-sm text-light-red font-semibold underline">
           {storeName}
         </h5>
-        <h6 className="text-sm text-green-700 flex items-center gap-1 font-semibold underline">
+        <h6 className="text-xs lg:text-sm text-green-700 flex items-center gap-1 font-semibold underline">
           <BsStarFill className="text-yellow-500" />
           {rating}({rateCount})
         </h6>
-        <p className="text-lg text-black flex items-center gap-1 font-semibold underline">
+        <p className="text-sm lg:text-lg text-black flex items-center gap-1 font-semibold underline">
           {goods.join(", ").slice(0, 13)}...
         </p>
       </div>

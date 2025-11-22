@@ -7,11 +7,13 @@ export const navItems = [
     icon: MdDashboard,
     pathName: "/dashboard/overview",
     name: "My Dashboard",
+    altName: "Dashboard",
   },
   {
     icon: AiFillFileAdd,
     pathName: "/dashboard/add-post",
-    name: "Add new post",
+    name: "Add New Post",
+    altName: "New Post",
   },
   {
     icon: MdPermMedia,

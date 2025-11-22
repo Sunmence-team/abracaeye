@@ -1,24 +1,20 @@
 import React from "react";
-import BalanceCard from "../../components/cards/BalanceCard";
+import BalanceCard from "../../../components/cards/BalanceCard";
 import { CiCamera } from "react-icons/ci";
-import { BsEnvelopePlus } from "react-icons/bs";
-import OverviewCard from "../../components/cards/OverviewCard";
-import ServicesCard from "../../components/cards/ServicesCard";
-import { BsBarChartFill } from "react-icons/bs";
-import { FaWifi } from "react-icons/fa6";
+import { BsBarChartFill, BsEnvelopePlus } from "react-icons/bs";
+import OverviewCard from "../../../components/cards/OverviewCard";
+import { FaWifi } from "react-icons/fa";
 import { LuSwitchCamera } from "react-icons/lu";
 import { PiDesktopFill } from "react-icons/pi";
-import { assets } from "../../assets/assets";
-import VendorCard from "../../components/cards/VendorCard";
-import { useScreenSize } from "../../hook/useScreenSize";
-import MobileOverview from "../view/mobile/Overview";
+import ServicesCard from "../../../components/cards/ServicesCard";
+import { assets } from "../../../assets/assets";
+import VendorCard from "../../../components/cards/VendorCard";
 import { useNavigate } from "react-router-dom";
 
-const Overview: React.FC = () => {
-  const screen = useScreenSize();
+const MobileOverview: React.FC = () => {
   const navigate = useNavigate();
   function greet() {
-    alert("Project Added");
+    alert("Hi");
   }
   const overviewItems = [
     {
@@ -88,30 +84,36 @@ const Overview: React.FC = () => {
       rateCount: 200,
     },
   ];
-  return screen.isMobile ? (
-    <MobileOverview />
-  ) : (
-    <div className="flex flex-col gap-9">
-      <div className="flex lg:flex-nowrap flex-wrap items-stretch gap-4 justify-between">
-        <div className="">
-          <BalanceCard />
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
+          <h3 className="text-black font-semibold text-[18px]">Hi, Alabi</h3>
+          <h5 className="text-light-red font-medium text-sm">
+            Ready to feed some eyes?
+          </h5>
         </div>
+        <BalanceCard />
+      </div>
+      <div className="flex justify-between w-full gap-2 items-center">
         {overviewItems.map((item, idx) => (
-          <div className="sm:w-[48%]" key={idx} onClick={item.action}>
+          <div className="w-1/2" key={idx} onClick={item.action}>
             <OverviewCard name={item.name} icon={item.icon} />
           </div>
         ))}
       </div>
-      <div className="flex items-stretch gap-2 justify-between lg:overflow-x-hidden noScrollBar overflow-x-auto">
+      <div className="flex w-full gap-4 overflow-x-scroll items-stretch">
         {serviceesItems.map((item, idx) => (
           <div className="" key={idx}>
             <ServicesCard name={item.name} desc={item.desc} icon={item.icon} />
           </div>
         ))}
       </div>
-      <div className="flex flex-col gap-5">
-        <h3 className="text-xl font-semibold">Best selling vendor</h3>
-        <div className="flex items-stretch lg:overflow-x-hidden noScrollBar overflow-x-auto gap-4 justify-between">
+      <div className="flex flex-col gap-5 mb-21">
+        <h3 className="text-sm font-semibold text-light-red">
+          Best selling vendor
+        </h3>
+        <div className="flex gap-4 w-full overflow-x-scroll">
           {vendorItems.map((item, idx) => (
             <div className="" key={idx}>
               <VendorCard
@@ -129,4 +131,4 @@ const Overview: React.FC = () => {
   );
 };
 
-export default Overview;
+export default MobileOverview;
