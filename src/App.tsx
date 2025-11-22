@@ -11,10 +11,12 @@ import Profile from "./pages/client/Profile";
 import Posts from "./pages/client/Posts";
 import AddPost from "./pages/client/AddPost";
 import Overview from "./pages/client/Overview";
+import { Toaster } from "sonner";
 
 const App: React.FC = () => {
   return (
     <>
+      <Toaster />
       <Routes>
         {/* Main routes with navbar */}
         <Route path="/" element={<MainLayout children={<Home />} />} />
@@ -23,7 +25,7 @@ const App: React.FC = () => {
           element={<MainLayout children={<Contact />} />}
         />
         <Route
-          path="/blogdetails"
+          path="/blogdetails/:id"
           element={<MainLayout children={<Blogdetails />} />}
         />
         <Route path="/login" element={<Login />} />

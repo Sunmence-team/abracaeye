@@ -68,7 +68,7 @@ const Register: React.FC = () => {
 
             <p className='font-medium text-[18px]'>
               Already have an Account?
-              <span className='font-semibold text-[var(--color-light-red)]'>
+              <span className='font-semibold text-light-red'>
                 <Link to={'/login'}> Sign In</Link>
               </span>
             </p>
@@ -121,17 +121,17 @@ const Register: React.FC = () => {
 
             <div className='space-y-2'>
               <label className='flex gap-2'>
-                <input type="radio" className='accent-[var(--color-light-red)]' />
+                <input type="radio" className='accent-light-red' />
                 <span>I agree to the terms and conditions</span>
               </label>
 
               <label className='flex gap-2'>
-                <input type="radio" className='accent-[var(--color-light-red)]' />
+                <input type="radio" className='accent-light-red' />
                 <span>I want to be able to post</span>
               </label>
 
               <label className='flex gap-2'>
-                <input type="radio" className='accent-[var(--color-light-red)]' />
+                <input type="radio" className='accent-light-red' />
                 <span>I am a vendor, I want to sell</span>
               </label>
             </div>
@@ -140,7 +140,7 @@ const Register: React.FC = () => {
               <button
                 type='submit'
                 disabled={formik.isSubmitting}
-                className='rounded-full bg-[var(--color-light-red)] text-white w-full p-2 font-semibold text-[20px]'
+                className='rounded-full bg-light-red text-white w-full p-2 font-semibold text-[20px]'
               >
                 Next
               </button>
