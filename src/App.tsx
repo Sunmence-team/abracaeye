@@ -18,11 +18,8 @@ const App: React.FC = () => {
         <Route path="/" element={<MainLayout children={<Home />} />} />
         <Route path="/contact" element={<MainLayout children={<Contact />} />} />
         <Route path="/blogdetails/:id" element={<MainLayout children={<Blogdetails />} />} />
-        <Route path="/login" element={<Login />}  />
-        <Route path="/register" element={<Register  />} />
-
-
-
+        <Route path="/auth/login" element={<Login />}  />
+        <Route path="/auth/register" element={<Register  />} />
 
       </Routes>
 

@@ -18,7 +18,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       {/* Main Content (adds top padding to clear navbar height) */}
       <main className="flex-1">{children}</main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

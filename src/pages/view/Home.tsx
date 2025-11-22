@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import BlogCard from '../../components/cards/BlogCards';
 import { useScreenSize } from '../../hook/useScreenSize';
 import MobileHome from './mobile/Home';
+import { useUser } from '../../context/UserContext';
 
 interface Slide {
   image: string;
@@ -14,6 +15,7 @@ interface Slide {
   description: string;
 }
 interface BlogPost {
+  id: string;
   image: string;
   title: string;
   excerpt: string;
@@ -47,6 +49,7 @@ const slides: Slide[] = [
 
 const blogPosts: BlogPost[] = [
   {
+    id: "1",
     image: assets.news1,
     title: 'Ronaldo Set to Marry Georgina After 2026 World Cup',
     excerpt: 'Soccer legend Cristiano Ronaldo has confirmed that his long-time partner Georgina Rodríguez said “yes” to his proposal this August.',
@@ -54,6 +57,7 @@ const blogPosts: BlogPost[] = [
     authorName: 'John Smith',
   },
   {
+    id: "1",
     image: assets.news2 || assets.news1,
     title: 'Elon Musk Announces Mars Mission Launch in 2026',
     excerpt: 'SpaceX to send first crewed mission to Mars with reusable Starship. Historic step toward multi-planetary civilization.',
@@ -61,6 +65,7 @@ const blogPosts: BlogPost[] = [
     authorName: 'Alex Morgan',
   },
   {
+    id: "1",
     image: assets.news3 || assets.news1,
     title: 'New COVID Variant Detected in South Africa',
     excerpt: 'Health officials monitor new strain with increased transmissibility. WHO calls emergency meeting to assess global risk.',
@@ -68,6 +73,7 @@ const blogPosts: BlogPost[] = [
     authorName: 'Tina Davis',
   },
   {
+    id: "1",
     image: assets.news1,
     title: 'Bitcoin Hits $100,000 Milestone for First Time',
     excerpt: 'Cryptocurrency surges past historic mark as institutional adoption grows. Analysts predict $150K by year-end.',
@@ -75,6 +81,7 @@ const blogPosts: BlogPost[] = [
     authorName: 'Mike King',
   },
   {
+    id: "1",
     image: assets.news2 || assets.news1,
     title: 'Taylor Swift Announces Surprise Album Drop',
     excerpt: 'Pop superstar releases 11th studio album at midnight. Fans flood streaming platforms, breaking records within hours.',
@@ -82,6 +89,7 @@ const blogPosts: BlogPost[] = [
     authorName: 'Lisa Johnson',
   },
   {
+    id: "1",
     image: assets.news3 || assets.news1,
     title: 'Scientists Discover Water on Exoplanet K2-18b',
     excerpt: 'James Webb Telescope confirms liquid water and organic compounds on distant world, fueling hopes of alien life.',
@@ -93,9 +101,17 @@ const blogPosts: BlogPost[] = [
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isMobile } = useScreenSize();
-
+  
   const prevSlide = () => setCurrentIndex(i => (i === 0 ? slides.length - 1 : i - 1));
   const nextSlide = () => setCurrentIndex(i => (i === slides.length - 1 ? 0 : i + 1));
+  
+  const { isLoggedIn, token, refreshUser } = useUser();
+  
+  useEffect(() => {
+    if (isLoggedIn && token) {
+      refreshUser(token)
+    }
+  }, [isLoggedIn, token])
 
   useEffect(() => {
     const id = setInterval(nextSlide, 3000);
@@ -107,7 +123,7 @@ const Home = () => {
   ) : (
     <div className="w-full flex items-center justify-center flex-col">
       {/* Hero Carousel */}
-      <div className="relative w-full h-screen overflow-hidden">
+      <div className="relative w-full lg:h-screen md:h-[80dvh] overflow-hidden">
         <div
           className="flex transition-transform duration-700 ease-in-out h-full"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -137,7 +153,7 @@ const Home = () => {
         {/* Text */}
         <div className="absolute inset-0 flex items-end pb-8 md:pb-12">
           <div className="w-[90%] mx-auto text-white">
-            <div className="w-full md:w-[55%] flex flex-col gap-3 md:gap-4">
+            <div className="w-full lg:w-[55%] md:w-3/4 flex flex-col gap-3 md:gap-4">
               <button className="bg-light-red text-white px-3 md:px-4 py-1 text-xs md:text-sm rounded-sm w-fit font-medium">
                 {slides[currentIndex].badge}
               </button>
@@ -166,6 +182,7 @@ const Home = () => {
           {blogPosts.map((post, i) => (
             <BlogCard
               key={i}
+              id={post.id}
               image={post.image}
               title={post.title}
               excerpt={post.excerpt}
