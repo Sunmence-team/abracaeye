@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
-
 @theme {
-  --color-dark-red: #A61616;
-  --color-light-red: #EF1212;
+  --color-dark-red: #a61616;
+  --color-light-red: #ef1212;
 }
 
 * {
@@ -12,6 +11,9 @@
   font-optical-sizing: auto;
 }
 
+.noScrollBar::-webkit-scrollbar {
+  display: none;
+}
 @keyframes slide-up {
   from {
     transform: translateY(100%);
@@ -23,4 +25,9 @@
 
 .animate-slide-up {
   animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:disabled{
+  opacity: 0.4;
+  cursor: not-allowed;
 }
