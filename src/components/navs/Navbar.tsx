@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 w-[90%] bg-white backdrop-blur-xl border border-white/20 rounded-full py-3 px-5 md:px-7 items-center justify-between shadow-xl shadow-black/5 z-50 transition-all duration-300 hover:shadow-2xl hover:shadow-black/10">
+      <nav className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 w-[90%] bg-white backdrop-blur-xl border border-white/20 rounded-full py-3 px-5 md:px-4 items-center justify-between shadow-xl shadow-black/5 z-50 transition-all duration-300 hover:shadow-2xl hover:shadow-black/10">
         {/* Logo */}
         <div className="shrink-0">
           <img src={assets.logo} className="w-22 md:w-26" alt="Logo" />
@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
             ))}
           </div>
           <Link
-            to={isLoggedIn ? "/" : "/auth/login"}
+            to={isLoggedIn ? "/dashboard/profile" : "/auth/login"}
             title={isLoggedIn ? "Dashboard" : "Log In"}
             className='cursor-pointer text-gray-700 hover:text-dark-red'
           >
@@ -87,10 +87,22 @@ const Navbar: React.FC = () => {
             <ShoppingBag size={22} className="text-dark-red" />
           </button>
 
-          {/* User Circle */}
-          <div className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20">
-            {userInitials}
-          </div>
+          <Link
+            to={isLoggedIn ? "/dashboard/profile" : "/auth/login"}
+            title={isLoggedIn ? "Dashboard" : "Log In"}
+            className='cursor-pointer text-gray-700 hover:text-dark-red'
+          >
+            {
+              !isLoggedIn 
+                ? (
+                <FaRegUserCircle size={20} />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20">
+                  {userInitials}
+                </div>
+              )
+            }
+          </Link>
         </div>
       </nav>
     </>
