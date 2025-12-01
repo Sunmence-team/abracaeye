@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { assets } from "../../assets/assets";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import api from "../../helpers/api";
+import { toast } from "sonner";
 
 const AddPost: React.FC = () => {
   const imageRef = useRef<HTMLInputElement>(null);
@@ -19,11 +21,27 @@ const AddPost: React.FC = () => {
       details: "",
     },
     validationSchema: postSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       const formData = new FormData();
       formData.append("title", values.title);
-      formData.append("image", values.image as File);
-      formData.append("details", values.details);
+      formData.append("cover_image", values.image as File);
+      formData.append("body", values.details);
+      setSubmitting(true);
+      try {
+        const res = await api.post("/blogs", formData);
+        if (res.status === 200 || res.status === 201) {
+          // console.log(res.data.data);
+          toast.success("Post created successfully");
+        }
+      } catch (error: any) {
+        console.log("error creating blog", error);
+        const errMessage = error.message;
+        toast.error(errMessage);
+      } finally {
+        setSubmitting(false);
+        resetForm();
+        setPrevImage(null);
+      }
     },
   });
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -137,9 +155,10 @@ const AddPost: React.FC = () => {
       </div>
       <button
         type="submit"
+        disabled={formik.isSubmitting}
         className="p-3 bg-light-red rounded-md text-white font-medium cursor-pointer"
       >
-        Post to eye
+        {formik.isSubmitting ? "Posting to eye..." : "Post to eye"}
       </button>
     </form>
   );

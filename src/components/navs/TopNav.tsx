@@ -2,8 +2,17 @@ import React from "react";
 import { CiSearch } from "react-icons/ci";
 import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom";
+import { useUser } from '../../context/UserContext';
+import { FaRegUserCircle } from 'react-icons/fa';
+
+
 
 const TopNav: React.FC = () => {
+    const { isLoggedIn, user } = useUser()
+    const firstName = user?.name.split(" ")?.[0]
+  const lastName = user?.name.split(" ")?.[1]
+  const userInitials = `${firstName?.split("")[0].toUpperCase()} ${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
+
   return (
     <header className="flex flex-col">
       <nav className="flex justify-between">
@@ -45,7 +54,9 @@ const TopNav: React.FC = () => {
               />
             </div>
             <Link to={"/dashboard/profile"} className="w-9 lg:w-10 cursor-pointer h-9 lg:h-10 uppercase flex items-center border border-light-red font-bold text-light-red text-center rounded-full justify-center p-2">
-              <span>ba</span>
+            {!isLoggedIn ? (            <span><FaRegUserCircle size={20}/></span>
+):              <span>{userInitials}</span>
+}
             </Link>
           </div>
         </div>

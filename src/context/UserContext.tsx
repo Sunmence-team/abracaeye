@@ -86,6 +86,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
       });
       const updatedUser = response.data.data;
 
+      console.log(updatedUser);
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setRole(updatedUser?.role || null);
