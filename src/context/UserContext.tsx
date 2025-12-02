@@ -2,8 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import api, { setupInterceptors } from "../helpers/api";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
-
 interface userProviderProps {
   children: React.ReactNode;
 }
@@ -72,6 +70,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
     toast.success("Logged out successfully");
     setTimeout(() => {
       // window.location.href = "https://abracaeye.com";
+      window.location.href = "/auth/login";
     }, 1000);
   };
 
@@ -86,7 +85,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
       });
       const updatedUser = response.data.data;
 
-      console.log(updatedUser);
+      // console.log(updatedUser);
       setUser(updatedUser);
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setRole(updatedUser?.role || null);

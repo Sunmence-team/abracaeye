@@ -8,10 +8,10 @@ import { FaRegUserCircle } from 'react-icons/fa';
 
 
 const TopNav: React.FC = () => {
-    const { isLoggedIn, user } = useUser()
-    const firstName = user?.name.split(" ")?.[0]
+  const { isLoggedIn, user } = useUser()
+  const firstName = user?.name.split(" ")?.[0]
   const lastName = user?.name.split(" ")?.[1]
-  const userInitials = `${firstName?.split("")[0].toUpperCase()} ${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
+  const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
 
   return (
     <header className="flex flex-col">
@@ -30,8 +30,8 @@ const TopNav: React.FC = () => {
             />
           </div>
           <div className="hidden lg:flex flex-col">
-            <h3 className="text-black font-semibold text-[20px]">Hi, Alabi</h3>
-            <h5 className="text-light-red font-medium text-sm">
+            <h3 className="text-black font-semibold text-[18px] capitalize">Hi, {firstName}</h3>
+            <h5 className="text-light-red font-medium text-xs">
               Ready to feed some eyes?
             </h5>
           </div>
@@ -46,17 +46,17 @@ const TopNav: React.FC = () => {
             <CiSearch />
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-[30px] lg:w-[45px] h-[35px] lg:h-[45px]">
+            <div className="w-[30px] lg:w-10 h-[35px] lg:h-10" title="Market place coming soon">
               <img
                 src={assets.health}
                 alt="logo"
-                className="w-full h-full cursor-pointer object-contain"
+                className="w-full h-full cursor-pointer object-cover"
               />
             </div>
             <Link to={"/dashboard/profile"} className="w-9 lg:w-10 cursor-pointer h-9 lg:h-10 uppercase flex items-center border border-light-red font-bold text-light-red text-center rounded-full justify-center p-2">
-            {!isLoggedIn ? (            <span><FaRegUserCircle size={20}/></span>
-):              <span>{userInitials}</span>
-}
+              {!isLoggedIn ? (
+                <span><FaRegUserCircle size={20}/></span>
+              ) : <span>{userInitials}</span>}
             </Link>
           </div>
         </div>

@@ -18,7 +18,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   });
 
   return (
-    <div className="flex flex-col gap-2 relative w-screen h-screen relative z-1">
+    <div className="flex flex-col relative w-screen h-screen overflow-hidden z-1">
        <div className='absolute -z-1 top-0 left-0 bg-[#FF7979]/10 rounded-br-full rounded-bl w-64 h-64 md:w-150 md:h-150'></div>
       <div className={`px-7 lg:px-12 py-3 lg:py-5 bg-white`}>
         <TopNav />

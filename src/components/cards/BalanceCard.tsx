@@ -18,7 +18,7 @@ const BalanceCard: React.FC = () => {
       }}
       className={`relative flex justify-between items-start py-5 px-4 lg:px-8 lg:w-[529px] rounded-md bg-light-red h-[100px] lg:h-[164px]`}
     >
-      <div className="flex flex-col gap-1 relative z-10">
+      <div className="flex flex-col gap-1 relative z-5">
         <h2 className="text-sm lg:text-base flex items-center gap-2 font-light text-white">
           Account Balance{" "}
           {eyeOpen ? (
@@ -37,7 +37,7 @@ const BalanceCard: React.FC = () => {
           {eyeOpen ? `${balance.toLocaleString()}.00` : hiddenBalance}
         </p>
       </div>
-      <div className="w-[200px] h-[124px] lg:h-[200px] absolute -top-6 lg:-top-9 lg:right-0 -right-8">
+      <div className="w-[200px] h-[124px] lg:h-[200px] absolute lg:right-0 -right-8"> {/* -top-9 lg:-top-9 */}
         <img
           src={assets.balance}
           alt="balance-img"

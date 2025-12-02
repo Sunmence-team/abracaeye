@@ -11,8 +11,18 @@
   font-optical-sizing: auto;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .noScrollBar::-webkit-scrollbar {
   display: none;
+}
+.styledScrollbar::-webkit-scrollbar {
+  @apply w-2 bg-transparent
+}
+.styledScrollbar::-webkit-scrollbar-thumb {
+  @apply bg-light-red/50 rounded-full
 }
 @keyframes slide-up {
   from {
@@ -24,7 +34,7 @@
 }
 
 .animate-slide-up {
-  animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :disabled{

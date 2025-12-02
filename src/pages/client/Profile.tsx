@@ -1,23 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { assets } from "../../assets/assets";
 import { useScreenSize } from "../../hook/useScreenSize";
+import { useUser } from "../../context/UserContext";
 
 const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const screen = useScreenSize();
+
+  const { user, token, refreshUser } = useUser()
+  const firstName = user?.name.split(" ")?.[0]
+  const lastName = user?.name.split(" ")?.[1]
+  const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
 
   const validationSchema = Yup.object({
     fullName: Yup.string().required("Full name is required"),
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
-    address: Yup.string().required("Address is required"),
+    // address: Yup.string().required("Address is required"),
   });
 
+  useEffect(() => {
+    refreshUser(token ?? "")
+  }, [token])
+
   return (
-    <div className="w-full min-h-screen flex gap-6 lg:flex-row flex-col">
+    <div className="w-full min-h-screen flex gap-6 lg:flex-row flex-col px-1">
       <div className="hidden w-full lg:w-1/4 lg:flex flex-col gap-4">
         <button className="w-full p-4 bg-white shadow rounded-lg text-left font-semibold text-gray-700">
           Account Setting
@@ -42,16 +51,12 @@ const Profile: React.FC = () => {
       </div>
 
       <div className="w-full lg:w-3/4 flex flex-col gap-6">
-        <div className="w-full bg-white p-4 shadow rounded-lg flex items-center justify-between">
+        <div className="w-full bg-white p-4 shadow rounded-lg flex md:flex-row flex-col gap-4 items-center justify-between">
           <div className="flex items-center gap-4">
-            <img
-              src={assets.user}
-              alt="profile"
-              className="w-9 lg:w-16 h-9 lg:h-16 rounded-full object-cover"
-            />
+            <div className="w-9 lg:w-16 h-9 lg:h-16 rounded-full bg-dark-red text-white flex items-center justify-center lg:text-2xl text-lg font-semibold">{userInitials}</div>
             <div>
-              <h2 className="font-semibold text-lg">Alabi Drizzy</h2>
-              <p className="text-gray-500 text-sm">Username: Big_drizzy</p>
+              <h2 className="font-semibold text-lg capitalize">{user?.name}</h2>
+              <p className="text-gray-500 text-sm">Email: {user?.email}</p>
             </div>
           </div>
 
@@ -70,9 +75,9 @@ const Profile: React.FC = () => {
 
           <Formik
             initialValues={{
-              fullName: "Alabi Drizzy",
-              email: "Alabidrizzy@gmail.com",
-              address: "Under G, Ogbomoso.",
+              fullName: user?.name || "",
+              email: user?.email || "",
+              // address: "Under G, Ogbomoso.",
             }}
             validationSchema={validationSchema}
             onSubmit={(values) => {
@@ -115,7 +120,7 @@ const Profile: React.FC = () => {
                   />
                 </div>
 
-                <div className="flex flex-col gap-2">
+                {/* <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-gray-700">
                     Address
                   </label>
@@ -129,7 +134,7 @@ const Profile: React.FC = () => {
                     component="p"
                     className="text-light-red text-sm"
                   />
-                </div>
+                </div> */}
 
                 <button
                   type="submit"

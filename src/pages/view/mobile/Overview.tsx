@@ -85,7 +85,7 @@ const MobileOverview: React.FC = () => {
     },
   ];
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 relative">
       <div className="flex flex-col gap-3">
         <div className="flex flex-col">
           <h3 className="text-black font-semibold text-[18px]">Hi, Alabi</h3>
@@ -126,6 +126,10 @@ const MobileOverview: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="absolute inset-0 bg-black/90 z-9 rounded-lg flex items-center justify-center">
+        <h3 className="text-2xl font-bold text-center text-white">Vendor & Marketplace Coming Soon</h3>
       </div>
     </div>
   );

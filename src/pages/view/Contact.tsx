@@ -5,7 +5,7 @@ import { FaInstagram, FaXTwitter, FaFacebook } from "react-icons/fa6";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const Contact = () => {
+const Contact: React.FC = () => {
   const formik = useFormik({
     initialValues: {
       name: "",

@@ -16,7 +16,7 @@ const VendorCard: React.FC<VendorCardProps> = ({
   rateCount,
 }) => {
   return (
-    <div className="rounded-md cursor-pointer shadow shadow-black/30 overflow-hidden bg-white w-[278px] h-[276px] group">
+    <div className="rounded-md cursor-pointer shadow shadow-black/30 overflow-hidden bg-white w-full h-[276px] group">
       <div className="w-full h-[172px] relative">
         <img
           src={image}

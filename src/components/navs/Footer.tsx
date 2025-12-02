@@ -2,7 +2,7 @@ import React from 'react';
 import { assets } from '../../assets/assessts';
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <footer className="w-full bg-black flex flex-col items-center">
       {/* Main Content */}

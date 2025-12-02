@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Overview = () => {
+const Overview: React.FC = () => {
   return (
     <div>Overview</div>
   )

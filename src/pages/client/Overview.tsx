@@ -91,7 +91,7 @@ const Overview: React.FC = () => {
   return screen.isMobile ? (
     <MobileOverview />
   ) : (
-    <div className="flex flex-col gap-9">
+    <div className="w-full flex flex-col gap-9 relative px-1">
       <div className="flex lg:flex-nowrap flex-wrap items-stretch gap-4 justify-between">
         <div className="">
           <BalanceCard />
@@ -104,16 +104,16 @@ const Overview: React.FC = () => {
       </div>
       <div className="flex items-stretch gap-2 justify-between lg:overflow-x-hidden noScrollBar overflow-x-auto">
         {serviceesItems.map((item, idx) => (
-          <div className="" key={idx}>
+          <div className="w-[200px] lg:w-[278px]" key={idx}>
             <ServicesCard name={item.name} desc={item.desc} icon={item.icon} />
           </div>
         ))}
       </div>
       <div className="flex flex-col gap-5">
         <h3 className="text-xl font-semibold">Best selling vendor</h3>
-        <div className="flex items-stretch lg:overflow-x-hidden noScrollBar overflow-x-auto gap-4 justify-between">
+        <div className="flex items-stretch lg:overflow-x-hidden noScrollBar overflow-x-auto gap-4 justify-between pb-3 px-1">
           {vendorItems.map((item, idx) => (
-            <div className="" key={idx}>
+            <div className="w-[278px]" key={idx}>
               <VendorCard
                 image={item.image}
                 storeName={item.storeName}
@@ -124,6 +124,10 @@ const Overview: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="absolute inset-0 bg-black/90 z-9 rounded-lg flex items-center justify-center">
+        <h3 className="text-3xl font-bold text-white">Vendor & MarketPlace Coming Soon</h3>
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ const ServicesCard: React.FC<ServicesCardProps> = ({
 }) => {
   return (
     <div
-      className="flex w-[200px] lg:w-[278px] h-[120px] py-2 px-4 items-center gap-3 bg-[#F56E6E] cursor-pointer rounded-md"
+      className="flex w-full h-[120px] py-2 px-4 items-center gap-3 bg-[#F56E6E] cursor-pointer rounded-md"
       onClick={action}
     >
       <div className="bg-white rounded-sm p-2">

@@ -23,7 +23,7 @@ const BottomNav: React.FC = () => {
   }
 
   return (
-    <motion.div className="fixed bottom-0 left-0 w-full bg-black flex justify-around items-center rounded-t-4xl shadow-lg">
+    <motion.div className="fixed z-999 bottom-0 left-0 w-full bg-black flex justify-around items-center rounded-t-4xl shadow-lg">
       {navItems.map((navItem, idx) => {
         const isActive = location.pathname === navItem.pathName;
 

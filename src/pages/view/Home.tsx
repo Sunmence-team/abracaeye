@@ -7,20 +7,14 @@ import BlogCard from '../../components/cards/BlogCards';
 import { useScreenSize } from '../../hook/useScreenSize';
 import MobileHome from './mobile/Home';
 import { useUser } from '../../context/UserContext';
+import api from '../../helpers/api';
+import type { BlogPostProps } from '../../lib/sharedInterface';
 
 interface Slide {
   image: string;
   badge: string;
   title: string;
   description: string;
-}
-interface BlogPost {
-  id: string;
-  image: string;
-  title: string;
-  excerpt: string;
-  authorInitials: string;
-  authorName: string;
 }
 
 const slides: Slide[] = [
@@ -47,60 +41,11 @@ const slides: Slide[] = [
   },
 ];
 
-const blogPosts: BlogPost[] = [
-  {
-    id: "1",
-    image: assets.news1,
-    title: 'Ronaldo Set to Marry Georgina After 2026 World Cup',
-    excerpt: 'Soccer legend Cristiano Ronaldo has confirmed that his long-time partner Georgina Rodríguez said “yes” to his proposal this August.',
-    authorInitials: 'JS',
-    authorName: 'John Smith',
-  },
-  {
-    id: "1",
-    image: assets.news2 || assets.news1,
-    title: 'Elon Musk Announces Mars Mission Launch in 2026',
-    excerpt: 'SpaceX to send first crewed mission to Mars with reusable Starship. Historic step toward multi-planetary civilization.',
-    authorInitials: 'AM',
-    authorName: 'Alex Morgan',
-  },
-  {
-    id: "1",
-    image: assets.news3 || assets.news1,
-    title: 'New COVID Variant Detected in South Africa',
-    excerpt: 'Health officials monitor new strain with increased transmissibility. WHO calls emergency meeting to assess global risk.',
-    authorInitials: 'TD',
-    authorName: 'Tina Davis',
-  },
-  {
-    id: "1",
-    image: assets.news1,
-    title: 'Bitcoin Hits $100,000 Milestone for First Time',
-    excerpt: 'Cryptocurrency surges past historic mark as institutional adoption grows. Analysts predict $150K by year-end.',
-    authorInitials: 'MK',
-    authorName: 'Mike King',
-  },
-  {
-    id: "1",
-    image: assets.news2 || assets.news1,
-    title: 'Taylor Swift Announces Surprise Album Drop',
-    excerpt: 'Pop superstar releases 11th studio album at midnight. Fans flood streaming platforms, breaking records within hours.',
-    authorInitials: 'LJ',
-    authorName: 'Lisa Johnson',
-  },
-  {
-    id: "1",
-    image: assets.news3 || assets.news1,
-    title: 'Scientists Discover Water on Exoplanet K2-18b',
-    excerpt: 'James Webb Telescope confirms liquid water and organic compounds on distant world, fueling hopes of alien life.',
-    authorInitials: 'RP',
-    authorName: 'Robert Park',
-  },
-];
-
 const Home = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { isMobile } = useScreenSize();
+  const [ blogs, setBlogs ] = useState<BlogPostProps[]>([])
+  const [ isLoading, setIsLoading ] = useState(false)
   
   const prevSlide = () => setCurrentIndex(i => (i === 0 ? slides.length - 1 : i - 1));
   const nextSlide = () => setCurrentIndex(i => (i === slides.length - 1 ? 0 : i + 1));
@@ -117,6 +62,29 @@ const Home = () => {
     const id = setInterval(nextSlide, 3000);
     return () => clearInterval(id);
   }, []);
+  
+  const fetchBlogs = async () => {
+    setIsLoading(true)
+    try {
+      const response = await api.get(`/blogs?per_page=6`, {
+        headers: { "Content-Type": `application/json` },
+      });
+
+      if (response.status === 200) { 
+        const { data } = response.data.data
+        setBlogs(data)
+      }
+
+    } catch (err) {
+      console.error("Failed to fetch blogs: ", err);
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchBlogs()
+  }, [])
 
   return isMobile ? (
     <MobileHome />
@@ -178,19 +146,20 @@ const Home = () => {
       {/* Recent Eye News */}
       <div className="w-[90%] flex flex-col py-12">
         <p className="text-dark-red text-sm md:text-base">Recent Eye News</p>
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mt-8">
-          {blogPosts.map((post, i) => (
-            <BlogCard
-              key={i}
-              id={post.id}
-              image={post.image}
-              title={post.title}
-              excerpt={post.excerpt}
-              authorInitials={post.authorInitials}
-              authorName={post.authorName}
-            />
-          ))}
-        </div>
+        {
+          isLoading ? (
+            <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin mx-auto my-8"></div>
+          ) : (
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mt-8">
+              {blogs.map((post, i) => (
+                <BlogCard
+                  key={i}
+                  {...post}
+                />
+              ))}
+            </div>
+          )
+        }
       </div>
     </div>
   );

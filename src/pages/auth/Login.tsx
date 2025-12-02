@@ -91,7 +91,7 @@ const Login: React.FC = () => {
 
             {/* EMAIL */}
             <div className="space-y-1 w-full">
-              <div className='w-full max-w-[300px] sm:max-w-[350px] md:max-w-[520px] h-[53px] flex items-center rounded-2xl border px-2'>
+              <div className='w-full max-w-[300px] sm:max-w-[350px] md:max-w-[520px] mx-auto h-[53px] flex items-center rounded-2xl border px-2'>
                 <span><LuUserRound size={20} className='text-gray-500' /></span>
                 <input type='text'
                   name='email'
@@ -107,7 +107,7 @@ const Login: React.FC = () => {
 
             <div className="space-y-1 w-full">
               {/* PASSWORD */}
-              <div className='relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-[520px] h-[53px] flex items-center rounded-2xl border px-2 transition'>
+              <div className='relative w-full max-w-[300px] sm:max-w-[350px] md:max-w-[520px] mx-auto h-[53px] flex items-center rounded-2xl border px-2 transition'>
                 <span><HiLockClosed size={20} className='text-gray-500' /></span>
                 <input type={showPassword ? "text" : "password"}
                   name='password'
