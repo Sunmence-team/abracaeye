@@ -25,9 +25,9 @@ dist-ssr
 *.sln
 *.sw?
 
-.env
-env
 dotenv
 
 
 old/
+
+.env

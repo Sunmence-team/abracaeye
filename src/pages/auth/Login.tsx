@@ -64,7 +64,7 @@ const Login: React.FC = () => {
       } catch (err: any) {
         console.error("Login error:", err);
         if (axios.isAxiosError(err) && err.response) {
-          toast.error(err.response.data.message || "Invalid email or password");
+          toast.error(err.response.data.message);
         } else {
           toast.error("Login failed. Please try again.");
         }
