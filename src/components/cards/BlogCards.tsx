@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import type { BlogPostProps } from '../../lib/sharedInterface';
 import { assets } from '../../assets/assessts';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const BlogCard: React.FC<BlogPostProps> = ({
   id,
@@ -16,7 +16,7 @@ const BlogCard: React.FC<BlogPostProps> = ({
   comments_count,
   user
 }) => {
-  const fullImageUrl = `${API_URL}/${cover_image}`;
+  const fullImageUrl = `${IMAGE_URL}/${cover_image}`;
   const defaultImageUrl = assets.logo2;
 
   const firstName = user?.name.split(" ")?.[0]

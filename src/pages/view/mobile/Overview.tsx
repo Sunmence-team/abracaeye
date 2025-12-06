@@ -128,7 +128,7 @@ const MobileOverview: React.FC = () => {
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-black/90 z-9 rounded-lg flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/95 z-9 rounded-lg flex items-center justify-center">
         <h3 className="text-2xl font-bold text-center text-white">Vendor & Marketplace Coming Soon</h3>
       </div>
     </div>

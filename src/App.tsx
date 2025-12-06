@@ -12,6 +12,7 @@ import Posts from "./pages/client/Posts";
 import AddPost from "./pages/client/AddPost";
 import Overview from "./pages/client/Overview";
 import { Toaster } from "sonner";
+import AllUsers from "./pages/admin/AllUsers";
 
 const App: React.FC = () => {
   return (
@@ -60,6 +61,14 @@ const App: React.FC = () => {
           element={
             <DashboardLayout>
               <Profile />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/dashboard/admin/users"
+          element={
+            <DashboardLayout>
+              <AllUsers />
             </DashboardLayout>
           }
         />

@@ -10,12 +10,27 @@ export interface postCardProps {
   created_at: string;
 }
 
+export interface userProps {
+  id: string;
+  name: string;
+  email: string;
+  created_at: string;
+  role: string;
+  blog: boolean;
+  vendor: boolean;
+}
+
 
 export interface BlogPostProps extends postCardProps {
+  user: userProps;
+}
+
+
+export interface CommentProps {
+  id: number;
+  text: string;
+  created_at: string;
   user: {
-    id: string;
     name: string;
-    email: string;
-    created_at: string;
-  }
+  };
 }

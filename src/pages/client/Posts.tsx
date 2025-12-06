@@ -50,7 +50,7 @@ const Posts: React.FC = () => {
   const fetchMyPosts = async () => {
     setIsLoading(true)
     try {
-      const response = await api.get(`/blogs`, {
+      const response = await api.get(`/blogs/user`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

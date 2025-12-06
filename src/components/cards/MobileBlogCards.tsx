@@ -4,7 +4,7 @@ import React, { type SyntheticEvent } from 'react';
 import type { BlogPostProps } from '../../lib/sharedInterface';
 import { assets } from '../../assets/assets';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 interface MobileBlogCardsProps extends BlogPostProps {
   onClick: () => void;
@@ -16,7 +16,7 @@ const MobileBlogCards: React.FC<MobileBlogCardsProps> = ({
   body,
   onClick
 }) => {
-  const fullImageUrl = `${API_URL}/${cover_image}`;
+  const fullImageUrl = `${IMAGE_URL}/${cover_image}`;
   const defaultImageUrl = assets.manFour;
 
   const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {

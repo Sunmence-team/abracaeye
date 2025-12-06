@@ -6,12 +6,15 @@ import { useUser } from "../../context/UserContext";
 import { MdLogout } from "react-icons/md";
 
 const SideBar: React.FC = () => {
-  const { logout } = useUser()
+  const { logout, user } = useUser()
   const location = useLocation();
+
+  const filteredLinks = navItems.filter(item => item.role?.includes(user?.role ?? ""))
+
   return (
     <motion.div className="bg-black rounded-full h-[75vh] py-4 px-2 flex flex-col justify-between gap-6">
       <div className="flex flex-col gap-6">
-        {navItems.map((navItem, idx) => {
+        {filteredLinks.map((navItem, idx) => {
           const isActive = location.pathname === navItem.pathName ? true : false;
           return (
             <NavLink

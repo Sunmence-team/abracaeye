@@ -1,6 +1,6 @@
 import { MdDashboard } from "react-icons/md";
 import { AiFillFileAdd } from "react-icons/ai";
-import { FaCircleUser } from "react-icons/fa6";
+import { FaCircleUser, FaUsers } from "react-icons/fa6";
 import { MdPermMedia } from "react-icons/md";
 export const navItems = [
   {
@@ -8,6 +8,7 @@ export const navItems = [
     pathName: "/dashboard/overview",
     accessibility: ["vendor"],
     name: "My Dashboard",
+    role: ["user"],
     altName: "Dashboard",
   },
   {
@@ -15,6 +16,7 @@ export const navItems = [
     pathName: "/dashboard/add-post",
     accessibility: ["blog"],
     name: "Add New Post",
+    role: ["user"],
     altName: "New Post",
   },
   {
@@ -22,11 +24,20 @@ export const navItems = [
     pathName: "/dashboard/posts",
     accessibility: ["blog"],
     name: "My Posts",
+    role: ["user"],
   },
   {
     icon: FaCircleUser,
     pathName: "/dashboard/profile",
     accessibility: ["all"],
     name: "Profile",
+    role: ["user"],
+  },
+  {
+    icon: FaUsers,
+    pathName: "/dashboard/admin/users",
+    accessibility: ["admin"],
+    name: "All Users",
+    role: ["admin"],
   },
 ];

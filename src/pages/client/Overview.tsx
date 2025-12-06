@@ -126,7 +126,7 @@ const Overview: React.FC = () => {
         </div>
       </div>
 
-      <div className="absolute inset-0 bg-black/90 z-9 rounded-lg flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/95 z-9 rounded-lg flex items-center justify-center">
         <h3 className="text-3xl font-bold text-white">Vendor & MarketPlace Coming Soon</h3>
       </div>
     </div>

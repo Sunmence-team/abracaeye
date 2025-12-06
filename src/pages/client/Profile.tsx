@@ -53,7 +53,7 @@ const Profile: React.FC = () => {
       <div className="w-full lg:w-3/4 flex flex-col gap-6">
         <div className="w-full bg-white p-4 shadow rounded-lg flex md:flex-row flex-col gap-4 items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-9 lg:w-16 h-9 lg:h-16 rounded-full bg-dark-red text-white flex items-center justify-center lg:text-2xl text-lg font-semibold">{userInitials}</div>
+            <div className="w-9 lg:w-16 h-9 lg:h-16 rounded-full bg-dark-red ring-4 ring-dark-red/20 text-white flex items-center justify-center lg:text-2xl text-lg font-semibold">{userInitials}</div>
             <div>
               <h2 className="font-semibold text-lg capitalize">{user?.name}</h2>
               <p className="text-gray-500 text-sm">Email: {user?.email}</p>

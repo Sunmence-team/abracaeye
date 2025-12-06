@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import MobileBlogCards from '../../../components/cards/MobileBlogCards';
 import { X } from 'lucide-react';
 import api from '../../../helpers/api';
-import type { BlogPostProps } from '../../../lib/sharedInterface';
+import type { BlogPostProps, CommentProps } from '../../../lib/sharedInterface';
 import { assets } from '../../../assets/assets';
 import { formatISODateToCustom } from '../../../helpers/formatterUtilities';
 import { BsHeartFill } from 'react-icons/bs';
 import { LuLoaderCircle } from "react-icons/lu";
 import { useUser } from '../../../context/UserContext';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const MobileHome: React.FC = () => {
   const { token } = useUser();
@@ -24,12 +24,17 @@ const MobileHome: React.FC = () => {
   // const [ isLoading, setIsLoading ] = useState(false)
   const [isLikingBlog, setisLikingBlog] = useState(false)
 
+  const [ comments, setComments ] = useState<CommentProps[]>([]);
+  const [ newComment, setNewComment ] = useState("");
+  const [ isSubmitting, setIsSubmitting ] = useState(false);
+  const [ isLoadingComments, setisLoadingComments ] = useState(false);
+
   const apiItemsPerPage = 10
 
   const fetchBlogs = async () => {
     // setIsLoading(true)
     try {
-      const response = await api.get(`/blogs??per_page=${apiItemsPerPage}`, {
+      const response = await api.get(`/blogs?per_page=${apiItemsPerPage}`, {
         headers: { "Content-Type": `application/json` },
       });
 
@@ -46,35 +51,37 @@ const MobileHome: React.FC = () => {
   }
 
   const likeBlog = async (id: string) => {
-  setisLikingBlog(true);
-  try {
-    const response = await api.post(
-      `/blogs/${id}/like`,
-      {},
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+    setisLikingBlog(true);
+    try {
+      const response = await api.post(
+        `/blogs/${id}/like`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-    if (response.status === 200) {
-      setSelectedPost(prev => {
-        if (!prev) return prev;
-        if (prev.id !== id) return prev;
+      if (response.status === 200) {
+        setSelectedPost(prev => {
+          if (!prev) return prev;
+          if (prev.id !== id) return prev;
 
-        return {
-          ...prev,
-          likes_count: prev.likes_count + 1
-        };
-      });
+          return {
+            ...prev,
+            likes_count: prev.likes_count + 1
+          };
+        });
+      }
+    } catch (err) {
+      console.error("Failed to like blog: ", err);
+    } finally {
+      setisLikingBlog(false);
     }
-  } catch (err) {
-    console.error("Failed to like blog: ", err);
-  } finally {
-    setisLikingBlog(false);
-  }
-};
-
+  };
 
   // Lock body scroll when popup is open
   useEffect(() => {
+    if (selectedPost !== null) {
+      fetchComments()
+    }
     if (selectedPost) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -184,11 +191,44 @@ const MobileHome: React.FC = () => {
     fetchBlogs()
   }, [])
 
+  const fetchComments = async () => {
+    setisLoadingComments(true)
+    try {
+      const response = await api.get(`/blogs/${selectedPost?.id}/comments?per_page=20`);
+      if (response.status === 200) {
+        setComments(response.data.data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch comments: ", err);
+    } finally {
+      setisLoadingComments(false)
+    }
+  };
+  
+  const handleCommentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await api.post(`/blogs/${selectedPost?.id}/comments`, { text: newComment });
+      if (response.status === 201 || response.status === 200) { 
+        setNewComment("");
+        fetchComments(); 
+      }
+    } catch (err) {
+      console.error("Failed to post comment: ", err);
+      // You might want to show an error to the user here
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const firstName = selectedPost?.user?.name.split(" ")?.[0]
   const lastName = selectedPost?.user?.name.split(" ")?.[1]
   const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
 
-  const fullImageUrl = `${API_URL}/${selectedPost?.cover_image}`;
+  const fullImageUrl = `${IMAGE_URL}/${selectedPost?.cover_image}`;
   const defaultImageUrl = assets.manFour;
 
   const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -293,6 +333,54 @@ const MobileHome: React.FC = () => {
                 </div>
 
 
+              </div>
+
+              {/* Comments Section */}
+              <div className="px-6 w-full mt-10">
+                <h2 className="text-xl font-bold mb-4 text-light-red">Comments ({comments?.length})</h2>
+        
+                {/* Post Comment Form */}
+                <form onSubmit={handleCommentSubmit} className="mb-8">
+                  <textarea
+                    className="w-full p-3 text-sm border border-gray-300 rounded-lg outline-0 resize-none focus:ring-light-red focus:border-light-red"
+                    rows={3}
+                    placeholder="Write a comment..."
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    required
+                  ></textarea>
+                  <button
+                    type="submit"
+                    className="mt-2 text-sm px-6 w-full py-3 bg-light-red text-white font-semibold rounded-md hover:bg-dark-red disabled:opacity-50"
+                    disabled={isSubmitting || !newComment.trim()}
+                  >
+                    {isSubmitting ? 'Posting...' : 'Post Comment'}
+                  </button>
+                </form>
+        
+                {/* Display Comments */}
+                <div className="space-y-6">
+                  {isLoadingComments ? (
+                    <div className="size-8 mx-auto border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
+                  ) : comments.length > 0 ? (
+                    comments.map((comment) => (
+                      <div key={comment.id} className="flex flex-col gap-1">
+                        <div className="flex gap-2 items-center">
+                          <div className="bg-dark-red w-10 h-10 rounded-full flex items-center justify-center text-white ring-2 ring-dark-red/20 font-bold">
+                            {comment.user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                          </div>
+                          <div className="flex flex-col">
+                            <p className="font-semibold text-sm">{comment.user.name}</p>
+                            <small className="text-gray-500 text-xs">{formatISODateToCustom(comment.created_at)}</small>
+                          </div>
+                        </div>
+                        <p className="text-gray-800 font-medium ms-2">{comment.text}</p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

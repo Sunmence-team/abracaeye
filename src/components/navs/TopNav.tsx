@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { useUser } from '../../context/UserContext';
 import { FaRegUserCircle } from 'react-icons/fa';
 
-
-
 const TopNav: React.FC = () => {
   const { isLoggedIn, user } = useUser()
   const firstName = user?.name.split(" ")?.[0]
@@ -53,7 +51,7 @@ const TopNav: React.FC = () => {
                 className="w-full h-full cursor-pointer object-cover"
               />
             </div>
-            <Link to={"/dashboard/profile"} className="w-9 lg:w-10 cursor-pointer h-9 lg:h-10 uppercase flex items-center border border-light-red font-bold text-light-red text-center rounded-full justify-center p-2">
+            <Link to={"/dashboard/profile"} className="w-9 lg:w-10 cursor-pointer h-9 lg:h-10 uppercase flex items-center ring-2 ring-dark-red/20 font-bold bg-dark-red text-white text-center rounded-full justify-center p-2">
               {!isLoggedIn ? (
                 <span><FaRegUserCircle size={20}/></span>
               ) : <span>{userInitials}</span>}
