@@ -242,7 +242,7 @@ const MobileHome: React.FC = () => {
       {/* Main Scroll Container */}
       <div
         ref={containerRef}
-        className="h-screen w-full overflow-y-auto"
+        className="h-dvh w-full overflow-y-auto"
         style={{
           scrollSnapType: 'y mandatory',
           WebkitOverflowScrolling: 'touch',
@@ -252,7 +252,7 @@ const MobileHome: React.FC = () => {
         {blogs.map((post, idx) => (
           <section
             key={idx}
-            className="h-screen snap-start shrink-0"
+            className="h-dvh snap-start shrink-0"
             style={{ scrollSnapAlign: 'start' }}
           >
             <MobileBlogCards
