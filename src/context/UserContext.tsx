@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import api, { setupInterceptors } from "../helpers/api";
+import api from "../helpers/api";
+// { setupInterceptors } 
 
 interface userProviderProps {
   children: React.ReactNode;
@@ -74,9 +75,9 @@ export const UserProvider = ({ children }: userProviderProps) => {
     }, 1000);
   };
 
-  useEffect(() => {
-    setupInterceptors(logout);
-  }, []);
+  // useEffect(() => {
+  //   setupInterceptors(logout);
+  // }, []);
 
   const refreshUser = async (authToken:string) => {
     try {
