@@ -57,7 +57,7 @@ const Login: React.FC = () => {
           toast.success("Welcome back! Redirecting...");
           setTimeout(() => {
             navigate(
-              role === "admin" ? "/admin/overview" : "/"
+              role === "admin" ? "/dashboard/admin/users" : "/"
             );
           }, 1500);
         }
