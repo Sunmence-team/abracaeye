@@ -8,6 +8,7 @@ import { formatISODateToCustom } from '../../../helpers/formatterUtilities';
 import { BsHeartFill } from 'react-icons/bs';
 import { LuLoaderCircle } from "react-icons/lu";
 import { useUser } from '../../../context/UserContext';
+import { Link } from 'react-router-dom';
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
@@ -360,7 +361,13 @@ const MobileHome: React.FC = () => {
                 {/* Display Comments */}
                 <div className="space-y-6">
                   {!isLoggedIn ? (
-                    <div className="size-8 mx-auto border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
+                    <div className="flex items-center flex-col">
+                      <p className="text-lg text-light-red font-semibold">What to know what others think?</p>
+                      <Link 
+                        to={"/auth/login"}
+                        className="bg-dark-red px-4 h-[50px] rounded-md"
+                      >Login/Create account</Link>
+                    </div>
                   ) : isLoadingComments ? (
                     <div className="size-8 mx-auto border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
                   ) : comments.length > 0 ? (
