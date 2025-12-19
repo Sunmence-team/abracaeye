@@ -33,7 +33,7 @@ const MobileHome: React.FC = () => {
   const currentIndexRef = useRef(0);
 
 
-  const apiItemsPerPage = 10
+  const apiItemsPerPage = 5
 
   const fetchBlogs = async (pageToFetch = 1) => {
     if (isFetchingNext) return;
@@ -256,6 +256,7 @@ const MobileHome: React.FC = () => {
               slideRefs.current[idx] = el;
             }}
             data-index={idx}
+            className="h-screen snap-start"
           >
             <MobileBlogCards
               {...post}
@@ -263,6 +264,11 @@ const MobileHome: React.FC = () => {
             />
           </section>
         ))}
+        {
+          page === lastPage && (
+            <div className="bg-dark-red p-2 text-center text-sm text-white">No more content. We are working to bring you more juicy update</div>
+          )
+        }
       </div>
 
       {/* POPUP MODAL */}
