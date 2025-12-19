@@ -13,14 +13,17 @@ import AddPost from "./pages/client/AddPost";
 import Overview from "./pages/client/Overview";
 import { Toaster } from "sonner";
 import AllUsers from "./pages/admin/AllUsers";
+import { useScreenSize } from "./hook/useScreenSize";
+import MobileHome from "./pages/view/mobile/Home";
 
 const App: React.FC = () => {
+  const { isMobile } = useScreenSize();
   return (
     <>
       <Toaster />
       <Routes>
         {/* Main routes with navbar */}
-        <Route path="/" element={<MainLayout children={<Home />} />} />
+        <Route path="/" element={isMobile ? <MobileHome /> : <MainLayout children={<Home />} />} />
         <Route
           path="/contact"
           element={<MainLayout children={<Contact />} />}

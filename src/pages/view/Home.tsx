@@ -1,51 +1,19 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { assets } from '../../assets/assessts';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import BlogCard from '../../components/cards/BlogCards';
-import { useScreenSize } from '../../hook/useScreenSize';
-import MobileHome from './mobile/Home';
 import { useUser } from '../../context/UserContext';
 import api from '../../helpers/api';
 import type { BlogPostProps } from '../../lib/sharedInterface';
 
-interface Slide {
-  image: string;
-  badge: string;
-  title: string;
-  description: string;
-}
+const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
-const slides: Slide[] = [
-  {
-    image: assets.news1,
-    badge: 'Top News',
-    title: 'The Future is Here: New Tech Changing Everyday Life',
-    description:
-      'Technology is evolving faster than ever, transforming how we live, work, and connect. From AI-powered personal assistants that anticipate our needs to smart homes that adapt to our routines, innovation is no longer a glimpse into the future — it’s part of our daily lives.',
-  },
-  {
-    image: assets.news2 || assets.news1,
-    badge: 'Top News',
-    title: 'Global Climate Summit Reaches Historic Agreement',
-    description:
-      'World leaders commit to net-zero emissions by 2050 in landmark deal. New funding and carbon credit systems to accelerate green energy transition worldwide.',
-  },
-  {
-    image: assets.news3 || assets.news1,
-    badge: 'Top News',
-    title: 'AI Breakthrough: Machines Now Write Better Than Humans',
-    description:
-      'New language model surpasses human writers in creativity, nuance, and speed. Experts warn of job disruption but celebrate new era of human-AI collaboration.',
-  },
-];
-
-const Home = () => {
+const Home: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { isMobile } = useScreenSize();
-  const [ blogs, setBlogs ] = useState<BlogPostProps[]>([])
-  const [ isLoading, setIsLoading ] = useState(false)
+  const [ blogs, setBlogs ] = useState<BlogPostProps[]>([]);
+  const [ slides, setSlides ] = useState<BlogPostProps[]>([]);
+  const [ isLoading, setIsLoading ] = useState(false);
   
   const prevSlide = () => setCurrentIndex(i => (i === 0 ? slides.length - 1 : i - 1));
   const nextSlide = () => setCurrentIndex(i => (i === slides.length - 1 ? 0 : i + 1));
@@ -72,6 +40,7 @@ const Home = () => {
 
       if (response.status === 200) { 
         const { data } = response.data.data
+        setSlides(data.slice(0, 3))
         setBlogs(data)
       }
 
@@ -86,9 +55,7 @@ const Home = () => {
     fetchBlogs()
   }, [])
 
-  return isMobile ? (
-    <MobileHome />
-  ) : (
+  return(
     <div className="w-full flex items-center justify-center flex-col">
       {/* Hero Carousel */}
       <div className="relative w-full lg:h-screen md:h-[80dvh] overflow-hidden">
@@ -96,12 +63,15 @@ const Home = () => {
           className="flex transition-transform duration-700 ease-in-out h-full"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {slides.map((slide, i) => (
-            <div key={i} className="min-w-full h-full relative">
-              <img src={slide.image} alt="" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/30" />
-            </div>
-          ))}
+          {slides.map((slide, i) => {
+            const fullImageUrl = `${IMAGE_URL}/${slide.cover_image}`;
+            return (
+              <div key={i} className="min-w-full h-full relative">
+                <img src={fullImageUrl} alt="" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/30" />
+              </div>
+            )
+          })}
         </div>
 
         {/* Arrows */}
@@ -123,20 +93,13 @@ const Home = () => {
           <div className="w-[90%] mx-auto text-white">
             <div className="w-full lg:w-[55%] md:w-3/4 flex flex-col gap-3 md:gap-4">
               <button className="bg-light-red text-white px-3 md:px-4 py-1 text-xs md:text-sm rounded-sm w-fit font-medium">
-                {slides[currentIndex].badge}
+                Top News
               </button>
-              <h1 className="font-bold text-2xl md:text-4xl leading-tight">
-                {slides[currentIndex].title
-                  .split('<br />')
-                  .map((l, i) => (
-                    <React.Fragment key={i}>
-                      {l}
-                      {i === 0 && <br />}
-                    </React.Fragment>
-                  ))}
+              <h1 className="font-bold text-2xl md:text-4xl leading-tight line-clamp-2">
+                {slides[currentIndex]?.title}
               </h1>
-              <p className="text-sm text-white/90 leading-relaxed">
-                {slides[currentIndex].description}
+              <p className="text-sm line-clamp-4 text-white/90 leading-relaxed">
+                {slides[currentIndex]?.body?.content}
               </p>
             </div>
           </div>
