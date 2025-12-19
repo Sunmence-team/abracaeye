@@ -15,7 +15,10 @@ const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 const MobileHome: React.FC = () => {
   const { isLoggedIn, token } = useUser();
   const containerRef = useRef<HTMLDivElement>(null);
-  const [blogs, setBlogs] = useState<BlogPostProps[]>([])
+  const [blogs, setBlogs] = useState<BlogPostProps[]>([]);
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState<number | null>(null);
+  const [isFetchingNext, setIsFetchingNext] = useState(false);
   const [selectedPost, setSelectedPost] = useState<BlogPostProps | null>(null);
   
   const [isLikingBlog, setisLikingBlog] = useState(false)
@@ -25,23 +28,84 @@ const MobileHome: React.FC = () => {
   const [ isSubmitting, setIsSubmitting ] = useState(false);
   const [ isLoadingComments, setisLoadingComments ] = useState(false);
 
+  const slideRefs = useRef<(HTMLElement | null)[]>([]);
+  const currentIndexRef = useRef(0);
+
+
   const apiItemsPerPage = 10
 
-  const fetchBlogs = async () => {
+  const fetchBlogs = async (pageToFetch = 1) => {
+    if (isFetchingNext) return;
+
+    setIsFetchingNext(true);
+
     try {
-      const response = await api.get(`/blogs?per_page=${apiItemsPerPage}`, {
-        headers: { "Content-Type": `application/json` },
-      });
+      const response = await api.get(
+        `/blogs?per_page=${apiItemsPerPage}&page=${pageToFetch}`,
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      if (response.status === 200) { 
-        const { data } = response.data.data
-        setBlogs(data)
+      if (response.status === 200) {
+        const { data, last_page } = response.data.data;
+
+        setBlogs(prev =>
+          pageToFetch === 1 ? data : [...prev, ...data]
+        );
+
+        data.forEach((post: BlogPostProps) => {
+          const img = new Image();
+          img.src = `${IMAGE_URL}/${post.cover_image}`;
+        });
+
+        setLastPage(last_page);
+        setPage(pageToFetch);
       }
-
     } catch (err) {
       console.error("Failed to fetch blogs: ", err);
+    } finally {
+      setIsFetchingNext(false);
     }
-  }
+  };
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+
+            const target = entry.target as HTMLElement;
+            const index = Number(target.dataset.index);
+
+            currentIndexRef.current = index;
+
+            // 🔥 Trigger pagination early (8th slide of 10)
+            const PREFETCH_OFFSET = 2;
+
+            if (
+              index >= blogs.length - PREFETCH_OFFSET &&
+              !isFetchingNext &&
+              lastPage &&
+              page < lastPage
+            ) {
+              fetchBlogs(page + 1);
+            }
+          }
+        });
+      },
+      {
+        root: containerRef.current,
+        threshold: 0.6, // perfect for snap
+      }
+    );
+
+    slideRefs.current.forEach(el => el && observer.observe(el));
+
+    return () => observer.disconnect();
+  }, [blogs, page, lastPage]);
+
+
 
   const likeBlog = async (id: string) => {
     setisLikingBlog(true);
@@ -86,7 +150,7 @@ const MobileHome: React.FC = () => {
   }, [selectedPost]);
 
   useEffect(() => {
-    fetchBlogs()
+    fetchBlogs(1)
   }, [])
 
   const fetchComments = async () => {
@@ -142,14 +206,18 @@ const MobileHome: React.FC = () => {
         ref={containerRef}
         className="h-screen w-full overflow-y-scroll overscroll-contain will-change-transform"
         style={{
-          scrollSnapType: 'y mandatory',
+          scrollSnapType: 'y proximity',
+          touchAction: 'pan-y',
           WebkitOverflowScrolling: 'touch',
         }}
       >
         {blogs.map((post, idx) => (
           <section
-            key={idx}
-            className="h-screen snap-start"
+            key={post.id ?? idx}
+            ref={(el) => {
+              slideRefs.current[idx] = el;
+            }}
+            data-index={idx}
           >
             <MobileBlogCards
               {...post}
