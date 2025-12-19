@@ -19,7 +19,7 @@ const Navbar: React.FC = () => {
 
   const firstName = user?.name?.split(" ")?.[0]
   const lastName = user?.name?.split(" ")?.[1]
-  const userInitials = `${firstName?.split("")?.[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}` || "00"
+  const userInitials = `${firstName?.split("")?.[0].toUpperCase() ?? "0"}${lastName ? lastName?.split("")[0].toUpperCase() ?? "0" : ''}` || "00"
 
   return (
     <>

@@ -9,8 +9,8 @@ const Profile: React.FC = () => {
   const screen = useScreenSize();
 
   const { user, token, refreshUser } = useUser()
-  const firstName = user?.name.split(" ")?.[0]
-  const lastName = user?.name.split(" ")?.[1]
+  const firstName = user?.name?.split(" ")?.[0]
+  const lastName = user?.name?.split(" ")?.[1]
   const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
 
   const validationSchema = Yup.object({

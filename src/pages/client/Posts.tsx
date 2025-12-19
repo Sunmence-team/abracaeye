@@ -10,6 +10,7 @@ import api from "../../helpers/api";
 const Posts: React.FC = () => {
   const { user, refreshUser, token } = useUser()
   const [ posts, setPosts ] = useState<postCardProps[]>([])
+  const [ total, setTotal ] = useState(1)
   const [ isLoading, setIsLoading ] = useState(false)
 
   // const posts: postCardProps[] = [
@@ -55,8 +56,9 @@ const Posts: React.FC = () => {
       });
 
       if (response.status === 200) { 
-        const { data } = response.data.data
+        const { data, total } = response.data.data
         setPosts(data)
+        setTotal(total)
       }
 
     } catch (err) {
@@ -90,7 +92,7 @@ const Posts: React.FC = () => {
           </Link>
           <div className="flex items-center justify-center bg-white w-1/2 lg:h-[156px] rounded-md p-3 font-semibold text-base lg:text-2xl cursor-pointer shadow shadow-black/30">
             <h2 className="flex gap-2 flex-col text-light-red items-center">
-              <span className="text-black">100</span>
+              <span className="text-black">{total}</span>
               Total Post
             </h2>
           </div>
