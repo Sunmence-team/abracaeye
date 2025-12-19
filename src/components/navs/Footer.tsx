@@ -1,6 +1,6 @@
-import React from 'react';
-import { assets } from '../../assets/assessts';
-import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
+import React from "react";
+import { assets } from "../../assets/assessts";
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 
 const Footer: React.FC = () => {
   return (
@@ -16,8 +16,9 @@ const Footer: React.FC = () => {
                 Subscribe for the daily Updates
               </h3>
               <p className="text-xs md:text-sm lg:text-sm text-gray-600 leading-relaxed">
-                Stay informed and never miss out! Subscribe now to receive the latest
-                news, insights, and updates delivered straight to your inbox every day.
+                Stay informed and never miss out! Subscribe now to receive the
+                latest news, insights, and updates delivered straight to your
+                inbox every day.
               </p>
             </div>
 
@@ -59,9 +60,14 @@ const Footer: React.FC = () => {
         <div className="w-full flex flex-col md:flex-row justify-between gap-6 md:gap-8 lg:gap-0 text-white">
           {/* Logo + Description + Social */}
           <div className="w-full md:w-[40%] lg:w-[20%] flex flex-col gap-3 md:gap-4">
-            <img src={assets.logo} className="w-24 md:w-28 lg:w-32" alt="Logo" />
+            <img
+              src={assets.logo}
+              className="w-24 md:w-28 lg:w-32"
+              alt="Logo"
+            />
             <p className="text-xs md:text-sm lg:text-xs leading-relaxed">
-              Stay informed with the latest stories, insights, and updates from around the world.
+              Stay informed with the latest stories, insights, and updates from
+              around the world.
             </p>
             <div className="flex gap-3 md:gap-4">
               <FaInstagram className="text-lg md:text-xl lg:text-base text-white hover:text-dark-red cursor-pointer transition-colors" />
@@ -72,9 +78,15 @@ const Footer: React.FC = () => {
 
           {/* Nav Links */}
           <div className="flex flex-row gap-4 md:gap-6 lg:gap-8 text-xs md:text-sm lg:text-sm">
-            <p className="hover:text-dark-red cursor-pointer transition-colors">Blog</p>
-            <p className="hover:text-dark-red cursor-pointer transition-colors">Market Place</p>
-            <p className="hover:text-dark-red cursor-pointer transition-colors">Contact Us</p>
+            <p className="hover:text-dark-red cursor-pointer transition-colors">
+              Blog
+            </p>
+            <p className="hover:text-dark-red cursor-pointer transition-colors">
+              Market Place
+            </p>
+            <p className="hover:text-dark-red cursor-pointer transition-colors">
+              Contact Us
+            </p>
           </div>
         </div>
       </div>
@@ -82,7 +94,7 @@ const Footer: React.FC = () => {
       {/* Copyright */}
       <div className="w-full bg-dark-red flex items-center justify-center py-3 md:py-4 lg:py-4">
         <p className="text-white text-xs md:text-sm lg:text-xs font-bold">
-          AbrayaBlogNews@2025 All rights Reserved
+          AbracaeyeBlogNews@2025 All rights Reserved
         </p>
       </div>
     </footer>
