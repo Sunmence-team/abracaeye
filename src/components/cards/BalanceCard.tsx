@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { assets } from "../../assets/assets";
 import { useScreenSize } from "../../hook/useScreenSize";
@@ -37,7 +37,9 @@ const BalanceCard: React.FC = () => {
           {eyeOpen ? `${balance.toLocaleString()}.00` : hiddenBalance}
         </p>
       </div>
-      <div className="w-[200px] h-[124px] lg:h-[200px] absolute lg:right-0 -right-8"> {/* -top-9 lg:-top-9 */}
+      <div className="w-[200px] h-[124px] lg:h-[200px] absolute lg:right-0 -right-8">
+        {" "}
+        {/* -top-9 lg:-top-9 */}
         <img
           src={assets.balance}
           alt="balance-img"
