@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, type SyntheticEvent } from 'react';
 import MobileBlogCards from '../../../components/cards/MobileBlogCards';
-import { X } from 'lucide-react';
+import { Search, ShoppingBag, X } from 'lucide-react';
 import api from '../../../helpers/api';
 import type { BlogPostProps, CommentProps } from '../../../lib/sharedInterface';
 import { assets } from '../../../assets/assets';
@@ -9,6 +9,7 @@ import { BsHeartFill } from 'react-icons/bs';
 import { LuLoaderCircle } from "react-icons/lu";
 import { useUser } from '../../../context/UserContext';
 import { Link } from 'react-router-dom';
+import { FaRegUserCircle } from 'react-icons/fa';
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
@@ -201,6 +202,43 @@ const MobileHome: React.FC = () => {
 
   return (
     <>
+      <nav className="md:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-5 py-4 z-50">
+        {/* Logo Left */}
+        <div className="shrink-0">
+          <img src={assets.logo2} className="w-10" alt="Logo" />
+        </div>
+
+        {/* Right Icons */}
+        <div className="flex items-center gap-2">
+          {/* Search */}
+          <button className="rounded-full hover:bg-gray-100 transition-colors">
+            <Search size={22} className="text-dark-red" />
+          </button>
+
+          {/* Marketplace */}
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <ShoppingBag size={22} className="text-dark-red" />
+          </button>
+
+          <Link
+            to={isLoggedIn ? "/dashboard/profile" : "/auth/login"}
+            title={isLoggedIn ? "Dashboard" : "Log In"}
+            className='cursor-pointer text-gray-700 hover:text-dark-red'
+          >
+            {
+              !isLoggedIn 
+                ? (
+                <FaRegUserCircle size={20} />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20">
+                  {userInitials}
+                </div>
+              )
+            }
+          </Link>
+        </div>
+      </nav>
+
       {/* Main Scroll Container */}
       <div
         ref={containerRef}
