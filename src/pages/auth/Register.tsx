@@ -9,6 +9,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { HiLockClosed } from "react-icons/hi2";
 import { GiPerson } from "react-icons/gi";
 import api from '../../helpers/api';
+import { assets } from '../../assets/assets';
 
 interface registerFormValues {
   name: string;
@@ -92,9 +93,8 @@ const Register: React.FC = () => {
     <>
       <div className='relative z-1 min-h-dvh py-20 w-full flex items-center justify-center overflow-hidden'>
 
-        {/* Background shape */}
-        <div className='absolute top-0 left-0 bg-[#FF7979]/10 rounded-br-full rounded-bl 
-    w-64 h-64 sm:w-96 sm:h-96 md:w-150 md:h-150 -z-1'>
+        <div className="absolute -z-1 top-0 left-0 bg-[#FF7979]/10 rounded-br-full rounded-bl w-64 h-64 md:w-150 md:h-150 p-8">
+          <Link to={"/"}><img src={assets.logo} /></Link>
         </div>
 
         <div className='flex flex-col justify-center gap-5 items-center w-full px-4 h-screen'>
