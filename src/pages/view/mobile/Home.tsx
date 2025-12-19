@@ -31,7 +31,7 @@ const MobileHome: React.FC = () => {
 
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
   const currentIndexRef = useRef(0);
-
+  const [isOnLastSlide, setIsOnLastSlide] = useState(false);
 
   const apiItemsPerPage = 5
 
@@ -81,7 +81,12 @@ const MobileHome: React.FC = () => {
 
             currentIndexRef.current = index;
 
-            // 🔥 Trigger pagination early (8th slide of 10)
+            const isLastSlide =
+              page === lastPage &&
+              index === blogs.length - 1;
+
+            setIsOnLastSlide(isLastSlide);
+            
             const PREFETCH_OFFSET = 2;
 
             if (
@@ -264,11 +269,11 @@ const MobileHome: React.FC = () => {
             />
           </section>
         ))}
-        {
-          page === lastPage && (
-            <div className="bg-dark-red p-2 text-center text-sm text-white">No more content. We are working to bring you more juicy update</div>
-          )
-        }
+        {isOnLastSlide && (
+          <div className="h-screen flex items-center justify-center bg-dark-red text-white text-sm px-4 text-center snap-start">
+            No more content. We are working to bring you more juicy updates 💛
+          </div>
+        )}
       </div>
 
       {/* POPUP MODAL */}
