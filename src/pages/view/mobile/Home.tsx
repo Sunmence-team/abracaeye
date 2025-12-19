@@ -17,12 +17,7 @@ const MobileHome: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blogs, setBlogs] = useState<BlogPostProps[]>([])
   const [selectedPost, setSelectedPost] = useState<BlogPostProps | null>(null);
-  const isScrolling = useRef(false);
-  const velocity = useRef(0);
-  const lastScrollTop = useRef(0);
-  const rafId = useRef<number | null>(null);
-
-  // const [ isLoading, setIsLoading ] = useState(false)
+  
   const [isLikingBlog, setisLikingBlog] = useState(false)
 
   const [ comments, setComments ] = useState<CommentProps[]>([]);
@@ -33,7 +28,6 @@ const MobileHome: React.FC = () => {
   const apiItemsPerPage = 10
 
   const fetchBlogs = async () => {
-    // setIsLoading(true)
     try {
       const response = await api.get(`/blogs?per_page=${apiItemsPerPage}`, {
         headers: { "Content-Type": `application/json` },
@@ -46,8 +40,6 @@ const MobileHome: React.FC = () => {
 
     } catch (err) {
       console.error("Failed to fetch blogs: ", err);
-    } finally {
-      // setIsLoading(false)
     }
   }
 
@@ -90,101 +82,6 @@ const MobileHome: React.FC = () => {
     }
     return () => {
       document.body.style.overflow = 'unset';
-    };
-  }, [selectedPost]);
-
-  // Smooth snap scrolling logic (unchanged)
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || selectedPost) return;
-
-    let startY = 0;
-    let startTime = 0;
-    let lastY = 0;
-
-    const snapTo = (index: number) => {
-      if (isScrolling.current) return;
-      isScrolling.current = true;
-
-      const viewportHeight = container.clientHeight;
-      const target = index * viewportHeight;
-
-      container.scrollTo({
-        top: target,
-        behavior: 'smooth',
-      });
-
-      setTimeout(() => {
-        isScrolling.current = false;
-      }, 400);
-    };
-
-    const handleTouchStart = (e: TouchEvent) => {
-      startY = e.touches[0].clientY;
-      startTime = Date.now();
-      lastY = startY;
-      velocity.current = 0;
-      lastScrollTop.current = container.scrollTop;
-      if (rafId.current) cancelAnimationFrame(rafId.current);
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      const currentY = e.touches[0].clientY;
-      const deltaY = lastY - currentY;
-      lastY = currentY;
-      velocity.current = deltaY / (Date.now() - startTime || 1);
-    };
-
-    const handleTouchEnd = () => {
-      const deltaTime = Date.now() - startTime;
-      const currentScroll = container.scrollTop;
-      const viewportHeight = container.clientHeight;
-      const currentIndex = Math.round(currentScroll / viewportHeight);
-
-      const direction = velocity.current > 0.3 ? 1 : velocity.current < -0.3 ? -1 : 0;
-      let targetIndex = currentIndex;
-
-      if (Math.abs(velocity.current) > 0.3 || deltaTime < 300) {
-        targetIndex = currentIndex + direction;
-      } else {
-        const offset = currentScroll % viewportHeight;
-        if (offset > viewportHeight * 0.3) {
-          targetIndex = currentIndex + 1;
-        } else if (offset < viewportHeight * 0.3) {
-          targetIndex = currentIndex;
-        } else {
-          targetIndex = currentIndex + (currentScroll > lastScrollTop.current ? 1 : -1);
-        }
-      }
-
-      targetIndex = Math.max(0, Math.min(targetIndex, blogs.length - 1));
-      snapTo(targetIndex);
-    };
-
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      if (isScrolling.current) return;
-
-      const delta = e.deltaY;
-      const currentScroll = container.scrollTop;
-      const viewportHeight = container.clientHeight;
-      const currentIndex = Math.round(currentScroll / viewportHeight);
-      const direction = delta > 0 ? 1 : -1;
-      const targetIndex = Math.max(0, Math.min(currentIndex + direction, blogs.length - 1));
-
-      snapTo(targetIndex);
-    };
-
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchmove', handleTouchMove, { passive: true });
-    container.addEventListener('touchend', handleTouchEnd, { passive: true });
-    container.addEventListener('wheel', handleWheel, { passive: false });
-
-    return () => {
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchmove', handleTouchMove);
-      container.removeEventListener('touchend', handleTouchEnd);
-      container.removeEventListener('wheel', handleWheel);
     };
   }, [selectedPost]);
 
@@ -245,9 +142,8 @@ const MobileHome: React.FC = () => {
         ref={containerRef}
         className="h-screen w-full overflow-y-scroll overscroll-contain will-change-transform"
         style={{
-          scrollSnapType: 'y proximity',
+          scrollSnapType: 'y mandatory',
           WebkitOverflowScrolling: 'touch',
-          touchAction: 'pan-y',
         }}
       >
         {blogs.map((post, idx) => (
