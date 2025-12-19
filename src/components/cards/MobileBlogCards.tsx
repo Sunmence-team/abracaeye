@@ -38,9 +38,9 @@ const MobileBlogCards: React.FC<MobileBlogCardsProps> = ({
         className="absolute inset-0 w-full h-full object-cover"
         onError={handleError}
       />
-      <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/20 to-black" />
+      <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/50 to-black" />
       <div className="absolute bottom-0 left-0 right-0 p-4 pb-24 text-white z-10 text-left">
-        <h3 className="font-semibold text-lg leading-tight mb-1">
+        <h3 className="font-semibold text-lg line-clamp-2 leading-tight mb-1">
           {title}
         </h3>
         <p className="text-sm text-white/90 leading-tight line-clamp-3">
