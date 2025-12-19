@@ -187,9 +187,9 @@ const MobileHome: React.FC = () => {
     }
   };
 
-  const firstName = selectedPost?.user?.name.split(" ")?.[0]
-  const lastName = selectedPost?.user?.name.split(" ")?.[1]
-  const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
+  const firstName = selectedPost?.user?.name?.split(" ")?.[0]
+  const lastName = selectedPost?.user?.name?.split(" ")?.[1]
+  const userInitials = `${firstName?.split("")?.[0].toUpperCase()}${lastName ? lastName?.split("")?.[0].toUpperCase() : ''}`
 
   const fullImageUrl = `${IMAGE_URL}/${selectedPost?.cover_image}`;
   const defaultImageUrl = assets.manFour;
