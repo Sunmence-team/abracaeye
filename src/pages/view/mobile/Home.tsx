@@ -12,7 +12,7 @@ import { useUser } from '../../../context/UserContext';
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const MobileHome: React.FC = () => {
-  const { token } = useUser();
+  const { isLoggedIn, token } = useUser();
   const containerRef = useRef<HTMLDivElement>(null);
   const [blogs, setBlogs] = useState<BlogPostProps[]>([])
   const [selectedPost, setSelectedPost] = useState<BlogPostProps | null>(null);
@@ -242,18 +242,17 @@ const MobileHome: React.FC = () => {
       {/* Main Scroll Container */}
       <div
         ref={containerRef}
-        className="h-dvh w-full overflow-y-auto"
+        className="h-screen w-full overflow-y-scroll overscroll-contain will-change-transform"
         style={{
-          scrollSnapType: 'y mandatory',
+          scrollSnapType: 'y proximity',
           WebkitOverflowScrolling: 'touch',
-          scrollBehavior: 'smooth',
+          touchAction: 'pan-y',
         }}
       >
         {blogs.map((post, idx) => (
           <section
             key={idx}
-            className="h-dvh snap-start shrink-0"
-            style={{ scrollSnapAlign: 'start' }}
+            className="h-screen snap-start"
           >
             <MobileBlogCards
               {...post}
@@ -360,7 +359,9 @@ const MobileHome: React.FC = () => {
         
                 {/* Display Comments */}
                 <div className="space-y-6">
-                  {isLoadingComments ? (
+                  {!isLoggedIn ? (
+                    <div className="size-8 mx-auto border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
+                  ) : isLoadingComments ? (
                     <div className="size-8 mx-auto border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
                   ) : comments.length > 0 ? (
                     comments.map((comment) => (

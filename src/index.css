@@ -9,10 +9,11 @@
 * {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 .noScrollBar::-webkit-scrollbar {

@@ -26,8 +26,10 @@ const MobileBlogCards: React.FC<MobileBlogCardsProps> = ({
   };
   
   return (
-    <button
+    <div
       onClick={onClick}
+      role="button"
+      tabIndex={0}
       className="h-full w-full relative overflow-hidden"
     >
       <img
@@ -45,7 +47,7 @@ const MobileBlogCards: React.FC<MobileBlogCardsProps> = ({
           {body?.content}
         </p>
       </div>
-    </button>
+    </div>
   );
 };
 
