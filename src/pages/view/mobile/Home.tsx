@@ -361,8 +361,8 @@ const MobileHome: React.FC = () => {
                 {/* Display Comments */}
                 <div className="space-y-6">
                   {!isLoggedIn ? (
-                    <div className="flex items-center flex-col">
-                      <p className="text-lg text-light-red font-semibold">What to know others take on this...?</p>
+                    <div className="flex items-center flex-col gap-2">
+                      <p className="text-2xl text-center text-light-red font-bold">What to know others take on this...?</p>
                       <Link 
                         to={"/auth/login"}
                         className="bg-dark-red text-white flex items-center justify-center px-6 h-[50px] rounded-md"
