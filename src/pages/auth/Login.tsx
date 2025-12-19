@@ -77,7 +77,7 @@ const Login: React.FC = () => {
     <>
       <div className="relative z-1 h-screen w-full flex items-center justify-center overflow-y-hidden">
         <Link to={"/"} className='fixed z-9 top-8 left-8'><img src={assets.logo} /></Link>
-        <div className="absolute -z-1 top-0 left-0 bg-[#FF7979] rounded-br-full rounded-bl w-64 h-64 md:w-150 md:h-150"></div>
+        <div className="absolute -z-1 top-0 left-0 bg-[#FF7979]/10 rounded-br-full rounded-bl w-64 h-64 md:w-150 md:h-150"></div>
 
         <div className='flex flex-col justify-center gap-5 items-center w-full px-4 h-screen'>
           <div className="text-center flex flex-col">
