@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import BlogCard from '../../components/cards/BlogCards';
 import { useUser } from '../../context/UserContext';
@@ -15,8 +15,13 @@ const Home: React.FC = () => {
   const [ slides, setSlides ] = useState<BlogPostProps[]>([]);
   const [ isLoading, setIsLoading ] = useState(false);
   
-  const prevSlide = () => setCurrentIndex(i => (i === 0 ? slides.length - 1 : i - 1));
-  const nextSlide = () => setCurrentIndex(i => (i === slides.length - 1 ? 0 : i + 1));
+  const prevSlide = useCallback(() => {
+    setCurrentIndex(i => (i === 0 ? slides.length - 1 : i - 1));
+  }, [slides.length]);
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex(i => (i === slides.length - 1 ? 0 : i + 1));
+  }, [slides.length]);
   
   const { isLoggedIn, token, refreshUser } = useUser();
   
@@ -24,12 +29,14 @@ const Home: React.FC = () => {
     if (isLoggedIn && token) {
       refreshUser(token)
     }
-  }, [isLoggedIn, token])
+  }, [isLoggedIn, token, refreshUser])
 
   useEffect(() => {
+    if (slides.length === 0) return;
+
     const id = setInterval(nextSlide, 3000);
     return () => clearInterval(id);
-  }, []);
+  }, [slides.length, nextSlide]);
   
   const fetchBlogs = async () => {
     setIsLoading(true)
