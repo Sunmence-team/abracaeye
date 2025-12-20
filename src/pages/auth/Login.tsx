@@ -148,17 +148,17 @@ const Login: React.FC = () => {
               )}
             </div>
             {/* FORGET PASSWORD */}
-            <div className="w-[300px] lg:w-[400px] md:w-[400px] flex max-w-[520px] ">
+            {/* <div className="w-[300px] lg:w-[400px] md:w-[400px] flex max-w-[520px] ">
               <Link to={"/auth/forgetPassword"} className="text-sm">
                 Forget Password?
               </Link>
-            </div>
+            </div> */}
             {/* BUTTON */}
-            <div className="flex justify-center text-center gap-3 w-full max-w-[520px]">
+            <div className="flex justify-center text-center gap-3 mt-6 w-full">
               <button
                 type="submit"
                 disabled={!formik.isValid || formik.isSubmitting}
-                className="rounded-full bg-light-red text-white w-full max-w-[300px] sm:max-w-[350px] md:max-w-[520 px] p-2 font-semibold text-[20px] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+                className="rounded-full bg-light-red text-white w-full max-w-[300px] sm:max-w-[350px] md:max-w-[520px] mx-auto p-2 font-semibold text-[20px] cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {formik.isSubmitting ? "Logging in..." : "Next"}
               </button>

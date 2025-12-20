@@ -8,8 +8,9 @@ import { Link } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 
 const Navbar: React.FC = () => {
-  const { isLoggedIn, user } = useUser()
+  const { isLoggedIn, user, logout } = useUser()
   const [activeLink, setActiveLink] = useState<string>('/about');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navItems = [
     { label: 'Blog', href: '/about' },
@@ -87,22 +88,45 @@ const Navbar: React.FC = () => {
             <ShoppingBag size={22} className="text-dark-red" />
           </button>
 
-          <Link
-            to={isLoggedIn ? "/dashboard/profile" : "/auth/login"}
-            title={isLoggedIn ? "Dashboard" : "Log In"}
-            className='cursor-pointer text-gray-700 hover:text-dark-red'
-          >
-            {
-              !isLoggedIn 
-                ? (
-                <FaRegUserCircle size={20} />
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20">
-                  {userInitials}
+          {!isLoggedIn ? (
+            <Link
+              to="/auth/login"
+              title="Log In"
+              className='cursor-pointer text-gray-700 hover:text-dark-red'
+            >
+              <FaRegUserCircle size={20} />
+            </Link>
+          ) : (
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20 cursor-pointer outline-none"
+              >
+                {userInitials}
+              </button>
+              
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-1 border border-gray-100 z-60">
+                  <Link
+                    to="/dashboard/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsDropdownOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                  >
+                    Logout
+                  </button>
                 </div>
-              )
-            }
-          </Link>
+              )}
+            </div>
+          )}
         </div>
       </nav>
     </>

@@ -14,7 +14,8 @@ import { FaRegUserCircle } from 'react-icons/fa';
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const MobileHome: React.FC = () => {
-  const { isLoggedIn, token } = useUser();
+  const { isLoggedIn, user, token, logout } = useUser();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [blogs, setBlogs] = useState<BlogPostProps[]>([]);
   const [page, setPage] = useState(1);
@@ -111,8 +112,6 @@ const MobileHome: React.FC = () => {
     return () => observer.disconnect();
   }, [blogs, page, lastPage]);
 
-
-
   const likeBlog = async (id: string) => {
     setisLikingBlog(true);
     try {
@@ -192,9 +191,13 @@ const MobileHome: React.FC = () => {
     }
   };
 
-  const firstName = selectedPost?.user?.name?.split(" ")?.[0]
-  const lastName = selectedPost?.user?.name?.split(" ")?.[1]
-  const userInitials = `${firstName?.split("")?.[0].toUpperCase() ?? "0"}${lastName ? lastName?.split("")?.[0].toUpperCase() ?? "0" : ''}`
+  const userFirstName = user?.name?.split(" ")?.[0]
+  const userLastName = user?.name?.split(" ")?.[1]
+  const userInitials = `${userFirstName?.split("")?.[0].toUpperCase() ?? "0"}${userLastName ? userLastName?.split("")?.[0].toUpperCase() ?? "0" : ''}`
+  
+  const blogAuthorFirstName = selectedPost?.user?.name?.split(" ")?.[0]
+  const blogAuthorLastName = selectedPost?.user?.name?.split(" ")?.[1]
+  const blogAuthorInitials = `${blogAuthorFirstName?.split("")?.[0].toUpperCase() ?? "0"}${blogAuthorLastName ? blogAuthorLastName?.split("")?.[0].toUpperCase() ?? "0" : ''}`
 
   const fullImageUrl = `${IMAGE_URL}/${selectedPost?.cover_image}`;
   const defaultImageUrl = assets.manFour;
@@ -225,22 +228,45 @@ const MobileHome: React.FC = () => {
             <ShoppingBag size={22} className="text-dark-red" />
           </button>
 
-          <Link
-            to={isLoggedIn ? "/dashboard/profile" : "/auth/login"}
-            title={isLoggedIn ? "Dashboard" : "Log In"}
-            className='cursor-pointer text-gray-700 hover:text-dark-red'
-          >
-            {
-              !isLoggedIn 
-                ? (
-                <FaRegUserCircle size={20} />
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20">
-                  {userInitials}
+          {!isLoggedIn ? (
+            <Link
+              to="/auth/login"
+              title="Log In"
+              className='cursor-pointer text-gray-700 hover:text-dark-red'
+            >
+              <FaRegUserCircle size={20} />
+            </Link>
+          ) : (
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20 cursor-pointer outline-none"
+              >
+                {userInitials}
+              </button>
+              
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-1 border border-gray-100 z-60">
+                  <Link
+                    to="/dashboard/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setIsDropdownOpen(false);
+                    }}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50"
+                  >
+                    Logout
+                  </button>
                 </div>
-              )
-            }
-          </Link>
+              )}
+            </div>
+          )}
         </div>
       </nav>
 
@@ -317,7 +343,7 @@ const MobileHome: React.FC = () => {
               <div className="flex items-end justify-between px-6 mb-6">
                 <div className="flex gap-2">
                   <div className="w-6 h-6 bg-dark-red text-white flex items-center justify-center rounded-full p-6 font-bold">
-                    {userInitials}
+                    {blogAuthorInitials}
                   </div>
                   <div className='flex flex-col'>
                     <p className='text-dark-red italic text-[9px]'>Posted by:</p>
