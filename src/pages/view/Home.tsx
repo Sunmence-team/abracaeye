@@ -6,6 +6,8 @@ import BlogCard from '../../components/cards/BlogCards';
 import { useUser } from '../../context/UserContext';
 import api from '../../helpers/api';
 import type { BlogPostProps } from '../../lib/sharedInterface';
+import { Link } from 'react-router-dom';
+import { MdOutlineArrowOutward } from 'react-icons/md';
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
@@ -59,6 +61,7 @@ const Home: React.FC = () => {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     fetchBlogs()
   }, [])
 
@@ -115,7 +118,13 @@ const Home: React.FC = () => {
 
       {/* Recent Eye News */}
       <div className="w-[90%] flex flex-col py-12">
-        <p className="text-dark-red text-sm md:text-base">Recent Eye News</p>
+        <div className="flex items-center justify-between">
+          <p className="text-light-red text-sm md:text-xl font-semibold">Recent Eye News</p>
+          <Link to={"/blogs"} className='flex items-center text-dark-red hover:border-b'>
+            <span>View More</span>
+            <MdOutlineArrowOutward />
+          </Link>
+        </div>
         {
           isLoading ? (
             <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin mx-auto my-8"></div>

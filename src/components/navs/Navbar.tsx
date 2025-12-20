@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navItems = [
-    { label: 'Blog', href: '/about' },
+    { label: 'Blog', href: '/blogs' },
     { label: 'Marketplace', href: '/services' },
     { label: 'Contact', href: '/contact' },
   ];
@@ -25,9 +25,9 @@ const Navbar: React.FC = () => {
     <>
       <nav className="hidden md:flex fixed top-4 left-1/2 -translate-x-1/2 w-[90%] bg-white backdrop-blur-xl border border-white/20 rounded-full py-3 px-5 md:px-4 items-center justify-between shadow-xl shadow-black/5 z-50 transition-all duration-300 hover:shadow-2xl hover:shadow-black/10">
         {/* Logo */}
-        <div className="shrink-0">
+        <Link to={"/"} className="shrink-0">
           <img src={assets.logo} className="w-22 md:w-26" alt="Logo" />
-        </div>
+        </Link>
 
         <div className="flex items-center gap-8">
           {/* Links */}

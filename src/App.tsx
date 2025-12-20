@@ -18,6 +18,8 @@ import MobileHome from "./pages/view/mobile/Home";
 import Modal from "./components/modal/Modal";
 import api from "./helpers/api";
 import Blogs from "./pages/view/Blogs";
+import AllContacts from "./pages/admin/AllContacts";
+import AllSubscribers from "./pages/admin/AllSubscribers";
 
 const App: React.FC = () => {
   const { isMobile } = useScreenSize();
@@ -30,7 +32,7 @@ const App: React.FC = () => {
     if (!hasVisited) {
       const timer = setTimeout(() => {
         setShowNewsletter(true);
-      }, 6000); // 1 minute
+      }, 5000);
 
       return () => clearTimeout(timer);
     }
@@ -147,6 +149,22 @@ const App: React.FC = () => {
           element={
             <DashboardLayout>
               <AllUsers />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/dashboard/admin/subscribers"
+          element={
+            <DashboardLayout>
+              <AllSubscribers />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/dashboard/admin/contacts"
+          element={
+            <DashboardLayout>
+              <AllContacts />
             </DashboardLayout>
           }
         />

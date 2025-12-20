@@ -20,9 +20,13 @@ export interface userProps {
   vendor: boolean;
 }
 
+export interface ContactProps extends userProps {
+  message: string;
+}
 
 export interface BlogPostProps extends postCardProps {
   user: userProps;
+  showBottom?: boolean;
 }
 
 

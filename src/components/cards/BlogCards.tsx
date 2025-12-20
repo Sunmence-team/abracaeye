@@ -14,7 +14,8 @@ const BlogCard: React.FC<BlogPostProps> = ({
   body,
   likes_count,
   comments_count,
-  user
+  user,
+  showBottom=true
 }) => {
   const fullImageUrl = `${IMAGE_URL}/${cover_image}`;
   const defaultImageUrl = assets.logo2;
@@ -41,26 +42,28 @@ const BlogCard: React.FC<BlogPostProps> = ({
       />
       <div className="w-full p-4 flex flex-col gap-1 h-full">
         <p className="font-semibold group-hover:text-light-red transition-all duration-500 text-lg line-clamp-2">{title}</p>
-        <p className="text-sm line-clamp-3 mb-4">{body.content}</p>
-        <div className="w-full flex justify-between gap-2 mt-auto">
-          <div className="flex items-center gap-1 w-[70%]">
-            <div className="bg-dark-red w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold p-2">
-              {userInitials}
+        <p className="text-sm line-clamp-3 mb-4">{body?.content}</p>
+        {showBottom && (
+          <div className="w-full flex justify-between gap-2 mt-auto">
+            <div className="flex items-center gap-1 w-[70%]">
+              <div className="bg-dark-red w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold p-2">
+                {userInitials}
+              </div>
+              <p className="text-xs capitalize font-medium">{user?.name}</p>
             </div>
-            <p className="text-xs capitalize font-medium">{user?.name}</p>
+            <div className="justify-end flex gap-3 items-center">
+              <div className="flex items-center gap-1">
+                <FaHeart className="text-dark-red" />
+                <span className='text-xs'>{likes_count}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <FaRegCommentDots />
+                <span className='text-xs'>{comments_count}</span>
+              </div>
+              <IoIosShareAlt />
+            </div>
           </div>
-          <div className="justify-end flex gap-3 items-center">
-            <div className="flex items-center gap-1">
-              <FaHeart className="text-dark-red" />
-              <span className='text-xs'>{likes_count}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <FaRegCommentDots />
-              <span className='text-xs'>{comments_count}</span>
-            </div>
-            <IoIosShareAlt />
-          </div>
-        </div>
+        )}
       </div>
     </Link>
   );

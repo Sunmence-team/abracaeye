@@ -145,7 +145,7 @@ const Blogdetails: React.FC = () => {
 
           
           <div className="mt-6 space-y-5 text-[17px] text-gray-700 leading-relaxed">
-            <p className="whitespace-pre-wrap">{blogDetails?.body.content}</p>
+            <p className="whitespace-pre-wrap">{blogDetails?.body?.content}</p>
           </div>
           
           <div className="w-full flex justify-between mt-5">
@@ -191,6 +191,7 @@ const Blogdetails: React.FC = () => {
                 <BlogCard
                   key={post.id+""+index}
                   {...post}
+                  showBottom={false}
                 />
               ))
             )}

@@ -2,6 +2,8 @@ import { MdDashboard } from "react-icons/md";
 import { AiFillFileAdd } from "react-icons/ai";
 import { FaCircleUser, FaUsers } from "react-icons/fa6";
 import { MdPermMedia } from "react-icons/md";
+import { MdContacts, MdSubscriptions } from "react-icons/md";
+
 export const navItems = [
   {
     icon: MdDashboard,
@@ -38,6 +40,20 @@ export const navItems = [
     pathName: "/dashboard/admin/users",
     accessibility: ["admin"],
     name: "All Users",
+    role: ["admin"],
+  },
+  {
+    icon: MdSubscriptions,
+    pathName: "/dashboard/admin/subscribers",
+    accessibility: ["admin"],
+    name: "Subscribers",
+    role: ["admin"],
+  },
+  {
+    icon: MdContacts,
+    pathName: "/dashboard/admin/contacts",
+    accessibility: ["admin"],
+    name: "All Contacts",
     role: ["admin"],
   },
 ];

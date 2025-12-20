@@ -25,7 +25,7 @@ const AllSubscribers: React.FC = () => {
           });
     
           if (response.status === 200) { 
-            const { data, last_page } = response.data.users
+            const { data, last_page } = response.data.data
             setAllSubscribers(data)
             setLastPage(last_page)
           }
@@ -79,10 +79,9 @@ const AllSubscribers: React.FC = () => {
                 <table className='w-full min-w-[800px] text-center'>
                 <thead>
                     <tr className='bg-dark-red text-white h-[55px]'>
-                    <th className='p-4 md:text-sm text-xs whitespace-nowrap'>S/N</th>
-                    <th className='p-4 md:text-sm text-xs whitespace-nowrap'>Email</th>
-                    <th className='p-4 md:text-sm text-xs whitespace-nowrap'>Date Joined</th>
-                    <th className='p-4 md:text-sm text-xs whitespace-nowrap'>Action</th>
+                        <th className='p-4 md:text-sm text-xs whitespace-nowrap'>S/N</th>
+                        <th className='p-4 md:text-sm text-xs whitespace-nowrap'>Email</th>
+                        <th className='p-4 md:text-sm text-xs whitespace-nowrap'>Date Joined</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,7 +94,7 @@ const AllSubscribers: React.FC = () => {
                             <td colSpan={7} className="text-center bg-white/61 py-4 border-y border-black/10">No subscribers found.</td>
                         </tr>
                     ) : (
-                        allSubscribers.filter(user => user?.role !== "admin").map((user, index) => {
+                        allSubscribers.map((user, index) => {
                             const serialNumber = (currentPage - 1) * apiItemsPerPage + (index + 1);
                             return(  
                             <tr

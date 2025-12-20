@@ -37,7 +37,10 @@ const Blogs: React.FC = () => {
     }
   }
 
+  console.log("blogs", blogs)
+
   useEffect(() => {
+    window.scrollTo(0, 0)
     fetchBlogs(1);
   }, []);
 
@@ -48,9 +51,9 @@ const Blogs: React.FC = () => {
   };
 
   return (
-    <div className="w-full flex items-center justify-center flex-col py-20">
+    <div className="w-full flex items-center justify-center flex-col pt-32 pb-20">
       <div className="w-[90%] flex flex-col">
-         <h1 className="text-3xl md:text-4xl font-bold text-dark-red mb-8">All Blogs</h1>
+         <h1 className="text-3xl md:text-4xl font-bold text-dark-red mb-4">All Blogs</h1>
         
         {isLoading ? (
             <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin mx-auto my-8"></div>
