@@ -8,11 +8,13 @@ import api from "../../helpers/api";
 import { assets } from "../../assets/assets";
 import { formatISODateToCustom } from "../../helpers/formatterUtilities";
 import { shareCurrentPage } from "../../helpers/ShareFunction";
+import { useUser } from "../../context/UserContext";
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const Blogdetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { token, isLoggedIn } = useUser();
   const [ blogDetails, setBlogDetails ] = useState<BlogPostProps | null>(null);
   const [ relatedBlogs, setRelatedBlogs ] = useState<BlogPostProps[]>([])
   const [ isLoading, setIsLoading ] = useState(false)
@@ -64,7 +66,11 @@ const Blogdetails: React.FC = () => {
   const fetchComments = async () => {
     setisLoadingComments(true)
     try {
-      const response = await api.get(`/blogs/${id}/comments?per_page=20`);
+      const response = await api.get(`/blogs/${id}/comments?per_page=20`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (response.status === 200) {
         setComments(response.data.data);
       }
@@ -99,9 +105,11 @@ const Blogdetails: React.FC = () => {
     if (id) {
       fetchBlogDetails()
       fetchRelatedBlog()
-      fetchComments()
+      if (token) {
+        fetchComments()
+      }
     }
-  }, [id])
+  }, [id, token])
 
   const fullImageUrl = `${IMAGE_URL}/${blogDetails?.cover_image}`;
   const defaultImageUrl = assets.news2;
@@ -223,22 +231,30 @@ const Blogdetails: React.FC = () => {
         </form>
 
         {/* Display Comments */}
-        <div className="space-y-6">
-          {isLoadingComments ? (
+        <div className="space-y-2">
+          {!isLoggedIn ? (
+            <div className="flex items-center flex-col gap-2">
+              <p className="text-2xl text-center text-light-red font-bold">What to know others take on this...?</p>
+              <Link 
+                to={"/auth/login"}
+                className="bg-dark-red text-white flex items-center justify-center px-6 h-[50px] rounded-md"
+              >Login/Create account</Link>
+            </div>
+          ) :isLoadingComments ? (
             <div className="size-8 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
           ) : comments.length > 0 ? (
             comments.map((comment) => (
-              <div key={comment.id} className="flex flex-col gap-1">
+              <div key={comment.id} className="flex flex-col gap-1 md:w-3/4 w-full border-b border-light-red/20 last:border-b-0 pb-3">
                 <div className="flex gap-2 items-center">
-                  <div className="bg-dark-red w-10 h-10 rounded-full flex items-center justify-center text-white ring-2 ring-dark-red/20 font-bold">
+                  <div className="bg-dark-red w-9 h-9 text-sm rounded-full flex items-center justify-center text-white ring-2 ring-dark-red/20 font-semibold">
                     {comment.user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                   </div>
-                  <div className="flex flex-col">
-                    <p className="font-semibold">{comment.user.name}</p>
-                    <small className="text-gray-500 text-xs">{formatISODateToCustom(comment.created_at)}</small>
+                  <div className="flex items-center justify-between w-[calc(100%-44px)]">
+                    <p className="font-medium text-black/80 text-sm">{comment.user.name}</p>
+                    <small className="text-gray-500 text-end text-xs">{formatISODateToCustom(comment.created_at)}</small>
                   </div>
                 </div>
-                <p className="text-gray-800 font-medium ms-4">{comment.text}</p>
+                <p className="text-gray-800 text-sm mt-1 font-medium ms-1">{comment.text}</p>
               </div>
             ))
           ) : (

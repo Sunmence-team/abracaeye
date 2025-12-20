@@ -161,7 +161,11 @@ const MobileHome: React.FC = () => {
   const fetchComments = async () => {
     setisLoadingComments(true)
     try {
-      const response = await api.get(`/blogs/${selectedPost?.id}/comments?per_page=20`);
+      const response = await api.get(`/blogs/${selectedPost?.id}/comments?per_page=20`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (response.status === 200) {
         setComments(response.data.data);
       }
@@ -178,7 +182,11 @@ const MobileHome: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await api.post(`/blogs/${selectedPost?.id}/comments`, { text: newComment });
+      const response = await api.post(`/blogs/${selectedPost?.id}/comments`, { text: newComment }, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (response.status === 201 || response.status === 200) { 
         setNewComment("");
         fetchComments(); 
@@ -398,7 +406,7 @@ const MobileHome: React.FC = () => {
                 </form>
         
                 {/* Display Comments */}
-                <div className="space-y-6">
+                <div className="">
                   {!isLoggedIn ? (
                     <div className="flex items-center flex-col gap-2">
                       <p className="text-2xl text-center text-light-red font-bold">What to know others take on this...?</p>
@@ -411,17 +419,17 @@ const MobileHome: React.FC = () => {
                     <div className="size-8 mx-auto border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
                   ) : comments.length > 0 ? (
                     comments.map((comment) => (
-                      <div key={comment.id} className="flex flex-col gap-1">
+                      <div key={comment.id} className="flex flex-col gap-1 border-b last:border-0 border-gray-400 pb-2 mb-3">
                         <div className="flex gap-2 items-center">
-                          <div className="bg-dark-red w-10 h-10 rounded-full flex items-center justify-center text-white ring-2 ring-dark-red/20 font-bold">
+                          <div className="bg-dark-red text-sm w-8 h-8 rounded-full flex items-center justify-center text-white ring-2 ring-dark-red/20 font-semibold">
                             {comment.user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
                           </div>
                           <div className="flex flex-col">
-                            <p className="font-semibold text-sm">{comment.user.name}</p>
-                            <small className="text-gray-500 text-xs">{formatISODateToCustom(comment.created_at)}</small>
+                            <p className="font-semibold text-xs">{comment.user.name}</p>
+                            <small className="text-gray-500 text-[10px]">{formatISODateToCustom(comment.created_at)}</small>
                           </div>
                         </div>
-                        <p className="text-gray-800 font-medium ms-2">{comment.text}</p>
+                        <p className="text-gray-800 text-base font-medium ms-1">{comment.text}</p>
                       </div>
                     ))
                   ) : (
