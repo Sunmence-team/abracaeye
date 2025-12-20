@@ -261,7 +261,7 @@ const MobileHome: React.FC = () => {
               slideRefs.current[idx] = el;
             }}
             data-index={idx}
-            className="h-screen snap-start"
+            className="h-[98vh] snap-start"
           >
             <MobileBlogCards
               {...post}
