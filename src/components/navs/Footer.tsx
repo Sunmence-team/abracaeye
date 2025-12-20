@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { assets } from "../../assets/assessts";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import api from "../../helpers/api";
+import { toast } from "sonner";
 
 const Footer: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await api.post("/newsletter", { email });
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Subscribed successfully!");
+        setEmail("");
+      }
+    } catch (error) {
+      console.error("Footer subscription error:", error);
+      toast.error("Subscription failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="w-full bg-black flex flex-col items-center">
       {/* Main Content */}
@@ -24,11 +48,17 @@ const Footer: React.FC = () => {
 
             {/* Form */}
             <div className="w-full">
-              <div className="w-full bg-[#EBEAEA]/50 p-3 md:p-4 lg:p-4 rounded-lg">
+              <form 
+                onSubmit={handleSubscribe}
+                className="w-full bg-[#EBEAEA]/50 p-3 md:p-4 lg:p-4 rounded-lg"
+              >
                 <div className="flex w-full h-10 md:h-12 lg:h-10">
                   <input
                     type="email"
                     placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                     className="
                       flex-1 h-full px-3 md:px-4 lg:px-4 py-2
                       border border-gray-300 rounded-lg
@@ -38,6 +68,8 @@ const Footer: React.FC = () => {
                     "
                   />
                   <button
+                    type="submit"
+                    disabled={isSubmitting}
                     className="
                       h-full px-4 md:px-8 lg:px-12 py-2
                       bg-light-red text-white font-medium text-xs md:text-sm lg:text-sm
@@ -46,12 +78,13 @@ const Footer: React.FC = () => {
                       focus:outline-none focus:ring-2 focus:ring-light-red/30
                       transition-all duration-200
                       whitespace-nowrap shadow-sm
+                      disabled:opacity-70
                     "
                   >
-                    Subscribe
+                    {isSubmitting ? "Subscribing..." : "Subscribe"}
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>

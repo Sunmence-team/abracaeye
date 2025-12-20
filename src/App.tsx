@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "./layout/MainLayout";
 import Home from "./pages/view/Home";
@@ -11,16 +11,86 @@ import Profile from "./pages/client/Profile";
 import Posts from "./pages/client/Posts";
 import AddPost from "./pages/client/AddPost";
 import Overview from "./pages/client/Overview";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 import AllUsers from "./pages/admin/AllUsers";
 import { useScreenSize } from "./hook/useScreenSize";
 import MobileHome from "./pages/view/mobile/Home";
+import Modal from "./components/modal/Modal";
+import api from "./helpers/api";
 
 const App: React.FC = () => {
   const { isMobile } = useScreenSize();
+  const [showNewsletter, setShowNewsletter] = useState(false);
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const hasVisited = localStorage.getItem("hasVisitedBefore");
+    if (!hasVisited) {
+      const timer = setTimeout(() => {
+        setShowNewsletter(true);
+      }, 6000); // 1 minute
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleCloseNewsletter = () => {
+    setShowNewsletter(false);
+    localStorage.setItem("hasVisitedBefore", "true");
+  };
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await api.post("/newsletter", { email });
+      if (response.status === 200 || response.status === 201) {
+        toast.success("Subscribed to newsletter successfully!");
+        handleCloseNewsletter();
+      }
+    } catch (error) {
+      console.error("Newsletter subscription error:", error);
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <>
       <Toaster />
+
+      {showNewsletter && (
+        <Modal onClose={handleCloseNewsletter}>
+          <div className="text-center">
+            <h2 className="md:text-2xl text-xl font-bold text-dark-red">Subscribe to our Newsletter</h2>
+            <p className="mb-8 md:text-base text-sm text-gray-600">
+              Stay updated with our latest news and offers!
+            </p>
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-4">
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-dark-red text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-colors disabled:opacity-70"
+              >
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
+              </button>
+            </form>
+          </div>
+        </Modal>
+      )}
+
       <Routes>
         {/* Main routes with navbar */}
         <Route path="/" element={isMobile ? <MobileHome /> : <MainLayout children={<Home />} />} />
