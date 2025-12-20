@@ -4,6 +4,8 @@ import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import { FaInstagram, FaXTwitter, FaFacebook } from "react-icons/fa6";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import api from "../../helpers/api";
+import { toast } from "sonner";
 
 const Contact: React.FC = () => {
   const formik = useFormik({
@@ -19,10 +21,19 @@ const Contact: React.FC = () => {
       message: Yup.string().required("Message is required"),
     }),
 
-    onSubmit: (values) => {
-      console.log("Form submitted:", values);
-      alert("Message sent!");
-      formik.resetForm();
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      try {
+        const response = await api.post("/contact", values);
+        if (response.status === 200 || response.status === 201) {
+          toast.success("Message sent successfully!");
+          resetForm();
+        }
+      } catch (error) {
+        console.error("Contact form error:", error);
+        toast.error("Failed to send message. Please try again.");
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
@@ -118,9 +129,10 @@ const Contact: React.FC = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full bg-[var(--color-light-red)] hover:bg-red-700 text-white py-3 rounded-md text-[16px] font-medium transition"
+                disabled={formik.isSubmitting}
+                className="w-full bg-light-red hover:bg-red-700 text-white py-3 rounded-md text-[16px] font-medium transition disabled:opacity-70"
               >
-                Submit
+                {formik.isSubmitting ? "Sending..." : "Submit"}
               </button>
             </form>
           </div>
@@ -132,7 +144,7 @@ const Contact: React.FC = () => {
             <div className="space-y-5">
               {/* Phone */}
               <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
-                <div className="text-white bg-[var(--color-light-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
+                <div className="text-white bg-light-red text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
                   <FaPhone size={25} />
                 </div>
                 <div>
@@ -143,7 +155,7 @@ const Contact: React.FC = () => {
 
               {/* Email */}
               <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
-                <div className="text-white bg-[var(--color-light-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
+                <div className="text-white bg-light-red text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
                   <FaEnvelope size={25} />
                 </div>
                 <div>
@@ -154,7 +166,7 @@ const Contact: React.FC = () => {
 
               {/* Location */}
               <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
-                <div className="text-white bg-[var(--color-light-red)] text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
+                <div className="text-white bg-light-red text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
                   <FaMapMarkerAlt size={25} />
                 </div>
                 <div>
@@ -169,9 +181,9 @@ const Contact: React.FC = () => {
               <h1 className="text-2xl font-medium my-15">Connect with Us</h1>
 
               <div className="flex items-center gap-5 text-3xl">
-                <FaInstagram className="cursor-pointer hover:text-[var(--color-light-red)] transition" />
-                <FaFacebook className="cursor-pointer hover:text-[var(--color-light-red)] transition" />
-                <FaXTwitter className="cursor-pointer hover:text-[var(--color-light-red)] transition" />
+                <FaInstagram className="cursor-pointer hover:text-light-red transition" />
+                <FaFacebook className="cursor-pointer hover:text-light-red transition" />
+                <FaXTwitter className="cursor-pointer hover:text-light-red transition" />
               </div>
             </div>
 
