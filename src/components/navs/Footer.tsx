@@ -3,6 +3,7 @@ import { assets } from "../../assets/assessts";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import api from "../../helpers/api";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -111,15 +112,15 @@ const Footer: React.FC = () => {
 
           {/* Nav Links */}
           <div className="flex flex-row gap-4 md:gap-6 lg:gap-8 text-xs md:text-sm lg:text-sm">
-            <p className="hover:text-dark-red cursor-pointer transition-colors">
+            <Link to={"/home"} className="hover:text-dark-red cursor-pointer transition-colors">
               Blog
-            </p>
-            <p className="hover:text-dark-red cursor-pointer transition-colors">
+            </Link>
+            <Link to={"/contact"} className="hover:text-dark-red cursor-pointer transition-colors">
               Market Place
-            </p>
-            <p className="hover:text-dark-red cursor-pointer transition-colors">
+            </Link>
+            <Link to={"/contact"} className="hover:text-dark-red cursor-pointer transition-colors">
               Contact Us
-            </p>
+            </Link>
           </div>
         </div>
       </div>
@@ -127,7 +128,7 @@ const Footer: React.FC = () => {
       {/* Copyright */}
       <div className="w-full bg-dark-red flex items-center justify-center py-3 md:py-4 lg:py-4">
         <p className="text-white text-xs md:text-sm lg:text-xs font-bold">
-          AbracaeyeBlogNews@2025 All rights Reserved
+          Abrakaeye@2025 All rights Reserved
         </p>
       </div>
     </footer>

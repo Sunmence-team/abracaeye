@@ -4,12 +4,11 @@ import React, { useState } from 'react';
 import { assets } from '../../assets/assessts';
 import { Search, ShoppingBag } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 
 const Navbar: React.FC = () => {
   const { isLoggedIn, user, logout } = useUser()
-  const [activeLink, setActiveLink] = useState<string>('/about');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navItems = [
@@ -34,21 +33,17 @@ const Navbar: React.FC = () => {
           {/* Links */}
           <div className="flex items-center gap-8">
             {navItems.map((item) => (
-              <a
+              <NavLink
+                to={item.href}
                 key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActiveLink(item.href);
-                }}
-                className={`
+                className={({ isActive }) => `
                   font-medium text-sm tracking-wide
                   transition-all duration-300
-                  ${activeLink === item.href ? 'text-dark-red' : 'text-gray-700 hover:text-dark-red'}
+                  ${isActive ? 'text-dark-red' : 'text-gray-700 hover:text-dark-red'}
                 `}
               >
                 {item.label}
-              </a>
+              </NavLink>
             ))}
           </div>
           <Link

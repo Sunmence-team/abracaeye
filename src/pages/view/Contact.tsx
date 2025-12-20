@@ -1,6 +1,6 @@
 import React from "react";
 import { assets } from "../../assets/assessts";
-import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { FaPhone, FaEnvelope } from "react-icons/fa";
 import { FaInstagram, FaXTwitter, FaFacebook } from "react-icons/fa6";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -61,7 +61,7 @@ const Contact: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           
           {/* LEFT FORM */}
-          <div className="bg-white shadow-sm rounded-xl p-6 md:p-10">
+          <div className="bg-white shadow-sm rounded-xl p-6">
             <form className="space-y-6" onSubmit={formik.handleSubmit}>
 
               {/* Name */}
@@ -119,7 +119,7 @@ const Contact: React.FC = () => {
                     formik.touched.message && formik.errors.message
                       ? "border-red-500"
                       : "border-gray-300"
-                  } p-3 rounded-md h-40 outline-none resize-none`}
+                  } p-3 rounded-md h-32 outline-none resize-none`}
                 ></textarea>
                 {formik.touched.message && formik.errors.message && (
                   <p className="text-red-600 text-sm">{formik.errors.message}</p>
@@ -149,7 +149,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-lg">Phone Number</p>
-                  <p className="text-gray-700">09028315839 / 09026793467</p>
+                  <p className="text-gray-700">+234 810 124 8856</p>
                 </div>
               </div>
 
@@ -160,27 +160,27 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="font-semibold text-lg">Email Address</p>
-                  <p className="text-gray-700">alabiidris@gmail.com</p>
+                  <p className="text-gray-700">abrakaeye@gmail.com</p>
                 </div>
               </div>
 
               {/* Location */}
-              <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
+              {/* <div className="flex items-start gap-4 p-5 border border-black/10 rounded-md shadow-sm">
                 <div className="text-white bg-light-red text-2xl w-[50px] h-[50px] rounded-[10px] flex justify-center items-center">
                   <FaMapMarkerAlt size={25} />
                 </div>
                 <div>
                   <p className="font-semibold text-lg">Location</p>
-                  <p className="text-gray-700">Under G, Ogbomoso, Oyo State</p>
+                  <p className="text-gray-700">Nig</p>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* Socials */}
-            <div className="mt-10">
-              <h1 className="text-2xl font-medium my-15">Connect with Us</h1>
+            <div className="mt-16">
+              <h1 className="text-2xl font-medium mb-4">Connect with Us</h1>
 
-              <div className="flex items-center gap-5 text-3xl">
+              <div className="flex items-center gap-6 text-3xl">
                 <FaInstagram className="cursor-pointer hover:text-light-red transition" />
                 <FaFacebook className="cursor-pointer hover:text-light-red transition" />
                 <FaXTwitter className="cursor-pointer hover:text-light-red transition" />

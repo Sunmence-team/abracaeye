@@ -17,6 +17,7 @@ import { useScreenSize } from "./hook/useScreenSize";
 import MobileHome from "./pages/view/mobile/Home";
 import Modal from "./components/modal/Modal";
 import api from "./helpers/api";
+import Blogs from "./pages/view/Blogs";
 
 const App: React.FC = () => {
   const { isMobile } = useScreenSize();
@@ -94,6 +95,10 @@ const App: React.FC = () => {
       <Routes>
         {/* Main routes with navbar */}
         <Route path="/" element={isMobile ? <MobileHome /> : <MainLayout children={<Home />} />} />
+        <Route
+          path="/blogs"
+          element={<MainLayout children={<Blogs />} />}
+        />
         <Route
           path="/contact"
           element={<MainLayout children={<Contact />} />}
