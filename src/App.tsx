@@ -13,8 +13,8 @@ import AddPost from "./pages/client/AddPost";
 import Overview from "./pages/client/Overview";
 import { Toaster, toast } from "sonner";
 import AllUsers from "./pages/admin/AllUsers";
-import { useScreenSize } from "./hook/useScreenSize";
-import MobileHome from "./pages/view/mobile/Home";
+// import { useScreenSize } from "./hook/useScreenSize";
+// import MobileHome from "./pages/view/mobile/Home";
 import Modal from "./components/modal/Modal";
 import api from "./helpers/api";
 import Blogs from "./pages/view/Blogs";
@@ -22,7 +22,7 @@ import AllContacts from "./pages/admin/AllContacts";
 import AllSubscribers from "./pages/admin/AllSubscribers";
 
 const App: React.FC = () => {
-  const { isMobile } = useScreenSize();
+  // const { isMobile } = useScreenSize();
   const [showNewsletter, setShowNewsletter] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -96,7 +96,7 @@ const App: React.FC = () => {
 
       <Routes>
         {/* Main routes with navbar */}
-        <Route path="/" element={isMobile ? <MobileHome /> : <MainLayout children={<Home />} />} />
+        <Route path="/" element={<MainLayout children={<Home />} />} />
         <Route
           path="/blogs"
           element={<MainLayout children={<Blogs />} />}

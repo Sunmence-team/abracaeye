@@ -1,25 +1,28 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { assets } from '../../assets/assessts';
-import { Search, ShoppingBag } from 'lucide-react';
-import { useUser } from '../../context/UserContext';
-import { Link, NavLink } from 'react-router-dom';
-import { FaRegUserCircle } from 'react-icons/fa';
+import React, { useState } from "react";
+import { assets } from "../../assets/assessts";
+import { Search, ShoppingBag } from "lucide-react";
+import { useUser } from "../../context/UserContext";
+import { Link, NavLink } from "react-router-dom";
+import { FaRegUserCircle } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
-  const { isLoggedIn, user, logout } = useUser()
+  const { isLoggedIn, user, logout } = useUser();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const navItems = [
-    { label: 'Blog', href: '/blogs' },
-    { label: 'Marketplace', href: '/services' },
-    { label: 'Contact', href: '/contact' },
+    { label: "Blog", href: "/blogs" },
+    { label: "Marketplace", href: "/services" },
+    { label: "Contact", href: "/contact" },
   ];
 
-  const firstName = user?.name?.split(" ")?.[0]
-  const lastName = user?.name?.split(" ")?.[1]
-  const userInitials = `${firstName?.split("")?.[0].toUpperCase() ?? "0"}${lastName ? lastName?.split("")[0].toUpperCase() ?? "0" : ''}` || "00"
+  const firstName = user?.name?.split(" ")?.[0];
+  const lastName = user?.name?.split(" ")?.[1];
+  const userInitials =
+    `${firstName?.split("")?.[0].toUpperCase() ?? "0"}${
+      lastName ? lastName?.split("")[0].toUpperCase() ?? "0" : ""
+    }` || "00";
 
   return (
     <>
@@ -39,7 +42,11 @@ const Navbar: React.FC = () => {
                 className={({ isActive }) => `
                   font-medium text-sm tracking-wide
                   transition-all duration-300
-                  ${isActive ? 'text-dark-red' : 'text-gray-700 hover:text-dark-red'}
+                  ${
+                    isActive
+                      ? "text-dark-red"
+                      : "text-gray-700 hover:text-dark-red"
+                  }
                 `}
               >
                 {item.label}
@@ -49,23 +56,20 @@ const Navbar: React.FC = () => {
           <Link
             to={isLoggedIn ? "/dashboard/profile" : "/auth/login"}
             title={isLoggedIn ? "Dashboard" : "Log In"}
-            className='cursor-pointer text-gray-700 hover:text-dark-red'
+            className="cursor-pointer text-gray-700 hover:text-dark-red"
           >
-            {
-              !isLoggedIn 
-                ? (
-                <FaRegUserCircle size={20} />
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20">
-                  {userInitials}
-                </div>
-              )
-            }
+            {!isLoggedIn ? (
+              <FaRegUserCircle size={20} />
+            ) : (
+              <div className="w-9 h-9 rounded-full bg-dark-red text-white flex items-center justify-center text-sm font-semibold ring-2 ring-dark-red/20">
+                {userInitials}
+              </div>
+            )}
           </Link>
         </div>
       </nav>
 
-      <nav className="md:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-5 py-4 z-50">
+      <nav className="md:hidden fixed top-0 left-2 right-0 flex items-center justify-between px-5 py-3 bg-white rounded-full shadow mt-3 w-100 z-60">
         {/* Logo Left */}
         <div className="shrink-0">
           <img src={assets.logo2} className="w-10" alt="Logo" />
@@ -87,7 +91,7 @@ const Navbar: React.FC = () => {
             <Link
               to="/auth/login"
               title="Log In"
-              className='cursor-pointer text-gray-700 hover:text-dark-red'
+              className="cursor-pointer text-gray-700 hover:text-dark-red"
             >
               <FaRegUserCircle size={20} />
             </Link>
@@ -99,7 +103,7 @@ const Navbar: React.FC = () => {
               >
                 {userInitials}
               </button>
-              
+
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-1 border border-gray-100 z-60">
                   <Link
