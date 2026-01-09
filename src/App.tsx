@@ -25,7 +25,7 @@ const App: React.FC = () => {
   // const { isMobile } = useScreenSize();
   const [showNewsletter, setShowNewsletter] = useState(false);
   const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); 
 
   useEffect(() => {
     const hasVisited = localStorage.getItem("hasVisitedBefore");
@@ -37,7 +37,7 @@ const App: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, []);
-
+ 
   const handleCloseNewsletter = () => {
     setShowNewsletter(false);
     localStorage.setItem("hasVisitedBefore", "true");
@@ -52,7 +52,7 @@ const App: React.FC = () => {
       const response = await api.post("/newsletter", { email });
       if (response.status === 200 || response.status === 201) {
         toast.success("Subscribed to newsletter successfully!");
-        handleCloseNewsletter();
+        handleCloseNewsletter();  
       }
     } catch (error) {
       console.error("Newsletter subscription error:", error);
