@@ -39,14 +39,14 @@ const AllUsers: React.FC = () => {
         }
     }
 
-    const handleVerifyUser = async (userId: string | undefined) => {
-        if (!userId) {
+    const handleVerifyUser = async (user: userProps) => {
+        if (!user.id) {
             console.error("User ID is undefined, cannot verify.");
             return;
         }
         setIsVerifying(true);
         try {
-            const response = await api.put(`/users/verify/${userId}`, {}, {
+            const response = await api.put(`/users/verify/${user.id}`, {}, {
                 headers: { 
                     "Content-Type": `application/json`,
                     Authorization: `Bearer ${token}` 
@@ -54,11 +54,11 @@ const AllUsers: React.FC = () => {
             });
 
             if (response.status === 200) {
-                toast.success(`User ${userId} verified successfully.`);
+                toast.success(`${user.name} verified successfully.`);
                 fetchAllUsers();
             }
         } catch (err: any) {
-            console.error(`Failed to verify user ${userId}: `, err);
+            console.error(`Failed to verify ${user.name}: `, err);
             toast.error(`Failed to verify user: ${err?.response?.data?.message}`);
         } finally {
             setIsVerifying(false);
@@ -71,7 +71,7 @@ const AllUsers: React.FC = () => {
 
     if (isLoading) {
         return <div className="flex justify-center items-center h-screen">
-        <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
+            <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
         </div>
     }
 
@@ -136,7 +136,7 @@ const AllUsers: React.FC = () => {
                                         type='button'
                                         className='bg-dark-red text-white rounded-md text-xs h-[50px] px-2 disabled:opacity-50 cursor-pointer'
                                         disabled={user?.blog || user?.vendor || isVerifying}
-                                        onClick={() => handleVerifyUser(user?.id)}
+                                        onClick={() => handleVerifyUser(user)}
                                     >
                                         {isVerifying ? "Verifing..." : "Verify as blogger/vendor"}
                                     </button>
