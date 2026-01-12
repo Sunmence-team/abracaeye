@@ -112,7 +112,7 @@ const Blogdetails: React.FC = () => {
   }, [id, token])
 
   const fullImageUrl = `${IMAGE_URL}/${blogDetails?.cover_image}`;
-  const defaultImageUrl = assets.news2;
+  const defaultImageUrl = assets.logo2;
 
   const firstName = blogDetails?.user?.name.split(" ")?.[0]
   const lastName = blogDetails?.user?.name.split(" ")?.[1]

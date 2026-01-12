@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const Home: React.FC = () => {
+  const { isLoggedIn, token, refreshUser } = useUser();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [blogs, setBlogs] = useState<BlogPostProps[]>([]);
   const [slides, setSlides] = useState<BlogPostProps[]>([]);
@@ -26,13 +27,12 @@ const Home: React.FC = () => {
     setCurrentIndex((i) => (i === slides.length - 1 ? 0 : i + 1));
   }, [slides.length]);
 
-  const { isLoggedIn, token, refreshUser } = useUser();
 
   useEffect(() => {
     if (isLoggedIn && token) {
       refreshUser(token);
     }
-  }, [isLoggedIn, token, refreshUser]);
+  }, [isLoggedIn, token]);
 
   useEffect(() => {
     if (slides.length === 0) return;

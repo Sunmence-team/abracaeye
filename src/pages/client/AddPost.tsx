@@ -6,9 +6,11 @@ import api from "../../helpers/api";
 import { toast } from "sonner";
 import { useUser } from "../../context/UserContext";
 import AccessDeniedScreen from "../../components/notify/AccessDeniedScreen"
+import { useNavigate } from "react-router-dom";
 
 const AddPost: React.FC = () => {
   const { user, token, refreshUser } = useUser();
+  const navigate = useNavigate();
   const imageRef = useRef<HTMLInputElement>(null);
   const [prevImage, setPrevImage] = useState<string | null>(null);
   const postSchema = yup.object({
@@ -35,10 +37,17 @@ const AddPost: React.FC = () => {
       formData.append("body", values.details);
       setSubmitting(true);
       try {
-        const res = await api.post("/blogs", formData);
+        const res = await api.post("/blogs", formData, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         if (res.status === 200 || res.status === 201) {
           // console.log(res.data.data);
           toast.success("Post created successfully");
+          setTimeout(() => {
+            navigate("/dashboard/posts")
+          }, 500);
         }
       } catch (error: any) {
         console.log("error creating blog", error);

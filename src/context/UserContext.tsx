@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 import api from "../helpers/api";
 // { setupInterceptors } 
@@ -79,7 +79,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
   //   setupInterceptors(logout);
   // }, []);
 
-  const refreshUser = async (authToken:string) => {
+  const refreshUser = useCallback(async (authToken:string) => {
     try {
       const response = await api.get(`/auth/show`, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -93,7 +93,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
     } catch (err) {
       console.error("Failed to refresh user:", err);
     }
-  };
+  }, []);
 
   return (
     <UserContext.Provider
