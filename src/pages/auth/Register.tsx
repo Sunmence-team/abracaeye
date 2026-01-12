@@ -17,8 +17,8 @@ interface registerFormValues {
   password: string;
   password_confirmation: string;
   termsAndCondition: boolean;
-  blog: boolean;
-  vendor: boolean;
+  want_blog: boolean;
+  want_vendor: boolean;
 }
 
 const Register: React.FC = () => {
@@ -41,8 +41,8 @@ const Register: React.FC = () => {
       password: "",
       password_confirmation: "",
       termsAndCondition: false,
-      blog: false,
-      vendor: false,
+      want_blog: false,
+      want_vendor: false,
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -59,8 +59,8 @@ const Register: React.FC = () => {
       termsAndCondition: Yup.bool()
         .oneOf([true], "You must agree to the terms and conditions")
         .required("You must agree to the terms and conditions"),
-      blog: Yup.bool().required("Can only be true or false"),
-      vendor: Yup.bool().required("Can only be true or false"),
+      want_blog: Yup.bool().required("Can only be true or false"),
+      want_vendor: Yup.bool().required("Can only be true or false"),
         
     }),
     onSubmit: async (values, { setSubmitting }) => {
@@ -89,6 +89,7 @@ const Register: React.FC = () => {
       }
     },
   });
+
   return (
     <>
       <div className='relative z-1 min-h-dvh py-20 w-full flex items-center justify-center overflow-hidden'>
@@ -217,35 +218,35 @@ const Register: React.FC = () => {
               </div>
 
               <div className="space-y-1 w-full">
-                <label htmlFor='blog' className='flex gap-2'>
+                <label htmlFor='want_blog' className='flex gap-2'>
                   <input 
                     type="checkbox" 
                     className='accent-light-red' 
-                    id='blog'
-                    name='blog'
-                    checked={formik.values.blog}
+                    id='want_blog'
+                    name='want_blog'
+                    checked={formik.values.want_blog}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
                   <span>I want to be able to post</span>
                 </label>
-                {formik.touched.blog && formik.errors.blog && (<p className='text-red-600 text-xs'>{formik.errors.blog}</p>)}
+                {formik.touched.want_blog && formik.errors.want_blog && (<p className='text-red-600 text-xs'>{formik.errors.want_blog}</p>)}
               </div>
 
               <div className="space-y-1 w-full">
-                <label htmlFor='vendor' className='flex gap-2'>
+                <label htmlFor='want_vendor' className='flex gap-2'>
                   <input 
                     type="checkbox" 
                     className='accent-light-red' 
-                    id='vendor'
-                    name='vendor'
-                    checked={formik.values.vendor}
+                    id='want_vendor'
+                    name='want_vendor'
+                    checked={formik.values.want_vendor}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
                   <span>I am a vendor, I want to sell</span>
                 </label>
-                {formik.touched.vendor && formik.errors.vendor && (<p className='text-red-600 text-xs'>{formik.errors.vendor}</p>)}
+                {formik.touched.want_vendor && formik.errors.want_vendor && (<p className='text-red-600 text-xs'>{formik.errors.want_vendor}</p>)}
               </div>
             </div>
 
