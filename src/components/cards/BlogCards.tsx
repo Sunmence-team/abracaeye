@@ -33,7 +33,7 @@ const BlogCard: React.FC<BlogPostProps> = ({
   return (
     <Link 
       to={`/blogdetails/${id}`}
-      className="group w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)]">
+      className="group w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)] min-h-[450px] max-h-[451px]">
       <img
         src={fullImageUrl}
         alt={title}
