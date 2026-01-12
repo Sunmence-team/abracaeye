@@ -33,14 +33,17 @@ const BlogCard: React.FC<BlogPostProps> = ({
   return (
     <Link 
       to={`/blogdetails/${id}`}
-      className="group w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)] min-h-[450px] max-h-[451px]">
-      <img
-        src={fullImageUrl}
-        alt={title}
-        className="w-full h-72 object-cover rounded-t-lg"
-        onError={handleError}
-      />
-      <div className="w-full p-4 flex flex-col gap-1 h-full">
+      className="group w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)] min-h-[450px] max-h-[450px]"
+    >
+      <div className="w-full h-64 rounded-t-lg overflow-hidden">
+        <img
+          src={fullImageUrl}
+          alt={title}
+          className="w-full h-full object-cover"
+          onError={handleError}
+        />
+      </div>
+      <div className="w-full p-4 flex flex-col gap-1 h-[calc(450px-256px)]">
         <p className="font-semibold group-hover:text-light-red transition-all duration-500 text-lg line-clamp-2">{title}</p>
         <p className="text-sm line-clamp-3 mb-4">{body?.content}</p>
         {showBottom && (
