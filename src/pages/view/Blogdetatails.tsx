@@ -212,35 +212,39 @@ const Blogdetails: React.FC = () => {
         <h2 className="text-xl font-bold mb-4 text-light-red">Comments ({comments?.length})</h2>
 
         {/* Post Comment Form */}
-        <form onSubmit={handleCommentSubmit} className="mb-8">
-          <textarea
-            className="w-full p-3 text-sm border border-gray-300 rounded-lg outline-0 resize-none focus:ring-light-red focus:border-light-red"
-            rows={3}
-            placeholder="Write a comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            required
-          ></textarea>
-          <button
-            type="submit"
-            className="mt-2 text-sm px-6 py-2 bg-light-red text-white font-semibold rounded-md hover:bg-dark-red disabled:opacity-50"
-            disabled={isSubmitting || !newComment.trim()}
-          >
-            {isSubmitting ? 'Posting...' : 'Post Comment'}
-          </button>
-        </form>
+        {!isLoggedIn ? (
+          <div className="flex items-start flex-col gap-2">
+            <p className="text text-start text-black font-medium">
+              What to share your thoughts on this...?{" "}
+              <Link 
+                to={"/auth/login"}
+                className="text-light-red font-semibold underline"
+              >Login/Create account</Link>
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleCommentSubmit} className="mb-8">
+            <textarea
+              className="w-full p-3 text-sm border border-gray-300 rounded-lg outline-0 resize-none focus:ring-light-red focus:border-light-red"
+              rows={3}
+              placeholder="Write a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              required
+            ></textarea>
+            <button
+              type="submit"
+              className="mt-2 text-sm px-6 py-2 bg-light-red text-white font-semibold rounded-md hover:bg-dark-red disabled:opacity-50"
+              disabled={isSubmitting || !newComment.trim()}
+            >
+              {isSubmitting ? 'Posting...' : 'Post Comment'}
+            </button>
+          </form>
+        )}
 
         {/* Display Comments */}
         <div className="space-y-2">
-          {!isLoggedIn ? (
-            <div className="flex items-center flex-col gap-2">
-              <p className="text-2xl text-center text-light-red font-bold">What to know others take on this...?</p>
-              <Link 
-                to={"/auth/login"}
-                className="bg-dark-red text-white flex items-center justify-center px-6 h-[50px] rounded-md"
-              >Login/Create account</Link>
-            </div>
-          ) :isLoadingComments ? (
+          {isLoadingComments ? (
             <div className="size-8 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
           ) : comments.length > 0 ? (
             comments.map((comment) => (
@@ -257,7 +261,7 @@ const Blogdetails: React.FC = () => {
                 <p className="text-gray-800 text-sm mt-1 font-medium ms-1">{comment.text}</p>
               </div>
             ))
-          ) : (
+          ) : isLoggedIn && comments.length <= 0 && (
             <p className="text-gray-500">No comments yet. Be the first to comment!</p>
           )}
         </div>
