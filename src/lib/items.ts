@@ -18,7 +18,7 @@ export const navItems = [
     pathName: "/dashboard/add-post",
     accessibility: ["blog"],
     name: "Add New Post",
-    role: ["user"],
+    role: ["user", "admin"],
     altName: "New Post",
   },
   {
@@ -26,7 +26,7 @@ export const navItems = [
     pathName: "/dashboard/posts",
     accessibility: ["blog"],
     name: "My Posts",
-    role: ["user"],
+    role: ["user", "admin"],
   },
   {
     icon: FaCircleUser,

@@ -46,12 +46,18 @@ const AllUsers: React.FC = () => {
         }
         setIsVerifying(true);
         try {
-            const response = await api.put(`/users/verify/${user.id}`, {}, {
-                headers: { 
-                    "Content-Type": `application/json`,
-                    Authorization: `Bearer ${token}` 
-                },
-            });
+            const response = await api.put(
+                `/users/verify/${user.id}`, 
+                {
+                    want_blog: 1, 
+                    want_vendor: 1
+                }, {
+                    headers: { 
+                        "Content-Type": `application/json`,
+                        Authorization: `Bearer ${token}` 
+                    },
+                }
+            );
 
             if (response.status === 200) {
                 toast.success(`${user.name} verified successfully.`);
