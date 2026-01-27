@@ -6,13 +6,14 @@ import BlogCard from "../../components/cards/BlogCards";
 import { useUser } from "../../context/UserContext";
 import api from "../../helpers/api";
 import type { BlogPostProps } from "../../lib/sharedInterface";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { motion } from "framer-motion";
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const Home: React.FC = () => {
+  const navigate = useNavigate()
   const { isLoggedIn, token, refreshUser } = useUser();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [blogs, setBlogs] = useState<BlogPostProps[]>([]);
@@ -76,14 +77,14 @@ const Home: React.FC = () => {
           {slides.map((slide, i) => {
             const fullImageUrl = `${IMAGE_URL}/${slide.cover_image}`;
             return (
-              <div key={i} className="min-w-full h-full relative">
+              <Link to={`/blogdetails/${slide.id}`} key={i} className="min-w-full h-full relative cursor-pointer">
                 <img
                   src={fullImageUrl}
                   alt=""
                   className="w-full h-screen object-cover"
                 />
-                <div className="absolute inset-0 bg-black/30" />
-              </div>
+                <div  className="absolute inset-0 bg-black/30 cursor-pointer" />
+              </Link>
             );
           })}
         </div>
@@ -103,7 +104,7 @@ const Home: React.FC = () => {
         </button>
 
         {/* Text */}
-        <div className="absolute inset-0 flex items-end pb-8 md:pb-12">
+        <div onClick={() => navigate(`/blogdetails/${slides[currentIndex].id}`)} className="absolute inset-0 flex items-end pb-8 md:pb-12 cursor-pointer">
           <div className="w-[90%] mx-auto text-white">
             <div className="w-full lg:w-[55%] md:w-3/4 flex flex-col gap-3 md:gap-4">
               <button className="bg-light-red text-white px-3 md:px-4 py-2 text-sm md:text-sm rounded-sm w-fit font-medium">

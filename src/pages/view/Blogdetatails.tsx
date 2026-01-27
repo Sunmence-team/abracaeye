@@ -1,5 +1,5 @@
 import React, { useEffect, useState, type SyntheticEvent } from "react";
-import { FaArrowLeftLong, FaHeart, FaRegCommentDots } from "react-icons/fa6";
+import { FaArrowLeftLong } from "react-icons/fa6";
 import { IoIosShareAlt } from "react-icons/io";
 import BlogCard from "../../components/cards/BlogCards";
 import { Link, useParams } from "react-router-dom";
@@ -9,6 +9,10 @@ import { assets } from "../../assets/assets";
 import { formatISODateToCustom } from "../../helpers/formatterUtilities";
 import { shareCurrentPage } from "../../helpers/ShareFunction";
 import { useUser } from "../../context/UserContext";
+import { toast } from "sonner";
+import { LuLoaderCircle } from "react-icons/lu";
+import { BsHeartFill } from "react-icons/bs";
+import BlogSkeleton from "../../components/skeletons/BlogDetailsSkeleton";
 
 const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
@@ -22,6 +26,7 @@ const Blogdetails: React.FC = () => {
   const [ newComment, setNewComment ] = useState("");
   const [ isSubmitting, setIsSubmitting ] = useState(false);
   const [ isLoadingComments, setisLoadingComments ] = useState(false);
+  const [isLikingBlog, setisLikingBlog] = useState(false)
 
   const fetchBlogDetails = async () => {
     setIsLoading(true)
@@ -39,7 +44,9 @@ const Blogdetails: React.FC = () => {
     } catch (err) {
       console.error("Failed to fetch blogs: ", err);
     } finally {
-      setIsLoading(false)
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1000);
     }
   }
 
@@ -87,27 +94,60 @@ const Blogdetails: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await api.post(`/blogs/${id}/comments`, { text: newComment });
+      const response = await api.post(`/blogs/${id}/comments`, { text: newComment }, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (response.status === 201 || response.status === 200) { 
         setNewComment("");
         fetchComments(); 
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to post comment: ", err);
-      // You might want to show an error to the user here
+      toast.error(
+        (err.response?.data?.message && err.response?.data?.message?.toLowerCase() == "unauthenticated" || err.message && err.message?.toLowerCase() == "unauthenticated")
+          ? "Failed to post comment. You are logged in" 
+          : err.response?.data?.message || err.message || "Failed to add your comment.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const likeBlog = async (id: string) => {
+      setisLikingBlog(true);
+      try {
+        const response = await api.post(
+          `/blogs/${id}/like`,
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+  
+        if (response.status === 200) {
+          setBlogDetails(prev => {
+            if (!prev) return prev;
+            if (prev.id !== id) return prev;
+  
+            return {
+              ...prev,
+              likes_count: prev.likes_count + 1
+            };
+          });
+        }
+      } catch (err) {
+        console.error("Failed to like blog: ", err);
+      } finally {
+        setisLikingBlog(false);
+      }
+    };
+  
 
   useEffect(() => {
     window.scrollTo(0, 0)
     if (id) {
       fetchBlogDetails()
       fetchRelatedBlog()
-      if (token) {
-        fetchComments()
-      }
+      fetchComments()
     }
   }, [id, token])
 
@@ -124,11 +164,15 @@ const Blogdetails: React.FC = () => {
     target.src = defaultImageUrl;
   };
 
-  if (isLoading && !blogDetails) { // Show loader only on initial load
-    return <div className="flex justify-center items-center h-screen">
-      <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
-    </div>
-  }
+  // if (isLoading && !blogDetails) { // Show loader only on initial load
+  //   return <div className="flex justify-center items-center h-screen">
+  //     <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
+  //   </div>
+  // }
+
+  if (isLoading && !blogDetails) {
+  return <BlogSkeleton />;
+}
 
   return (
     <div className="w-[90%] mx-auto bg-white py-10 md:mt-20 mt-10">
@@ -168,14 +212,31 @@ const Blogdetails: React.FC = () => {
             </div>
 
             <div className="justify-end flex gap-3 items-center">
-              <FaHeart className="text-light-red" size={20} />
-              <FaRegCommentDots size={20} />
-              <IoIosShareAlt 
-                size={20} 
+              <button 
+                type="button"
+                className="flex items-center gap-2 cursor-pointer"
+                title="Like Post"
+                onClick={() => likeBlog(blogDetails?.id ?? "")}
+              >
+                {
+                  isLikingBlog ? (
+                    <LuLoaderCircle size={20} className="animate-spin text-light-red" />
+                  ) : (
+                    <BsHeartFill size={20} className="text-light-red" />
+                  )
+                }
+                <span className="text-lg font-semibold">{blogDetails?.likes_count}</span>
+              </button>
+              <button
+                type="button"
                 onClick={() => shareCurrentPage(
                   blogDetails?.title
                 )}
-              />
+                title="Share"
+                className="hover:bg-dark-red/20 w-10 h-10 flex items-center justify-center cursor-pointer rounded-md transition-all"
+              >
+                <IoIosShareAlt size={20} />
+              </button>
             </div>
           </div>
         </div>
@@ -213,7 +274,7 @@ const Blogdetails: React.FC = () => {
 
         {/* Post Comment Form */}
         {!isLoggedIn ? (
-          <div className="flex items-start flex-col gap-2">
+          <div className="flex items-start flex-col gap-2 mb-8">
             <p className="text text-start text-black font-medium">
               What to share your thoughts on this...?{" "}
               <Link 
