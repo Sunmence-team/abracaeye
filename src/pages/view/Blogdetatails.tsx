@@ -234,7 +234,7 @@ const Blogdetails: React.FC = () => {
             ></textarea>
             <button
               type="submit"
-              className="mt-2 text-sm px-6 py-2 bg-light-red text-white font-semibold rounded-md hover:bg-dark-red disabled:opacity-50"
+              className="mt-2 text-sm px-6 py-2 bg-light-red text-white font-semibold rounded-md cursor-pointer hover:bg-dark-red disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting || !newComment.trim()}
             >
               {isSubmitting ? 'Posting...' : 'Post Comment'}
