@@ -10,9 +10,11 @@ import { HiLockClosed } from "react-icons/hi2";
 import { GiPerson } from "react-icons/gi";
 import api from '../../helpers/api';
 import { assets } from '../../assets/assets';
+import { MdPhone } from 'react-icons/md';
 
 interface registerFormValues {
   name: string;
+  phone: string;
   email: string;
   password: string;
   password_confirmation: string;
@@ -38,6 +40,7 @@ const Register: React.FC = () => {
     initialValues: {
       name: "",
       email: "",
+      phone: "",
       password: "",
       password_confirmation: "",
       termsAndCondition: false,
@@ -50,6 +53,8 @@ const Register: React.FC = () => {
       email: Yup.string()
         .email("Invalid email")
         .required("Email is required"),
+      phone: Yup.string()
+        .required("Phone Number is required"),
       password: Yup.string()
         .min(8, "Password must be at least 8 characters")
         .required("Password is required"),
@@ -113,7 +118,7 @@ const Register: React.FC = () => {
           <form onSubmit={formik.handleSubmit} className='space-y-5 w-full max-w-[520px]'>
 
             <div className="space-y-1 w-full">
-              <div className='w-full h-[53px] flex items-center rounded-2xl border px-2'>
+              <div className='w-full h-[53px] flex items-center rounded-xl border px-2'>
                 <span><GiPerson size={20} className='text-gray-500' /></span>
                 <input
                   type="text"
@@ -130,7 +135,7 @@ const Register: React.FC = () => {
             </div>
 
             <div className="space-y-1 w-full">
-              <div className='w-full h-[53px] flex items-center rounded-2xl border px-2'>
+              <div className='w-full h-[53px] flex items-center rounded-xl border px-2'>
                 <span><LuUserRound size={20} className='text-gray-500' /></span>
                 <input
                   type="email"
@@ -147,58 +152,78 @@ const Register: React.FC = () => {
             </div>
 
             <div className="space-y-1 w-full">
-              <div className='relative w-full h-[53px] flex items-center rounded-2xl border px-2'>
-                <span><HiLockClosed size={20} className='text-gray-500' /></span>
+              <div className='w-full h-[53px] flex items-center rounded-xl border px-2'>
+                <span><MdPhone size={20} className='text-gray-500' /></span>
                 <input
-                  type={showPassword.initial ? "text" : "password"}
-                  id="password"
-                  name="password"
-                  placeholder='Password'
-                  value={formik.values.password}
+                  type="phone"
+                  id="phone"
+                  name="phone"
+                  placeholder='Phone Number'
+                  value={formik.values.phone}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   className="w-full rounded-lg h-full indent-2 text-sm placeholder:text-gray-500 placeholder:font-semibold focus:outline-none"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(prev =>({
-                    ...prev,
-                    initial: !prev.initial
-                  }))}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
-                >
-                  {showPassword.initial ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-                </button>
               </div>
-              {formik.touched.password && formik.errors.password && (<p className='text-red-600 text-sm'>{formik.errors.password}</p>)}
+              {formik.touched.phone && formik.errors.phone && (<p className='text-red-600 text-sm'>{formik.errors.phone}</p>)}
             </div>
 
-            <div className="space-y-1 w-full">
-              <div className='relative w-full h-[53px] flex items-center rounded-2xl border px-2'>
-                <span><HiLockClosed size={20} className='text-gray-500' /></span>
-                <input
-                  type={showPassword.confirmation ? "text" : "password"}
-                  id="password_confirmation"
-                  name="password_confirmation"
-                  placeholder='Confirm password'
-                  value={formik.values.password_confirmation}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  className="w-full rounded-lg h-full indent-2 text-sm placeholder:text-gray-500 placeholder:font-semibold focus:outline-none"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(prev => ({
-                    ...prev,
-                    confirmation: !prev.confirmation
-                  }))}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
-                >
-                  {showPassword.confirmation ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
-                </button>
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+              <div className="space-y-1 w-full">
+                <div className='relative w-full h-[53px] flex items-center rounded-xl border px-2'>
+                  <span><HiLockClosed size={20} className='text-gray-500' /></span>
+                  <input
+                    type={showPassword.initial ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    placeholder='Password'
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg h-full indent-2 text-sm placeholder:text-gray-500 placeholder:font-semibold focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(prev =>({
+                      ...prev,
+                      initial: !prev.initial
+                    }))}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+                  >
+                    {showPassword.initial ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                  </button>
+                </div>
+                {formik.touched.password && formik.errors.password && (<p className='text-red-600 text-sm'>{formik.errors.password}</p>)}
               </div>
-              {formik.touched.password_confirmation && formik.errors.password_confirmation && (<p className='text-red-600 text-sm'>{formik.errors.password_confirmation}</p>)}
+
+              <div className="space-y-1 w-full">
+                <div className='relative w-full h-[53px] flex items-center rounded-xl border px-2'>
+                  <span><HiLockClosed size={20} className='text-gray-500' /></span>
+                  <input
+                    type={showPassword.confirmation ? "text" : "password"}
+                    id="password_confirmation"
+                    name="password_confirmation"
+                    placeholder='Confirm password'
+                    value={formik.values.password_confirmation}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg h-full indent-2 text-sm placeholder:text-gray-500 placeholder:font-semibold focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(prev => ({
+                      ...prev,
+                      confirmation: !prev.confirmation
+                    }))}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500"
+                  >
+                    {showPassword.confirmation ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                  </button>
+                </div>
+                {formik.touched.password_confirmation && formik.errors.password_confirmation && (<p className='text-red-600 text-sm'>{formik.errors.password_confirmation}</p>)}
+              </div>
             </div>
+
 
             <div className='space-y-2'>
               <div className="space-y-1 w-full">
