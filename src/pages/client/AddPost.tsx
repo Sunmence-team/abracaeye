@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import api from "../../helpers/api";
 import { toast } from "sonner";
 import { useUser } from "../../context/UserContext";
-import AccessDeniedScreen from "../../components/notify/AccessDeniedScreen"
+import AccessDeniedScreen from "../../components/notify/AccessDeniedScreen";
 import { useNavigate } from "react-router-dom";
 
 const AddPost: React.FC = () => {
@@ -20,8 +20,8 @@ const AddPost: React.FC = () => {
   });
 
   useEffect(() => {
-    refreshUser(token ?? "")
-  }, [token])
+    refreshUser(token ?? "");
+  }, [token]);
 
   const formik = useFormik({
     initialValues: {
@@ -39,19 +39,22 @@ const AddPost: React.FC = () => {
       try {
         const res = await api.post("/blogs", formData, {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
         if (res.status === 200 || res.status === 201) {
           // console.log(res.data.data);
-          toast.success("Post created successfully");
+          toast.success(res.data.message);
           setTimeout(() => {
-            navigate("/dashboard/posts")
+            navigate("/dashboard/posts");
           }, 500);
         }
       } catch (error: any) {
         console.log("error creating blog", error);
-        const errMessage = error.message;
+        const errMessage =
+          error.response.data.message ||
+          error.message ||
+          "Failed to make blog req";
         toast.error(errMessage);
       } finally {
         setSubmitting(false);
@@ -70,12 +73,13 @@ const AddPost: React.FC = () => {
   };
 
   if (!user?.blog) {
-    return (
-      <AccessDeniedScreen />
-    )
+    return <AccessDeniedScreen />;
   } else {
     return (
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-6 w-full">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col gap-6 w-full"
+      >
         <div className="flex lg:flex-row sm:flex-row flex-col justify-between w-full items-stretch gap-4">
           <div className="flex flex-col gap-2 w-full sm:w-1/2 lg:w-1/2">
             <label
@@ -186,5 +190,5 @@ const AddPost: React.FC = () => {
       </form>
     );
   }
-}
+};
 export default AddPost;

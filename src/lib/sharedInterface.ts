@@ -5,9 +5,10 @@ export interface postCardProps {
   body: {
     content: string;
   };
-  likes_count: number
-  comments_count: number
+  likes_count: number;
+  comments_count: number;
   created_at: string;
+  status?:string
 }
 
 export interface userProps {
