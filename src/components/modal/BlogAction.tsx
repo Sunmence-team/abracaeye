@@ -29,10 +29,10 @@ const BlogAction: React.FC<BlogActionProps> = ({
     setIsAprooving(true);
 
     try {
-      const response = await api.put(`/blogs/${blog.id}/approve`, {
+      const response = await api.put(`/blogs/approve/${blog.id}`, {
         headers: {
-          "Content-Type": `application/json`,
-          Authorization: `Bearer ${token}`,
+          "Accept": `application/json`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -54,10 +54,10 @@ const BlogAction: React.FC<BlogActionProps> = ({
     setIsDeclining(true);
 
     try {
-      const response = await api.put(`/blogs/${blog.id}/reject`, {
+      const response = await api.put(`/blogs/reject/${blog.id}`, {
         headers: {
-          "Content-Type": `application/json`,
-          Authorization: `Bearer ${token}`,
+          "Accept": `application/json`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 

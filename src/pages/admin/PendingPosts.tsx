@@ -33,7 +33,7 @@ const PendingPosts: React.FC = () => {
         `/blogs/admin?per_page=${apiItemsPerPage}`,
         {
           headers: {
-            "Content-Type": `application/json`,
+            "Accept": `application/json`,
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         },
