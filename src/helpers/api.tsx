@@ -16,7 +16,7 @@ export const setupInterceptors = (logout: () => void) => {
       }
       return config;
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error),
   );
   api.interceptors.response.use(
     (response) => response,
@@ -29,7 +29,7 @@ export const setupInterceptors = (logout: () => void) => {
         logout();
       }
       return Promise.reject(error);
-    }
+    },
   );
 };
 
