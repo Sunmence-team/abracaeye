@@ -20,6 +20,7 @@ import api from "./helpers/api";
 import Blogs from "./pages/view/Blogs";
 import AllContacts from "./pages/admin/AllContacts";
 import AllSubscribers from "./pages/admin/AllSubscribers";
+import PendingPosts from "./pages/admin/PendingPosts";
 
 const App: React.FC = () => {
   // const { isMobile } = useScreenSize();
@@ -149,6 +150,14 @@ const App: React.FC = () => {
           element={
             <DashboardLayout>
               <AllUsers />
+            </DashboardLayout>
+          }
+        />
+        <Route
+          path="/dashboard/admin/pending-posts"
+          element={
+            <DashboardLayout>
+              <PendingPosts />
             </DashboardLayout>
           }
         />

@@ -43,6 +43,13 @@ export const navItems = [
     role: ["admin"],
   },
   {
+    icon: MdPermMedia,
+    pathName: "/dashboard/admin/pending-posts",
+    accessibility: ["admin"],
+    name: "Blogs",
+    role: ["admin"],
+  },
+  {
     icon: MdSubscriptions,
     pathName: "/dashboard/admin/subscribers",
     accessibility: ["admin"],

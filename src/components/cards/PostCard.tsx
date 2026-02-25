@@ -5,7 +5,7 @@ import { FaCommentDots } from "react-icons/fa6";
 import { FaTrashAlt } from "react-icons/fa";
 import { assets } from "../../assets/assets";
 
-const API_URL = import.meta.env.VITE_API_BASE_URL;
+const API_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
 const PostCard: React.FC<postCardProps> = ({
   cover_image,
