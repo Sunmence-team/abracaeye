@@ -3,7 +3,6 @@ import type { postCardProps } from "../../lib/sharedInterface";
 import Modal from "./Modal";
 import api from "../../helpers/api";
 import { toast } from "sonner";
-import { useUser } from "../../context/UserContext";
 
 interface BlogActionProps {
   isOpen: boolean;
@@ -18,8 +17,6 @@ const BlogAction: React.FC<BlogActionProps> = ({
   blog,
   succesAction,
 }) => {
-  const { token } = useUser();
-
   const status = (blog?.status || "pending").toLowerCase();
   const isPending = status === "pending";
   const [isAprooving, setIsAprooving] = useState(false);
@@ -31,7 +28,7 @@ const BlogAction: React.FC<BlogActionProps> = ({
     try {
       const response = await api.put(`/blogs/approve/${blog.id}`, {
         headers: {
-          "Accept": `application/json`,
+          Accept: `application/json`,
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
@@ -56,7 +53,7 @@ const BlogAction: React.FC<BlogActionProps> = ({
     try {
       const response = await api.put(`/blogs/reject/${blog.id}`, {
         headers: {
-          "Accept": `application/json`,
+          Accept: `application/json`,
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
