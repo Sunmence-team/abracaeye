@@ -21,6 +21,7 @@ import Blogs from "./pages/view/Blogs";
 import AllContacts from "./pages/admin/AllContacts";
 import AllSubscribers from "./pages/admin/AllSubscribers";
 import PendingPosts from "./pages/admin/PendingPosts";
+import MarketPlace from "./pages/view/Marketplace";
 
 const App: React.FC = () => {
   // const { isMobile } = useScreenSize();
@@ -105,6 +106,10 @@ const App: React.FC = () => {
         <Route
           path="/contact"
           element={<MainLayout children={<Contact />} />}
+        />
+        <Route
+          path="/services"
+          element={<MainLayout children={<MarketPlace />} />}
         />
         <Route
           path="/blogdetails/:id"
