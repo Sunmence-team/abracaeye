@@ -38,19 +38,19 @@ export const UserProvider = ({ children }: userProviderProps) => {
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   const storedToken = localStorage.getItem("token");
 
-    if (storedToken && storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setToken(storedToken);
-      setUser(parsedUser);
-      setRole(parsedUser?.role || null);
-    }
+  //   if (storedToken && storedUser) {
+  //     const parsedUser = JSON.parse(storedUser);
+  //     setToken(storedToken);
+  //     setUser(parsedUser);
+  //     setRole(parsedUser?.role || null);
+  //   }
 
-    setLoading(false);
-  }, []);
+  //   setLoading(false);
+  // }, []);
 
 //   const login = (token: string, user: userProps) => {
 //     localStorage.setItem("token", token);
@@ -59,6 +59,25 @@ export const UserProvider = ({ children }: userProviderProps) => {
 //     setUser(user);
 //     setRole(user?.role || null);
 //   };
+
+  useEffect(() => {
+  const storedToken = localStorage.getItem("token");
+  const storedUser = localStorage.getItem("user");
+
+  if (storedToken) setToken(storedToken);
+
+  if (storedUser) {
+    try {
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
+      setRole(parsedUser?.role || null);
+    } catch {
+      localStorage.removeItem("user");
+    }
+  }
+
+  setLoading(false);
+}, []);
 
   const isLoggedIn = Boolean(token);
 
