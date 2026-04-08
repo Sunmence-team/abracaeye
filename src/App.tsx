@@ -42,7 +42,7 @@ const App: React.FC = () => {
 
   const handleCloseNewsletter = () => {
     setShowNewsletter(false);
-    localStorage.setItem("hasVisitedBefore", "true");
+    // localStorage.setItem("hasVisitedBefore", "true");
   };
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {

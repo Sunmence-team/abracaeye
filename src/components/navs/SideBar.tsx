@@ -6,47 +6,42 @@ import { useUser } from "../../context/UserContext";
 import { MdLogout } from "react-icons/md";
 
 const SideBar: React.FC = () => {
-  const { logout, user } = useUser()
+  const { logout, user } = useUser();
   const location = useLocation();
 
-  const filteredLinks = navItems.filter(item => item.role?.includes(user?.role ?? ""))
+  const filteredLinks = navItems.filter((item) =>
+    item.role?.includes(user?.role ?? ""),
+  );
 
   return (
-    <motion.div className="bg-black rounded-full h-[75vh] py-4 px-2 flex flex-col justify-between gap-6">
-      <div className="flex flex-col gap-6">
+    <motion.div className="bg-black w-full h-full py-8 px-4 flex flex-col justify-between gap-6">
+      <div className="flex flex-col gap-4">
         {filteredLinks.map((navItem, idx) => {
-          const isActive = location.pathname === navItem.pathName ? true : false;
+          const isActive =
+            location.pathname === navItem.pathName ? true : false;
           return (
             <NavLink
               to={navItem.pathName}
               className={`${
                 isActive
-                  ? "text-light-red"
-                  : "text-white hover:text-light-red transition-colors flex items-center"
-              } cursor-pointer`}
+                  ? "text-light-red bg-white"
+                  : "text-white hover:bg-white hover:text-light-red transition-colors flex items-center"
+              } cursor-pointer flex items-center gap-2 h-10 px-4 rounded-md text-xs`}
               key={idx}
             >
-              <div
-                className={`${
-                  isActive ? "bg-white" : "hover:bg-white"
-                } p-2 rounded-full text-[30px] animation`}
-              >
-                {<navItem.icon />}
-              </div>
+              {<navItem.icon />}
+              <span className="">{navItem?.altName}</span>
             </NavLink>
           );
         })}
       </div>
       <button
         type="button"
-        className={`text-white hover:text-light-red transition-colors flex items-center cursor-pointer`}
+        className={`h-10 text-xs gap-2 text-white hover:text-light-red hover:bg-white px-4 rounded-md transition-colors flex items-center cursor-pointer`}
         onClick={logout}
       >
-        <div
-          className={`hover:bg-white p-2 rounded-full text-[30px] animation`}
-        >
-          {<MdLogout />}
-        </div>
+        <MdLogout />
+        <span>Logout</span>
       </button>
     </motion.div>
   );

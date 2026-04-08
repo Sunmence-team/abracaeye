@@ -20,10 +20,10 @@ html {
   display: none;
 }
 .styledScrollbar::-webkit-scrollbar {
-  @apply w-2 bg-transparent
+  @apply w-2 bg-transparent;
 }
 .styledScrollbar::-webkit-scrollbar-thumb {
-  @apply bg-light-red/50 rounded-full
+  @apply bg-light-red/50 rounded-full;
 }
 @keyframes slide-up {
   from {
@@ -38,7 +38,11 @@ html {
   animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-:disabled{
+:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.imageInput::-webkit-file-upload-button {
+  @apply h-full bg-dark-red px-2 text-white;
 }
