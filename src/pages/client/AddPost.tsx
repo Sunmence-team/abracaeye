@@ -177,7 +177,7 @@ const AddPost: React.FC = () => {
 
             <label
               htmlFor="multiUpload"
-              className="text-blue-500 cursor-pointer"
+              className="text-light-red cursor-pointer"
             >
               Browse files
             </label>
