@@ -199,9 +199,7 @@ const AddPost: React.FC = () => {
             </div>
           </div>
           {formik.touched.images && formik.errors.images && (
-            <p className="text-red-600 text-sm">
-              {formik.errors.images as string}
-            </p>
+            <p className="text-red-600 text-sm">{formik.errors.images as string}</p>
           )}
         </div>
         <div className="md:col-span-2 flex flex-col gap-2">
