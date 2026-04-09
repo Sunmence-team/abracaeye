@@ -5,8 +5,6 @@ import { FaCommentDots } from "react-icons/fa6";
 import { assets } from "../../assets/assets";
 import { imageFullURLGenerator } from "../../helpers/imageFullURLGenerator";
 
-const API_URL = import.meta.env.VITE_IMAGE_BASE_URL;
-
 const PostCard: React.FC<postCardProps> = ({
   cover_image,
   title,
