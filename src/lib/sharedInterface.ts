@@ -12,6 +12,7 @@ export interface postCardProps {
   status?: string;
   published_at?: string;
   is_published?: boolean;
+  user_id?: number;
 }
 
 export interface userProps {

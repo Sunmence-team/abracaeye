@@ -2,8 +2,8 @@ import React, { type SyntheticEvent } from "react";
 import type { postCardProps } from "../../lib/sharedInterface";
 import { BsHeartFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
-import { FaTrashAlt } from "react-icons/fa";
 import { assets } from "../../assets/assets";
+import { imageFullURLGenerator } from "../../helpers/imageFullURLGenerator";
 
 const API_URL = import.meta.env.VITE_IMAGE_BASE_URL;
 
@@ -14,7 +14,7 @@ const PostCard: React.FC<postCardProps> = ({
   likes_count,
   comments_count,
 }) => {
-  const fullImageUrl = `${API_URL}/${cover_image}`;
+  const fullImageUrl = imageFullURLGenerator(cover_image);
   const defaultImageUrl = assets.logo2;
 
   const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
@@ -53,9 +53,6 @@ const PostCard: React.FC<postCardProps> = ({
             <div className="flex gap-2 items-center">
               <FaCommentDots size={18} />
               <span className="text-xs font-medium">{comments_count}</span>
-            </div>
-            <div className="">
-              <FaTrashAlt />
             </div>
           </div>
         </div>

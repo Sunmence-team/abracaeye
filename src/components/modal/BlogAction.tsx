@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import api from "../../helpers/api";
 import { toast } from "sonner";
 import { formatISODateToCustom } from "../../helpers/formatterUtilities";
+import { useUser } from "../../context/UserContext";
 
 interface BlogActionProps {
   isOpen: boolean;
@@ -20,10 +21,13 @@ const BlogAction: React.FC<BlogActionProps> = ({
   succesAction,
   type = "actOn",
 }) => {
+  console.log("blog open: ", blog);
+  const { user } = useUser();
   const status = (blog?.status || "pending").toLowerCase();
   const isPending = status === "pending";
   const [isAprooving, setIsAprooving] = useState(false);
   const [isDeclining, setIsDeclining] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleApprove = async () => {
     setIsAprooving(true);
@@ -44,7 +48,7 @@ const BlogAction: React.FC<BlogActionProps> = ({
     } catch (err: any) {
       console.error("Failed to approve blog: ", err);
       const errMessage =
-        err.response.data.message || err.message || "Failed to make blog req";
+        err.response.data.message || err.message || "Failed to approve blog";
       toast.error(errMessage);
     } finally {
       setIsAprooving(false);
@@ -70,10 +74,40 @@ const BlogAction: React.FC<BlogActionProps> = ({
     } catch (err: any) {
       console.error("Failed to decline blog: ", err);
       const errMessage =
-        err.response.data.message || err.message || "Failed to make blog req";
+        err.response.data.message || err.message || "Failed to decline blog";
       toast.error(errMessage);
     } finally {
       setIsDeclining(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (Number(blog?.user_id) !== Number(user?.id)) {
+      toast.success("You are unauthorized to delete this blog");
+      return;
+    }
+    setIsDeleting(true);
+
+    try {
+      const response = await api.delete(`/blogs/${blog.id}`, {
+        headers: {
+          Accept: `application/json`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (response.status === 200) {
+        toast.success("Blog deleted successfully");
+        succesAction();
+        onClose();
+      }
+    } catch (err: any) {
+      console.error("Failed to delete blog: ", err);
+      const errMessage =
+        err.response.data.message || err.message || "Failed to delete blog";
+      toast.error(errMessage);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -161,9 +195,9 @@ const BlogAction: React.FC<BlogActionProps> = ({
           </div>
         </div>
 
-        <div className="pt-4 mt-5 border-t border-gray-200 bg-white">
-          {isPending && type === "actOn" ? (
-            <div className="flex items-center justify-end gap-3">
+        <div className="pt-4 mt-5 border-t border-gray-200 bg-white flex items-center justify-end gap-3">
+          {isPending && type === "actOn" && (
+            <div className="flex items-center gap-3">
               <button
                 onClick={handleDecline}
                 disabled={isDeclining}
@@ -180,16 +214,24 @@ const BlogAction: React.FC<BlogActionProps> = ({
                 {isAprooving ? "Approving..." : "Approve"}
               </button>
             </div>
-          ) : (
-            <div className="flex items-center justify-end">
-              <button
-                onClick={onClose}
-                className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
-              >
-                Close
-              </button>
-            </div>
           )}
+          <div className="flex items-center gap-3">
+            {Number(blog?.user_id) === Number(user?.id) && (
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="rounded-lg bg-light-red px-5 py-2.5 text-sm font-semibold text-white hover:bg-dark-red transition"
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </Modal>

@@ -78,7 +78,7 @@ const Posts: React.FC = () => {
             type="view"
             isOpen={Boolean(selectedBlog)}
             onClose={() => setSelectedBlog(null)}
-            succesAction={() => {}}
+            succesAction={fetchMyPosts}
           />
         )}
       </div>
