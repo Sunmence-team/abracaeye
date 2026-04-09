@@ -9,6 +9,7 @@ import upload from "../assets/images/upload.png";
 import post from "../assets/images/post.png";
 import manFour from "../assets/images/manFour.jpeg";
 import notFound from "../assets/images/notFound.png";
+import vendorPlaceHolder from "./images/vendor-placeholder.jpg";
 
 export const assets = {
   logo,
@@ -21,5 +22,6 @@ export const assets = {
   post,
   manFour,
   news2,
-  notFound
+  notFound,
+  vendorPlaceHolder
 };

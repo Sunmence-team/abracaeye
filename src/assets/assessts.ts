@@ -35,5 +35,5 @@ export const assets = {
     gadgets3,
     home,
     sports,
-    headphone,
+    headphone
 };
