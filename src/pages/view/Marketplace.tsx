@@ -1,6 +1,8 @@
 import * as React from "react";
 import { assets } from "../../assets/assessts";
 import { Heart, ShoppingCart } from "lucide-react";
+import { globals } from "../../constants";
+import { Link } from "react-router-dom";
 const MarketPlace: React.FC = () => {
   const categories = [
     { name: "Electronics", image: assets.electronics },
@@ -50,12 +52,12 @@ const MarketPlace: React.FC = () => {
             technology, lifestyle, fashion and more.
           </p>
           <div className="flex gap-5 justify-center">
-            <button className="btn py-4 px-7 rounded-xl bg-red-600 border-0 text-white cursor-pointer">
+            <Link to={ globals.marketPlaceURl} className="btn py-4 px-7 rounded-xl bg-red-600 border-0 text-white cursor-pointer hover:bg-red-700 transition duration-300">
               Start Shopping
-            </button>
-            <button className="btn py-4 px-7 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white cursor-pointer">
+            </Link>
+            <Link to={`${globals.adminSiteURl}/login`} className="btn py-4 px-7 rounded-xl bg-white/20 backdrop-blur-md border border-white/30 text-white cursor-pointer hover:bg-white/30 transition duration-300">
               Sell a Product
-            </button>
+            </Link>
           </div>
         </div>
       </div>
