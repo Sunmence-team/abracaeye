@@ -14,6 +14,7 @@ interface userProps {
   role: string;
   vendor: boolean;
   blog: boolean;
+  want_blog: boolean;
 }
 
 interface UserContextType {
