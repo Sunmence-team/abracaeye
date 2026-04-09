@@ -76,7 +76,8 @@ const MarketPlace: React.FC = () => {
               key={index}
               className="flex flex-col items-center gap-3 cursor-pointer"
             >
-              <div className="w-20 h-20 md:w-24 md:h-24 lg:w-25 lg:h-25 bg-white rounded-xl shadow-sm flex items-center justify-center hover:shadow-md transition">
+              <div className="w-20 h-20 md:w-24 md:h-24 lg:w-25 lg:h-25
+              .02 bg-white rounded-xl shadow-sm flex items-center justify-center hover:shadow-md transition">
                 <img
                   src={category.image}
                   alt={category.name}
