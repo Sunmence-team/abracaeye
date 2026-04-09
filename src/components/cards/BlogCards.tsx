@@ -1,11 +1,10 @@
-import React, { type SyntheticEvent } from 'react';
-import { FaHeart, FaRegCommentDots } from 'react-icons/fa';
-import { IoIosShareAlt } from 'react-icons/io';
-import { Link } from 'react-router-dom';
-import type { BlogPostProps } from '../../lib/sharedInterface';
-import { assets } from '../../assets/assessts';
-
-const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+import React, { type SyntheticEvent } from "react";
+import { FaHeart, FaRegCommentDots } from "react-icons/fa";
+import { IoIosShareAlt } from "react-icons/io";
+import { Link } from "react-router-dom";
+import type { BlogPostProps } from "../../lib/sharedInterface";
+import { assets } from "../../assets/assessts";
+import { imageFullURLGenerator } from "../../helpers/imageFullURLGenerator";
 
 const BlogCard: React.FC<BlogPostProps> = ({
   id,
@@ -15,36 +14,39 @@ const BlogCard: React.FC<BlogPostProps> = ({
   likes_count,
   comments_count,
   user,
-  showBottom=true
+  showBottom = true,
 }) => {
-  const fullImageUrl = `${IMAGE_URL}/${cover_image}`;
   const defaultImageUrl = assets.logo2;
 
-  const firstName = user?.name.split(" ")?.[0]
-  const lastName = user?.name.split(" ")?.[1]
-  const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
+  const firstName = user?.name.split(" ")?.[0];
+  const lastName = user?.name.split(" ")?.[1];
+  const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ""}`;
 
   const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement; 
+    const target = e.target as HTMLImageElement;
     target.onerror = null;
     target.src = defaultImageUrl;
   };
 
   return (
-    <Link 
+    <Link
       to={`/blogdetails/${id}`}
-      className="group w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)] min-h-[450px] max-h-[450px]"
+      className={`group w-full border border-black/10 flex flex-col rounded-lg shadow-[4px_4px_4px_rgba(0,0,0,0.05)] ${showBottom ? "min-h-[450px] max-h-[450px]" : ""}`}
     >
       <div className="w-full h-64 rounded-t-lg overflow-hidden">
         <img
-          src={fullImageUrl}
+          src={imageFullURLGenerator(cover_image)}
           alt={title}
           className="w-full h-full object-cover"
           onError={handleError}
         />
       </div>
-      <div className="w-full p-4 flex flex-col gap-1 h-[calc(450px-256px)]">
-        <p className="font-semibold group-hover:text-light-red transition-all duration-500 text-lg line-clamp-2">{title}</p>
+      <div
+        className={`w-full p-4 flex flex-col gap-1 ${showBottom ? "h-[calc(450px-256px)]" : ""}`}
+      >
+        <p className="font-semibold group-hover:text-light-red transition-all duration-500 text-lg line-clamp-2">
+          {title}
+        </p>
         <p className="text-sm line-clamp-3 mb-4">{body?.content}</p>
         {showBottom && (
           <div className="w-full flex justify-between gap-2 mt-auto">
@@ -57,11 +59,11 @@ const BlogCard: React.FC<BlogPostProps> = ({
             <div className="justify-end flex gap-3 items-center">
               <div className="flex items-center gap-1">
                 <FaHeart className="text-dark-red" />
-                <span className='text-xs'>{likes_count}</span>
+                <span className="text-xs">{likes_count}</span>
               </div>
               <div className="flex items-center gap-1">
                 <FaRegCommentDots />
-                <span className='text-xs'>{comments_count}</span>
+                <span className="text-xs">{comments_count}</span>
               </div>
               <IoIosShareAlt />
             </div>

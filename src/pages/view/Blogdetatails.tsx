@@ -1,6 +1,10 @@
 import React, { useEffect, useState, type SyntheticEvent } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { IoIosShareAlt } from "react-icons/io";
+import {
+  IoIosArrowRoundBack,
+  IoIosArrowRoundForward,
+  IoIosShareAlt,
+} from "react-icons/io";
 import BlogCard from "../../components/cards/BlogCards";
 import { Link, useParams } from "react-router-dom";
 import type { BlogPostProps, CommentProps } from "../../lib/sharedInterface";
@@ -13,70 +17,75 @@ import { toast } from "sonner";
 import { LuLoaderCircle } from "react-icons/lu";
 import { BsHeartFill } from "react-icons/bs";
 import BlogSkeleton from "../../components/skeletons/BlogDetailsSkeleton";
-
-const IMAGE_URL = import.meta.env.VITE_IMAGE_BASE_URL;
+import { imageFullURLGenerator } from "../../helpers/imageFullURLGenerator";
 
 const Blogdetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { token, isLoggedIn } = useUser();
-  const [ blogDetails, setBlogDetails ] = useState<BlogPostProps | null>(null);
-  const [ relatedBlogs, setRelatedBlogs ] = useState<BlogPostProps[]>([])
-  const [ isLoading, setIsLoading ] = useState(false)
-  const [ comments, setComments ] = useState<CommentProps[]>([]);
-  const [ newComment, setNewComment ] = useState("");
-  const [ isSubmitting, setIsSubmitting ] = useState(false);
-  const [ isLoadingComments, setisLoadingComments ] = useState(false);
-  const [isLikingBlog, setisLikingBlog] = useState(false)
+  const [blogDetails, setBlogDetails] = useState<BlogPostProps | null>(null);
+  const [relatedBlogs, setRelatedBlogs] = useState<BlogPostProps[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [comments, setComments] = useState<CommentProps[]>([]);
+  const [newComment, setNewComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoadingComments, setisLoadingComments] = useState(false);
+  const [isLikingBlog, setisLikingBlog] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [blogDetails]);
 
   const fetchBlogDetails = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const response = await api.get(`/blogs/${id}`, {
         headers: { "Content-Type": `application/json` },
       });
 
-      console.log("details response", response)
+      console.log("details response", response);
 
       if (response.status === 200) {
-        setBlogDetails(response.data.data)
+        setBlogDetails(response.data.data);
       }
-
     } catch (err) {
       console.error("Failed to fetch blogs: ", err);
     } finally {
       setTimeout(() => {
-        setIsLoading(false)
+        setIsLoading(false);
       }, 1000);
     }
-  }
+  };
 
   const fetchRelatedBlog = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const response = await api.get(`/blogs/${id}/related?mode=related&limit=3`, {
-        headers: { "Content-Type": `application/json` },
-      });
+      const response = await api.get(
+        `/blogs/${id}/related?mode=related&limit=3`,
+        {
+          headers: { "Content-Type": `application/json` },
+        },
+      );
 
-      console.log("related response", response)
+      console.log("related response", response);
 
       if (response.status === 200) {
-        setRelatedBlogs(response.data.data.data)
+        setRelatedBlogs(response.data.data.data);
       }
-
     } catch (err) {
       console.error("Failed to fetch related blogs: ", err);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const fetchComments = async () => {
-    setisLoadingComments(true)
+    setisLoadingComments(true);
     try {
       const response = await api.get(`/blogs/${id}/comments?per_page=20`, {
         headers: {
-          "Authorization": `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (response.status === 200) {
         setComments(response.data.data);
@@ -84,7 +93,7 @@ const Blogdetails: React.FC = () => {
     } catch (err) {
       console.error("Failed to fetch comments: ", err);
     } finally {
-      setisLoadingComments(false)
+      setisLoadingComments(false);
     }
   };
 
@@ -94,92 +103,105 @@ const Blogdetails: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      const response = await api.post(`/blogs/${id}/comments`, { text: newComment }, {
-        headers: {
-          "Authorization": `Bearer ${token}`
-        }
-      });
-      if (response.status === 201 || response.status === 200) { 
+      const response = await api.post(
+        `/blogs/${id}/comments`,
+        { text: newComment },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      if (response.status === 201 || response.status === 200) {
         setNewComment("");
-        fetchComments(); 
+        fetchComments();
       }
     } catch (err: any) {
       console.error("Failed to post comment: ", err);
       toast.error(
-        (err.response?.data?.message && err.response?.data?.message?.toLowerCase() == "unauthenticated" || err.message && err.message?.toLowerCase() == "unauthenticated")
-          ? "Failed to post comment. You are logged in" 
-          : err.response?.data?.message || err.message || "Failed to add your comment.");
+        (err.response?.data?.message &&
+          err.response?.data?.message?.toLowerCase() == "unauthenticated") ||
+          (err.message && err.message?.toLowerCase() == "unauthenticated")
+          ? "Failed to post comment. You are logged in"
+          : err.response?.data?.message ||
+              err.message ||
+              "Failed to add your comment.",
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const likeBlog = async (id: string) => {
-      setisLikingBlog(true);
-      try {
-        const response = await api.post(
-          `/blogs/${id}/like`,
-          {},
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-  
-        if (response.status === 200) {
-          setBlogDetails(prev => {
-            if (!prev) return prev;
-            if (prev.id !== id) return prev;
-  
-            return {
-              ...prev,
-              likes_count: prev.likes_count + 1
-            };
-          });
-        }
-      } catch (err) {
-        console.error("Failed to like blog: ", err);
-      } finally {
-        setisLikingBlog(false);
+    setisLikingBlog(true);
+    try {
+      const response = await api.post(
+        `/blogs/${id}/like`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+
+      if (response.status === 200) {
+        setBlogDetails((prev) => {
+          if (!prev) return prev;
+          if (prev.id !== id) return prev;
+
+          return {
+            ...prev,
+            likes_count: prev.likes_count + 1,
+          };
+        });
       }
-    };
-  
+    } catch (err) {
+      console.error("Failed to like blog: ", err);
+    } finally {
+      setisLikingBlog(false);
+    }
+  };
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     if (id) {
-      fetchBlogDetails()
-      fetchRelatedBlog()
-      fetchComments()
+      fetchBlogDetails();
+      fetchRelatedBlog();
+      if (token) fetchComments();
     }
-  }, [id, token])
+  }, [id, token]);
 
-  const fullImageUrl = `${IMAGE_URL}/${blogDetails?.cover_image}`;
+  const images = [
+    blogDetails?.cover_image,
+    ...(blogDetails?.images || []),
+  ].filter(Boolean);
+
   const defaultImageUrl = assets.logo2;
 
-  const firstName = blogDetails?.user?.name.split(" ")?.[0]
-  const lastName = blogDetails?.user?.name.split(" ")?.[1]
-  const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
+  const firstName = blogDetails?.user?.name.split(" ")?.[0];
+  const lastName = blogDetails?.user?.name.split(" ")?.[1];
+  const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ""}`;
+
+  const handleNext = () => {
+    setActiveIndex((prev) => Math.min(prev + 1, images.length - 1));
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => Math.max(prev - 1, 0));
+  };
 
   const handleError = (e: SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement; 
+    const target = e.target as HTMLImageElement;
     target.onerror = null;
     target.src = defaultImageUrl;
   };
 
-  // if (isLoading && !blogDetails) { // Show loader only on initial load
-  //   return <div className="flex justify-center items-center h-screen">
-  //     <div className="size-15 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
-  //   </div>
-  // }
-
   if (isLoading && !blogDetails) {
-  return <BlogSkeleton />;
-}
+    return <BlogSkeleton />;
+  }
 
   return (
     <div className="w-[90%] mx-auto bg-white py-10 md:mt-20 mt-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 md:gap-10">
         {/* LEFT CONTENT */}
         <div className="col-span-2">
-         
           <Link to={"/"} className="flex items-center gap-2 text-black mb-6">
             <FaArrowLeftLong size={20} />
           </Link>
@@ -187,51 +209,111 @@ const Blogdetails: React.FC = () => {
           <h1 className="text-3xl md:text-4xl font-bold leading-tight text-light-red">
             {blogDetails?.title}
           </h1>
-          
-          <img
-            src={fullImageUrl}
-            alt={blogDetails?.title}
-            className="w-full h-[350px] md:h-[400px] object-cover rounded-xl mt-6"
-            onError={handleError}
-          />
 
-          
-          <div className="mt-6 space-y-5 text-[17px] text-gray-700 leading-relaxed">
+          <div className="mt-6">
+            {/* MAIN IMAGE PREVIEW */}
+            <div className="relative">
+              <img
+                src={imageFullURLGenerator(images[activeIndex] ?? "")}
+                alt="preview"
+                className="w-full h-[350px] md:h-[400px] object-cover rounded-xl"
+                onError={handleError}
+              />
+
+              {(blogDetails?.images || [])?.length > 0 && (
+                <>
+                  {/* LEFT BUTTON */}
+                  <button
+                    onClick={handlePrev}
+                    disabled={activeIndex === 0}
+                    className={`absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur w-10 h-10 flex items-center justify-center text-lg cursor-pointer rounded-full shadow 
+                    ${activeIndex === 0 ? "opacity-40 cursor-not-allowed" : "hover:bg-white"}`}
+                  >
+                    <IoIosArrowRoundBack />
+                  </button>
+
+                  {/* RIGHT BUTTON */}
+                  <button
+                    onClick={handleNext}
+                    disabled={activeIndex === images.length - 1}
+                    className={`absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur w-10 h-10 flex items-center justify-center text-lg cursor-pointer rounded-full shadow 
+                    ${activeIndex === images.length - 1 ? "opacity-40 cursor-not-allowed" : "hover:bg-white"}`}
+                  >
+                    <IoIosArrowRoundForward />
+                  </button>
+                </>
+
+              )}
+
+            </div>
+
+            {/* THUMBNAIL TRACK */}
+            {(blogDetails?.images || [])?.length > 0 && (
+              <div className="mt-2 relative">
+                <div className="flex justify-center gap-3 overflow-x-auto scrollbar-hide py-2">
+                  {images.map((img, index) => (
+                    <div
+                      key={`${img}+${index}`}
+                      onClick={() => setActiveIndex(index)}
+                      className={`w-20 h-20 rounded-lg overflow-hidden cursor-pointer border-2 transition 
+                      ${
+                        activeIndex === index
+                          ? "border-light-red scale-105"
+                          : "border-transparent opacity-70 hover:opacity-100"
+                      }`}
+                    >
+                      <img
+                        src={imageFullURLGenerator(img ?? "")}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 space-y-5 text-[17px] text-gray-700 leading-relaxed">
             <p className="whitespace-pre-wrap">{blogDetails?.body?.content}</p>
           </div>
-          
+
           <div className="w-full flex justify-between mt-5">
             <div className="flex items-center gap-2">
               <div className="bg-dark-red ring-2 ring-dark-red/20 w-9 h-9 rounded-full flex items-center justify-center text-white text-base p-2 font-bold">
                 {userInitials}
               </div>
               <div className="flex flex-col">
-                <p className="text-[15px] capitalize font-medium">{blogDetails?.user?.name}</p>
-                <small className="text-gray-500">{formatISODateToCustom(blogDetails?.created_at ?? "")}</small>
+                <p className="text-[15px] capitalize font-medium">
+                  {blogDetails?.user?.name}
+                </p>
+                <small className="text-gray-500">
+                  {formatISODateToCustom(blogDetails?.created_at ?? "")}
+                </small>
               </div>
             </div>
 
             <div className="justify-end flex gap-3 items-center">
-              <button 
+              <button
                 type="button"
                 className="flex items-center gap-2 cursor-pointer"
                 title="Like Post"
                 onClick={() => likeBlog(blogDetails?.id ?? "")}
               >
-                {
-                  isLikingBlog ? (
-                    <LuLoaderCircle size={20} className="animate-spin text-light-red" />
-                  ) : (
-                    <BsHeartFill size={20} className="text-light-red" />
-                  )
-                }
-                <span className="text-lg font-semibold">{blogDetails?.likes_count}</span>
+                {isLikingBlog ? (
+                  <LuLoaderCircle
+                    size={20}
+                    className="animate-spin text-light-red"
+                  />
+                ) : (
+                  <BsHeartFill size={20} className="text-light-red" />
+                )}
+                <span className="text-lg font-semibold">
+                  {blogDetails?.likes_count}
+                </span>
               </button>
               <button
                 type="button"
-                onClick={() => shareCurrentPage(
-                  blogDetails?.title
-                )}
+                onClick={() => shareCurrentPage(blogDetails?.title)}
                 title="Share"
                 className="hover:bg-dark-red/20 w-10 h-10 flex items-center justify-center cursor-pointer rounded-md transition-all"
               >
@@ -252,13 +334,18 @@ const Blogdetails: React.FC = () => {
             {relatedBlogs.length === 0 ? (
               <div className="text-center">
                 <img src={assets.notFound} alt="" />
-                <h3 className="text-dark-red text-lg font-bold">We couldn't curate more related blogs for your reading right now</h3>
-                <small className="font-medium text-gray-500">We are working on that</small>
+                <h3 className="text-dark-red text-lg font-bold">
+                  We couldn't curate more related blogs for your reading right
+                  now
+                </h3>
+                <small className="font-medium text-gray-500">
+                  We are working on that
+                </small>
               </div>
             ) : (
               relatedBlogs?.map((post, index) => (
                 <BlogCard
-                  key={post.id+""+index}
+                  key={post.id + "" + index}
                   {...post}
                   showBottom={false}
                 />
@@ -267,20 +354,24 @@ const Blogdetails: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Comments Section */}
       <div className="md:w-3/4 w-full mt-10">
-        <h2 className="text-xl font-bold mb-4 text-light-red">Comments ({comments?.length})</h2>
+        <h2 className="text-xl font-bold mb-4 text-light-red">
+          Comments ({comments?.length})
+        </h2>
 
         {/* Post Comment Form */}
         {!isLoggedIn ? (
           <div className="flex items-start flex-col gap-2 mb-8">
             <p className="text text-start text-black font-medium">
               What to share your thoughts on this...?{" "}
-              <Link 
+              <Link
                 to={"/auth/login"}
                 className="text-light-red font-semibold underline"
-              >Login/Create account</Link>
+              >
+                Login/Create account
+              </Link>
             </p>
           </div>
         ) : (
@@ -298,7 +389,7 @@ const Blogdetails: React.FC = () => {
               className="mt-2 text-sm px-6 py-2 bg-light-red text-white font-semibold rounded-md cursor-pointer hover:bg-dark-red disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isSubmitting || !newComment.trim()}
             >
-              {isSubmitting ? 'Posting...' : 'Post Comment'}
+              {isSubmitting ? "Posting..." : "Post Comment"}
             </button>
           </form>
         )}
@@ -309,21 +400,39 @@ const Blogdetails: React.FC = () => {
             <div className="size-8 border-4 border-dark-red rounded-full border-t-transparent animate-spin"></div>
           ) : comments.length > 0 ? (
             comments.map((comment) => (
-              <div key={comment.id} className="flex flex-col gap-1 md:w-3/4 w-full border-b border-light-red/20 last:border-b-0 pb-3">
+              <div
+                key={comment.id}
+                className="flex flex-col gap-1 md:w-3/4 w-full border-b border-light-red/20 last:border-b-0 pb-3"
+              >
                 <div className="flex gap-2 items-center">
                   <div className="bg-dark-red w-9 h-9 text-sm rounded-full flex items-center justify-center text-white ring-2 ring-dark-red/20 font-semibold">
-                    {comment.user.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                    {comment.user.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()}
                   </div>
                   <div className="flex items-center justify-between w-[calc(100%-44px)]">
-                    <p className="font-medium text-black/80 text-sm">{comment.user.name}</p>
-                    <small className="text-gray-500 text-end text-xs">{formatISODateToCustom(comment.created_at)}</small>
+                    <p className="font-medium text-black/80 text-sm">
+                      {comment.user.name}
+                    </p>
+                    <small className="text-gray-500 text-end text-xs">
+                      {formatISODateToCustom(comment.created_at)}
+                    </small>
                   </div>
                 </div>
-                <p className="text-gray-800 text-sm mt-1 font-medium ms-1">{comment.text}</p>
+                <p className="text-gray-800 text-sm mt-1 font-medium ms-1">
+                  {comment.text}
+                </p>
               </div>
             ))
-          ) : isLoggedIn && comments.length <= 0 && (
-            <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+          ) : (
+            isLoggedIn &&
+            comments.length <= 0 && (
+              <p className="text-gray-500">
+                No comments yet. Be the first to comment!
+              </p>
+            )
           )}
         </div>
       </div>

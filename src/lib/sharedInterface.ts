@@ -1,6 +1,7 @@
 export interface postCardProps {
   id: string;
   cover_image: string;
+  images: string[];
   title: string;
   body: {
     content: string;

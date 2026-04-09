@@ -5,7 +5,7 @@ import { navItems } from "../../lib/items";
 import { useUser } from "../../context/UserContext";
 import { MdLogout } from "react-icons/md";
 
-const SideBar: React.FC = () => {
+const SideBar: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const { logout, user } = useUser();
   const location = useLocation();
 
@@ -14,7 +14,9 @@ const SideBar: React.FC = () => {
   );
 
   return (
-    <motion.div className="bg-black w-full h-full py-8 px-4 flex flex-col justify-between gap-6">
+    <motion.div
+      className={`bg-black ${isOpen ? "md:w-2/5 w-3/4" : "w-full"} h-full py-8 px-4 flex flex-col justify-between gap-6`}
+    >
       <div className="flex flex-col gap-4">
         {filteredLinks.map((navItem, idx) => {
           const isActive =
