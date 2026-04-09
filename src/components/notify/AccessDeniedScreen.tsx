@@ -69,7 +69,7 @@ const AccessDeniedScreen: React.FC = () => {
           </h3>
           <p className="md:text-base text-sm">
             We apologize for any inconvenience. Review might be late due to
-            numerous reviews awaiting approval.
+            numerous reviews we're scrutinizing daily.
           </p>
         </div>
       ) : (
