@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { assets } from "../../assets/assets";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import api from "../../helpers/api";
@@ -8,16 +7,18 @@ import { useUser } from "../../context/UserContext";
 import AccessDeniedScreen from "../../components/notify/AccessDeniedScreen";
 import { useNavigate } from "react-router-dom";
 
+const postSchema = yup.object({
+  title: yup.string().required("Please provide post title"),
+  image: yup.mixed<File>().required("Please provide an image"),
+  images: yup.array().of(yup.mixed<File>()),
+  body: yup.string().required("Please provide post body"),
+});
+
 const AddPost: React.FC = () => {
   const { user, token, refreshUser } = useUser();
   const navigate = useNavigate();
   const imageRef = useRef<HTMLInputElement>(null);
-  const [prevImage, setPrevImage] = useState<string | null>(null);
-  const postSchema = yup.object({
-    title: yup.string().required("Please provide post title"),
-    image: yup.mixed<File>().required("Please provide an image"),
-    details: yup.string().required("Please provide post details"),
-  });
+  const [multiPreviews, setMultiPreviews] = useState<string[]>([]);
 
   useEffect(() => {
     refreshUser(token ?? "");
@@ -27,50 +28,100 @@ const AddPost: React.FC = () => {
     initialValues: {
       title: "",
       image: null as File | null,
-      details: "",
+      images: [] as File[],
+      body: "",
     },
     validationSchema: postSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       const formData = new FormData();
+
       formData.append("title", values.title);
+
+      formData.append(
+        "body",
+        JSON.stringify({
+          content: values.body,
+        }),
+      );
+
       formData.append("cover_image", values.image as File);
-      formData.append("body", values.details);
+
+      if (values.images && values.images.length > 0) {
+        values.images.forEach((file) => {
+          formData.append("images[]", file);
+        });
+      }
+
       setSubmitting(true);
+
       try {
         const res = await api.post("/blogs", formData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
         if (res.status === 200 || res.status === 201) {
-          // console.log(res.data.data);
-          toast.success(res.data.message);
+          toast.success("Post created successfully");
           setTimeout(() => {
             navigate("/dashboard/posts");
           }, 500);
         }
       } catch (error: any) {
         console.log("error creating blog", error);
-        const errMessage =
-          error.response.data.message ||
-          error.message ||
-          "Failed to make blog req";
-        toast.error(errMessage);
+        toast.error(error.message);
       } finally {
         setSubmitting(false);
         resetForm();
-        setPrevImage(null);
       }
     },
   });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const url = URL.createObjectURL(e.target.files[0]);
-      setPrevImage(url);
       formik.setFieldValue("image", e.target.files[0]);
     }
   };
+
+  const handleMultipleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+
+      formik.setFieldValue("images", filesArray);
+
+      const previewUrls = filesArray.map((file) => URL.createObjectURL(file));
+      setMultiPreviews(previewUrls);
+    }
+  };
+
+  const removeMultipleImage = (index: number) => {
+    const updatedFiles = [...formik.values.images];
+    const updatedPreviews = [...multiPreviews];
+
+    updatedFiles.splice(index, 1);
+    updatedPreviews.splice(index, 1);
+
+    formik.setFieldValue("images", updatedFiles);
+    setMultiPreviews(updatedPreviews);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    const files = Array.from(e.dataTransfer.files);
+
+    formik.setFieldValue("images", files);
+
+    const previewUrls = files.map((file) => URL.createObjectURL(file));
+    setMultiPreviews(previewUrls);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const inputClass =
+    "w-full rounded-lg border border-light-red/50 h-11 indent-2 text-sm placeholder:text-gray-500 placeholder:font-semibold focus:outline-none transition";
 
   if (!user?.blog) {
     return <AccessDeniedScreen />;
@@ -78,115 +129,101 @@ const AddPost: React.FC = () => {
     return (
       <form
         onSubmit={formik.handleSubmit}
-        className="flex flex-col gap-6 w-full"
+        className="w-full grid gap-8 md:grid-cols-2 items-stretch"
       >
-        <div className="flex lg:flex-row sm:flex-row flex-col justify-between w-full items-stretch gap-4">
-          <div className="flex flex-col gap-2 w-full sm:w-1/2 lg:w-1/2">
-            <label
-              htmlFor="title"
-              className={`text-base font-medium ${
-                formik.errors.title && formik.touched.title
-                  ? "text-light-red"
-                  : "text-black"
-              } `}
-            >
-              {formik.errors.title && formik.touched.title
-                ? "Title - "
-                : "Title:"}
-              {formik.touched.title && formik.errors.title && (
-                <span className="text-xs mt-1">{formik.errors.title}</span>
-              )}
-            </label>
-            <textarea
-              name="title"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              id="title"
-              rows={4}
-              className="border resize-none border-light-red p-4 transition-colors outline-0 rounded-lg w-full h-[50px] text-sm sm:h-[110px] lg:h-[110px] overflow-y-hidden"
-            ></textarea>
-          </div>
-          <div className="flex flex-col gap-2 w-full sm:w-1/2 lg:w-1/2">
-            <label
-              htmlFor="image"
-              className={`text-base font-medium ${
-                formik.errors.image && formik.touched.image
-                  ? "text-light-red"
-                  : "text-black"
-              } `}
-            >
-              {formik.errors.image && formik.touched.image
-                ? "Image - "
-                : "Image:"}
-              {formik.touched.image && formik.errors.image && (
-                <span className="text-xs mt-1">{formik.errors.image}</span>
-              )}
-            </label>
+        <div className="flex flex-col gap-2">
+          <label className="font-medium">Title</label>
+          <input
+            name="title"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={inputClass}
+          />
+          {formik.touched.title && formik.errors.title && (
+            <p className="text-red-600 text-sm">{formik.errors.title}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-medium">Cover Image</label>
+          <input
+            type="file"
+            ref={imageRef}
+            accept="image/*"
+            onChange={handleImageChange}
+            className={`${inputClass} imageInput indent-0!`}
+          />
+          {formik.touched.image && formik.errors.image && (
+            <p className="text-red-600 text-sm">{formik.errors.image}</p>
+          )}
+        </div>
+        <div className="md:col-span-2 flex flex-col gap-2">
+          <label className="font-medium">Gallery Images</label>
+          <div
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            className="border border-dashed border-gray-400 rounded-lg p-6 text-center cursor-pointer"
+          >
+            <p className="text-sm text-gray-500">
+              Drag & drop images here or click to upload
+            </p>
+
             <input
               type="file"
-              hidden
-              ref={imageRef}
-              accept="image/*"
-              onChange={handleImageChange}
+              multiple
+              onChange={handleMultipleImages}
+              className="hidden"
+              id="multiUpload"
             />
-            <div
-              className="border resize-none border-light-red p-4 rounded-lg w-full h-[110px] cursor-pointer flex items-center justify-center"
-              onClick={() => {
-                if (imageRef.current) {
-                  imageRef.current.click();
-                }
-              }}
+
+            <label
+              htmlFor="multiUpload"
+              className="text-light-red cursor-pointer"
             >
-              {prevImage ? (
-                <img
-                  src={prevImage}
-                  alt="prev-img"
-                  className="h-23 w-23 object-cover"
-                />
-              ) : (
-                <img
-                  src={assets.upload}
-                  alt="upoad-img"
-                  className="object-contain"
-                />
-              )}
+              Browse files
+            </label>
+            {/* Preview Grid */}
+            <div className="flex flex-wrap justify-center gap-3 mt-3">
+              {multiPreviews.map((img, index) => (
+                <div key={index} className="relative w-1/6">
+                  <img src={img} className="h-28 w-full object-cover rounded" />
+
+                  <button
+                    type="button"
+                    onClick={() => removeMultipleImage(index)}
+                    className="absolute top-1 right-1 bg-black text-white text-xs px-1 rounded"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
+          {formik.touched.images && formik.errors.images && (
+            <p className="text-red-600 text-sm">{formik.errors.images as string}</p>
+          )}
         </div>
-        <div className="flex justify-between w-full items-stretch gap-4">
-          <div className="flex flex-col gap-2 w-full">
-            <label
-              htmlFor="details"
-              className={`text-base font-medium ${
-                formik.errors.details && formik.touched.details
-                  ? "text-light-red"
-                  : "text-black"
-              } `}
-            >
-              {formik.errors.details && formik.touched.details
-                ? "Details - "
-                : "Details:"}
-              {formik.touched.details && formik.errors.details && (
-                <span className="text-xs mt-1">{formik.errors.details}</span>
-              )}
-            </label>
-            <textarea
-              name="details"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              id="details"
-              rows={10}
-              className="border resize-none border-light-red p-4 transition-colors outline-0 rounded-lg w-full text-sm styledScrollbar"
-            ></textarea>
-          </div>
+        <div className="md:col-span-2 flex flex-col gap-2">
+          <label className="font-medium">Body</label>
+          <textarea
+            name="body"
+            rows={6}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={`${inputClass} h-auto! px-2 py-3 resize-none`}
+          />
+          {formik.touched.body && formik.errors.body && (
+            <p className="text-red-600 text-sm">{formik.errors.body}</p>
+          )}
         </div>
-        <button
-          type="submit"
-          disabled={formik.isSubmitting}
-          className="p-3 bg-light-red rounded-md text-white font-medium cursor-pointer"
-        >
-          {formik.isSubmitting ? "Posting to eye..." : "Post to eye"}
-        </button>
+        <div className="md:col-span-2 text-center">
+          <button
+            type="submit"
+            disabled={formik.isSubmitting || !formik.isValid}
+            className="md:w-1/2 w-full p-3 bg-light-red rounded-md text-white font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {formik.isSubmitting ? "Posting to eye..." : "Post to eye"}
+          </button>
+        </div>
       </form>
     );
   }

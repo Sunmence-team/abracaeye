@@ -27,6 +27,7 @@ export const navItems = [
     accessibility: ["blog"],
     name: "My Posts",
     role: ["user", "admin"],
+    altName: "My Posts",
   },
   {
     icon: FaCircleUser,
@@ -34,6 +35,7 @@ export const navItems = [
     accessibility: ["all"],
     name: "Profile",
     role: ["user"],
+    altName: "My Profile",
   },
   {
     icon: FaUsers,
@@ -41,6 +43,7 @@ export const navItems = [
     accessibility: ["admin"],
     name: "All Users",
     role: ["admin"],
+    altName: "All Users",
   },
   {
     icon: MdPermMedia,
@@ -48,6 +51,7 @@ export const navItems = [
     accessibility: ["admin"],
     name: "Blogs",
     role: ["admin"],
+    altName: "Manage Blogs",
   },
   {
     icon: MdSubscriptions,
@@ -55,6 +59,7 @@ export const navItems = [
     accessibility: ["admin"],
     name: "Subscribers",
     role: ["admin"],
+    altName: "Subscribers",
   },
   {
     icon: MdContacts,
@@ -62,5 +67,6 @@ export const navItems = [
     accessibility: ["admin"],
     name: "All Contacts",
     role: ["admin"],
+    altName: "Contacts",
   },
 ];

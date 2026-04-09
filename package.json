@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.17",
     "axios": "^1.13.2",
+    "crypto-js": "^4.2.0",
     "dotenv": "^17.2.3",
     "formik": "^2.4.9",
     "framer-motion": "^12.24.10",
@@ -26,10 +27,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
+    "baseline-browser-mapping": "^2.10.16",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

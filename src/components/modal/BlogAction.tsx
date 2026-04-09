@@ -1,14 +1,16 @@
 import React, { useState } from "react";
-import type { postCardProps } from "../../lib/sharedInterface";
+import type { BlogPostProps } from "../../lib/sharedInterface";
 import Modal from "./Modal";
 import api from "../../helpers/api";
 import { toast } from "sonner";
+import { formatISODateToCustom } from "../../helpers/formatterUtilities";
 
 interface BlogActionProps {
   isOpen: boolean;
   onClose: () => void;
-  blog: postCardProps;
+  blog: BlogPostProps;
   succesAction: () => void;
+  type?: "actOn" | "view";
 }
 
 const BlogAction: React.FC<BlogActionProps> = ({
@@ -16,6 +18,7 @@ const BlogAction: React.FC<BlogActionProps> = ({
   onClose,
   blog,
   succesAction,
+  type = "actOn",
 }) => {
   const status = (blog?.status || "pending").toLowerCase();
   const isPending = status === "pending";
@@ -47,6 +50,7 @@ const BlogAction: React.FC<BlogActionProps> = ({
       setIsAprooving(false);
     }
   };
+
   const handleDecline = async () => {
     setIsDeclining(true);
 
@@ -72,41 +76,52 @@ const BlogAction: React.FC<BlogActionProps> = ({
       setIsDeclining(false);
     }
   };
+
   if (!isOpen) return null;
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} showClose={false}>
       <div className="flex flex-col max-h-[75vh]">
-        <div className="pb-4 border-b border-gray-200">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0">
+        <div className="border-b border-gray-200">
+          <div className="flex flex-col items-start justify-between">
+            <div className="flex items-center justify-between w-full">
               <p className="text-xs font-semibold tracking-wide text-gray-500">
                 BLOG DETAILS
               </p>
-
-              <h2 className="mt-1 text-lg sm:text-xl font-semibold text-gray-900 leading-snug">
-                {blog.title}
-              </h2>
-
-              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600">
-                <span>{new Date(blog.created_at).toLocaleString()}</span>
-                <span>•</span>
-                <span>{blog.likes_count} Likes</span>
-                <span>•</span>
-                <span>{blog.comments_count} Comments</span>
-              </div>
+              <span
+                className={[
+                  "shrink-0 rounded-full px-3 py-1 text-xs font-semibold capitalize",
+                  isPending
+                    ? "bg-dark-red/10 text-dark-red"
+                    : "bg-emerald-50 text-emerald-700",
+                ].join(" ")}
+              >
+                {status}
+              </span>
             </div>
 
-            <span
-              className={[
-                "shrink-0 rounded-full px-3 py-1 text-xs font-semibold capitalize",
-                isPending
-                  ? "bg-dark-red/10 text-dark-red"
-                  : "bg-emerald-50 text-emerald-700",
-              ].join(" ")}
-            >
-              {status}
-            </span>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 leading-snug">
+              {blog.title}
+            </h2>
+
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-sm text-gray-600">
+              <span>
+                Date Created: {formatISODateToCustom(blog?.created_at)}
+              </span>
+              {blog?.is_published && (
+                <>
+                  <span>•</span>
+                  <span>
+                    Date Published:{" "}
+                    {formatISODateToCustom(blog?.published_at ?? "")}
+                  </span>
+                </>
+              )}
+              <span>•</span>
+              <span>{blog.likes_count} Likes</span>
+              <span>•</span>
+              <span>{blog.comments_count} Comments</span>
+            </div>
           </div>
 
           <div className="mt-4 h-1 w-16 rounded-full bg-dark-red" />
@@ -130,19 +145,24 @@ const BlogAction: React.FC<BlogActionProps> = ({
           <div className="mt-5 rounded-xl border border-gray-200 bg-white">
             <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
               <p className="text-sm font-semibold text-gray-900">Content</p>
-              <span className="text-xs text-gray-500">ID: {blog.id}</span>
             </div>
 
             <div className="px-4 py-4">
               <p className="text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">
                 {blog.body?.content || "No content provided."}
               </p>
+              {type === "actOn" && (
+                <div className="mt-6">
+                  <p className="-mb-2">Uploaded by: {blog?.user?.name}</p>
+                  <small className="text-gray-500">{blog?.user?.email}</small>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         <div className="pt-4 mt-5 border-t border-gray-200 bg-white">
-          {isPending ? (
+          {isPending && type === "actOn" ? (
             <div className="flex items-center justify-end gap-3">
               <button
                 onClick={handleDecline}

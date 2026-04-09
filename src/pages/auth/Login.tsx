@@ -4,12 +4,14 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { HiLockClosed } from "react-icons/hi2";
 import api from "../../helpers/api";
 import { useUser } from "../../context/UserContext";
 import { assets } from "../../assets/assets";
+import { globals } from "../../constants";
+import { encryptToken } from "../../helpers/tokenHelper";
 
 interface loginFormValues {
   email: string;
@@ -19,7 +21,6 @@ interface loginFormValues {
 
 const Login: React.FC = () => {
   const { setToken, setRole, refreshUser } = useUser();
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const formik = useFormik<loginFormValues>({
@@ -49,12 +50,20 @@ const Login: React.FC = () => {
           localStorage.setItem("role", role);
           setToken(token);
           setRole(role);
-
+          
           await refreshUser(token);
+          const encrypted = encryptToken(token);
 
           toast.success("Welcome back! Redirecting...");
+          const redirectURL = 
+            role === 'admin'
+              ? `${globals.adminSiteURl}/auth-redirect?token=${encodeURIComponent(encrypted)}`
+              : role === 'user'
+                ? `/`
+                : "";
+                
           setTimeout(() => {
-            navigate(role === "admin" ? "/dashboard/admin/users" : "/");
+            window.location.href = redirectURL
           }, 1500);
         }
       } catch (err: any) {

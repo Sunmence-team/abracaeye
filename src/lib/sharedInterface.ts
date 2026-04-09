@@ -8,7 +8,9 @@ export interface postCardProps {
   likes_count: number;
   comments_count: number;
   created_at: string;
-  status?:string
+  status?: string;
+  published_at?: string;
+  is_published?: boolean;
 }
 
 export interface userProps {
@@ -29,7 +31,6 @@ export interface BlogPostProps extends postCardProps {
   user: userProps;
   showBottom?: boolean;
 }
-
 
 export interface CommentProps {
   id: number;
