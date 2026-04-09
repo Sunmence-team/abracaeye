@@ -1,13 +1,30 @@
-import React from 'react'
-import { Link } from "react-router-dom"
+import React, { useState } from "react";
+import Modal from "../modal/Modal";
 
 const AccessDeniedScreen: React.FC = () => {
-  return (
-    <div className='h-full flex flex-col items-center justify-center text-center'>
-      <h3 className='text-2xl font-bold'>Unfortunately, You can't add any post at this time</h3>
-      <p>You have to <Link to={"/dashboard/profile"} className='text-light-red underline underline-offset-3'> be a blogger</Link></p>
-    </div>
-  )
-}
+  const [openApplyPortal, setOpenApplyPortal] = useState(false);
 
-export default AccessDeniedScreen
+  return (
+    <>
+      <div className="h-full p-6 flex flex-col items-center justify-center text-center">
+        <h3 className="text-2xl font-bold">
+          Unfortunately, You can't add any post at this time
+        </h3>
+        <p>
+          You have to{" "}
+          <span className="text-light-red underline underline-offset-3">
+            {" "}
+            be a blogger
+          </span>
+        </p>
+      </div>
+      {openApplyPortal && (
+        <Modal onClose={() => setOpenApplyPortal(false)}>
+          <h3>Apply to be a blogger</h3>
+        </Modal>
+      )}
+    </>
+  );
+};
+
+export default AccessDeniedScreen;
