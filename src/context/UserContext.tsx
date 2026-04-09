@@ -1,7 +1,14 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { toast } from "sonner";
-import api from "../helpers/api";
-// { setupInterceptors } 
+import api, { getErrorMessage } from "../helpers/api";
+import type { Category } from "../lib/sharedInterface";
+// { setupInterceptors }
 
 interface userProviderProps {
   children: React.ReactNode;
@@ -24,11 +31,13 @@ interface UserContextType {
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUser: React.Dispatch<React.SetStateAction<userProps | null>>;
   setRole: React.Dispatch<React.SetStateAction<string | null>>;
-//   login: (token: string, user: userProps) => void;
+  //   login: (token: string, user: userProps) => void;
   logout: () => void;
   isLoggedIn: boolean;
   refreshUser: (token: string) => Promise<void>;
-  loading:boolean
+  loading: boolean;
+  fetchingCategories: boolean;
+  categories: Category[];
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -38,6 +47,28 @@ export const UserProvider = ({ children }: userProviderProps) => {
   const [token, setToken] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [fetchingCategories, setFetchingCategories] = useState(false);
+
+  const fetchCategories = useCallback(async () => {
+    setFetchingCategories(true);
+    try {
+      const res = await api.get("/products/categories");
+      if (res.status === 200) {
+        setCategories(res.data.data);
+      }
+    } catch (error: unknown) {
+      console.log("error-fetching-categories", error);
+      const errMessage = getErrorMessage(error, "Failed to fetch categories");
+      toast.error(errMessage);
+    } finally {
+      setFetchingCategories(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   // useEffect(() => {
   //   const storedUser = localStorage.getItem("user");
@@ -53,32 +84,32 @@ export const UserProvider = ({ children }: userProviderProps) => {
   //   setLoading(false);
   // }, []);
 
-//   const login = (token: string, user: userProps) => {
-//     localStorage.setItem("token", token);
-//     localStorage.setItem("user", JSON.stringify(user));
-//     setToken(token);
-//     setUser(user);
-//     setRole(user?.role || null);
-//   };
+  //   const login = (token: string, user: userProps) => {
+  //     localStorage.setItem("token", token);
+  //     localStorage.setItem("user", JSON.stringify(user));
+  //     setToken(token);
+  //     setUser(user);
+  //     setRole(user?.role || null);
+  //   };
 
   useEffect(() => {
-  const storedToken = localStorage.getItem("token");
-  const storedUser = localStorage.getItem("user");
+    const storedToken = localStorage.getItem("token");
+    const storedUser = localStorage.getItem("user");
 
-  if (storedToken) setToken(storedToken);
+    if (storedToken) setToken(storedToken);
 
-  if (storedUser) {
-    try {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setRole(parsedUser?.role || null);
-    } catch {
-      localStorage.removeItem("user");
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setRole(parsedUser?.role || null);
+      } catch {
+        localStorage.removeItem("user");
+      }
     }
-  }
 
-  setLoading(false);
-}, []);
+    setLoading(false);
+  }, []);
 
   const isLoggedIn = Boolean(token);
 
@@ -99,7 +130,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
   //   setupInterceptors(logout);
   // }, []);
 
-  const refreshUser = useCallback(async (authToken:string) => {
+  const refreshUser = useCallback(async (authToken: string) => {
     try {
       const response = await api.get(`/auth/show`, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -129,6 +160,8 @@ export const UserProvider = ({ children }: userProviderProps) => {
         isLoggedIn,
         refreshUser,
         loading,
+        fetchingCategories,
+        categories,
       }}
     >
       {children}

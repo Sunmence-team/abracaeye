@@ -71,11 +71,16 @@ const App: React.FC = () => {
       {showNewsletter && (
         <Modal onClose={handleCloseNewsletter}>
           <div className="text-center">
-            <h2 className="md:text-2xl text-xl font-bold text-dark-red">Subscribe to our Newsletter</h2>
+            <h2 className="md:text-2xl text-xl font-bold text-dark-red">
+              Subscribe to our Newsletter
+            </h2>
             <p className="mb-8 md:text-base text-sm text-gray-600">
               Stay updated with our latest news and offers!
             </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-4">
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="flex flex-col gap-4"
+            >
               <input
                 type="email"
                 placeholder="Enter your email address"
@@ -99,16 +104,13 @@ const App: React.FC = () => {
       <Routes>
         {/* Main routes with navbar */}
         <Route path="/" element={<MainLayout children={<Home />} />} />
-        <Route
-          path="/blogs"
-          element={<MainLayout children={<Blogs />} />}
-        />
+        <Route path="/blogs" element={<MainLayout children={<Blogs />} />} />
         <Route
           path="/contact"
           element={<MainLayout children={<Contact />} />}
         />
         <Route
-          path="/services"
+          path="/marketplace"
           element={<MainLayout children={<MarketPlace />} />}
         />
         <Route

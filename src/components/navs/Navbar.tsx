@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { label: "Blog", href: "/blogs" },
-    { label: "Marketplace", href: "/services" },
+    { label: "Marketplace", href: "/marketplace" },
     { label: "Contact", href: "/contact" },
   ];
 

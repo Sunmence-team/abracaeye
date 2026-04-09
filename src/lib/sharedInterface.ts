@@ -42,3 +42,24 @@ export interface CommentProps {
     name: string;
   };
 }
+
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Product {
+  id: number;
+  user_id: number;
+  category_id: number;
+  images: string[];
+  name: string;
+  price: string;
+  category: Category;
+  description: string;
+  quantity: number;
+  user: userProps;
+}
