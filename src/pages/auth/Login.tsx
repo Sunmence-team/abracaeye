@@ -61,7 +61,7 @@ const Login: React.FC = () => {
               : role === 'user'
                 ? `/`
                 : "";
-
+                
           setTimeout(() => {
             window.location.href = redirectURL
           }, 1500);
