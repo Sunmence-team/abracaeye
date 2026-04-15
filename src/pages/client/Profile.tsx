@@ -3,15 +3,23 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useScreenSize } from "../../hook/useScreenSize";
 import { useUser } from "../../context/UserContext";
+import { assets } from "../../assets/assets";
+import { globals } from "../../constants";
+import { useNavigate } from "react-router-dom";
 
 const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const screen = useScreenSize();
+  const navigate = useNavigate();
 
-  const { user, token, refreshUser } = useUser()
+  const { user, isLoggedIn, token, encryptedToken, refreshUser } = useUser()
   const firstName = user?.name?.split(" ")?.[0]
   const lastName = user?.name?.split(" ")?.[1]
   const userInitials = `${firstName?.split("")[0].toUpperCase()}${lastName ? lastName?.split("")[0].toUpperCase() : ''}`
+
+  const primaryHref = (isLoggedIn && encryptedToken)
+    ? `/auth-redirect?token=${encodeURIComponent(encryptedToken)}&redirectUrl=${globals.redirectIdentifiers[3]}`
+    : `/auth/login?redirectUrl=${globals.redirectIdentifiers[3]}`;
 
   const validationSchema = Yup.object({
     fullName: Yup.string().required("Full name is required"),
@@ -27,29 +35,6 @@ const Profile: React.FC = () => {
 
   return (
     <div className="w-full min-h-screen flex gap-6 lg:flex-row flex-col px-1">
-      <div className="hidden w-full lg:w-1/4 lg:flex flex-col gap-4">
-        <button className="w-full p-4 bg-white shadow rounded-lg text-left font-semibold text-gray-700">
-          Account Setting
-          <p className="text-sm font-normal text-gray-500">
-            Details about your personal information
-          </p>
-        </button>
-
-        <button className="w-full p-4 bg-white shadow rounded-lg text-left font-semibold text-gray-700">
-          Notification
-          <p className="text-sm font-normal text-gray-500">
-            Details about your personal information
-          </p>
-        </button>
-
-        <button className="w-full p-4 bg-white shadow rounded-lg text-left font-semibold text-gray-700">
-          Password and Security
-          <p className="text-sm font-normal text-gray-500">
-            Details about your personal information
-          </p>
-        </button>
-      </div>
-
       <div className="w-full lg:w-3/4 flex flex-col gap-6">
         <div className="w-full bg-white p-4 shadow rounded-lg flex md:flex-row flex-col gap-4 items-center justify-between">
           <div className="flex items-center gap-4">
@@ -148,6 +133,46 @@ const Profile: React.FC = () => {
           </Formik>
         </div>
       </div>
+
+      <div className="hidden w-full lg:w-1/4 lg:flex flex-col gap-4">
+        {!user?.vendor && (
+          <div className="w-full lg:w-1/4 flex flex-col gap-4 lg:pb-0 pb-25 mt-3">
+            <div className="w-full bg-white p-5 shadow rounded-3xl border border-black/10 flex flex-col gap-4">
+              <div>
+                <h2 className="text-base lg:text-lg font-semibold text-gray-900">
+                  Introducing our Marketplace!
+                </h2>
+                <p className="mt-1 text-sm text-gray-600">
+                  Do you have services and products to render? Become a vendor today and showcase your products when it is visible.
+                </p>
+              </div>
+
+              <div className="w-full rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 aspect-4/3">
+                <img
+                  className="w-full h-full object-cover"
+                  src={assets.vendor}
+                  alt="vendor-placeholder"
+                  loading="lazy"
+                />
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  type="button"
+                  className="w-full px-4 py-3 rounded-full bg-dark-red text-white text-sm font-semibold hover:opacity-95 transition disabled:opacity-60 cursor-pointer"
+                  onClick={() => navigate(primaryHref)}
+                >
+                  Apply now
+                </button>
+                <p className="text-xs text-gray-500">
+                  Apply to start listing products and selling to our vast community of customers.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
     </div>
   );
 };
