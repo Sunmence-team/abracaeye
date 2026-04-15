@@ -8,6 +8,7 @@ import React, {
 import { toast } from "sonner";
 import api, { getErrorMessage } from "../helpers/api";
 import type { Category } from "../lib/sharedInterface";
+import { encryptToken } from "../helpers/tokenHelper";
 // { setupInterceptors }
 
 interface userProviderProps {
@@ -27,6 +28,7 @@ interface userProps {
 interface UserContextType {
   user: userProps | null;
   token: string | null;
+  encryptedToken: string | null;
   role: string | null;
   setToken: React.Dispatch<React.SetStateAction<string | null>>;
   setUser: React.Dispatch<React.SetStateAction<userProps | null>>;
@@ -45,6 +47,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider = ({ children }: userProviderProps) => {
   const [user, setUser] = useState<userProps | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [encryptedToken, setEncryptedToken] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -96,7 +99,10 @@ export const UserProvider = ({ children }: userProviderProps) => {
     const storedToken = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
 
-    if (storedToken) setToken(storedToken);
+    if (storedToken) {
+      setToken(storedToken)
+      setEncryptedToken(encryptToken(storedToken));
+    };
 
     if (storedUser) {
       try {
@@ -117,6 +123,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
     localStorage.removeItem("token");
     setToken(null);
     localStorage.removeItem("user");
+    setEncryptedToken(null);
     setUser(null);
 
     toast.success("Logged out successfully");
@@ -139,6 +146,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
 
       // console.log(updatedUser);
       setUser(updatedUser);
+      setEncryptedToken(authToken);
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setRole(updatedUser?.role || null);
     } catch (err) {
@@ -151,6 +159,7 @@ export const UserProvider = ({ children }: userProviderProps) => {
       value={{
         user,
         token,
+        encryptedToken,
         role,
         setToken,
         setUser,

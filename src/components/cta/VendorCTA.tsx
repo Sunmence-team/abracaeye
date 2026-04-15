@@ -5,14 +5,18 @@ import { useUser } from "../../context/UserContext";
 import { globals } from "../../constants";
 
 const VendorCTA: React.FC = () => {
-  const { isLoggedIn, user } = useUser();
+  const { isLoggedIn, user, encryptedToken } = useUser();
 
   if (user?.vendor) return null;
 
-  const primaryHref = isLoggedIn ? "/apply-as-vendor?skip=true" : "/auth/login";
-  const primaryLabel = isLoggedIn ? "Become a Vendor" : "Log in to Apply";
+  const primaryHref = (isLoggedIn && encryptedToken)
+    ? `/auth-redirect?token=${encodeURIComponent(encryptedToken)}&redirectUrl=${globals.redirectIdentifiers[3]}`
+    : `/auth/login?redirectUrl=${globals.redirectIdentifiers[3]}`;
+  const primaryLabel = "Become a Vendor";
 
-  const secondaryHref = "/apply-as-vendor";
+  const secondaryHref = (isLoggedIn && encryptedToken)
+    ? `/auth-redirect?token=${encodeURIComponent(encryptedToken)}&redirectUrl=${globals.redirectIdentifiers[2]}`
+    : `/auth/login?redirectUrl=${globals.redirectIdentifiers[2]}`;
   const secondaryLabel = "Learn more";
 
   return (

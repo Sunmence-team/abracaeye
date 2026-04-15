@@ -6,7 +6,7 @@ import api from "../../helpers/api";
 import type { Product } from "../../lib/sharedInterface";
 import ProductCard from "../../components/cards/ProductCard";
 import { useUser } from "../../context/UserContext";
-import VendorCTA from "../../components/cta/VendorCta";
+import VendorCTA from "../../components/cta/VendorCTA";
 
 const MarketPlace: React.FC = () => {
   const { categories } = useUser();
@@ -142,7 +142,7 @@ const MarketPlace: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-6 md:px-12 lg:px-20 pb-16">
+      <div className="w-[90%] mx-auto mb-16">
         <div className="max-w-6xl mx-auto">
           <VendorCTA />
         </div>
